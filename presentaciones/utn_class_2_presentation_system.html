@@ -1,0 +1,2191 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Materia Electiva: Desarrollo de Aplicaciones con LLMs y Modelos Generativos - Unidad 2 (UTN FRSR)</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Mermaid.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            utn: {
+              navy: '#0B132B',       // UTN Deep Midnight Navy
+              card: '#16223F',       // UTN Dark Surface
+              blue: '#003882',       // Azul Institucional UTN (Pantone 286)
+              lightBlue: '#0284C7',  // Celeste Institucional UTN (#0284C7 / #009FE3)
+              teal: '#0891B2',       // Technological Cyan / Teal
+              indigo: '#4F46E5',     // Modern Tech Indigo
+              amber: '#F59E0B',      // UTN Gold / Amber accent
+            },
+            unc: { // Fallback alias
+              navy: '#0B132B',
+              card: '#16223F',
+              blue: '#003882',
+              lightBlue: '#0284C7',
+              teal: '#0891B2',
+              indigo: '#4F46E5',
+              amber: '#F59E0B',
+            },
+            semantic: {
+              error: '#EF4444',
+              success: '#10B981',
+              warning: '#F59E0B'
+            }
+          },
+          fontFamily: {
+            sans: ['Roboto', 'Inter', 'system-ui', 'sans-serif'],
+            heading: ['Montserrat', 'Roboto', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          },
+          fontSize: {
+            '2xs': ['0.78rem', { lineHeight: '1.15rem' }],
+            'xs': ['0.875rem', { lineHeight: '1.3rem' }],
+            'sm': ['0.975rem', { lineHeight: '1.45rem' }],
+            'base': ['1.075rem', { lineHeight: '1.6rem' }],
+            'lg': ['1.22rem', { lineHeight: '1.75rem' }],
+            'xl': ['1.4rem', { lineHeight: '1.9rem' }],
+            '2xl': ['1.7rem', { lineHeight: '2.15rem' }],
+            '3xl': ['2.15rem', { lineHeight: '2.5rem' }],
+            '4xl': ['2.65rem', { lineHeight: '2.9rem' }]
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    :root {
+      --scale-multiplier: 1;
+      /* Escala tipográfica base de la Unidad 2: el 80% del tamaño original pasa a ser el nuevo 100%. */
+      --base-font-scale: 0.8;
+    }
+    
+    html {
+      font-size: calc(clamp(15px, 0.8vw + 0.4vh + 5px, 21.5px) * var(--scale-multiplier) * var(--base-font-scale));
+      transition: font-size 0.2s ease-out;
+    }
+    @media (min-width: 1600px) {
+      html {
+        font-size: calc(clamp(17px, 0.85vw + 0.42vh + 5px, 23px) * var(--scale-multiplier) * var(--base-font-scale));
+      }
+    }
+    :fullscreen html,
+    :-webkit-full-screen html {
+      font-size: calc(clamp(17.5px, 0.9vw + 0.45vh + 5px, 24px) * var(--scale-multiplier) * var(--base-font-scale));
+    }
+
+    body {
+      font-family: 'Roboto', 'Inter', system-ui, sans-serif;
+    }
+    h1, h2, h3, .font-heading {
+      font-family: 'Montserrat', system-ui, sans-serif;
+      letter-spacing: -0.015em;
+    }
+    code, pre, .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    #slide-stage-content {
+      width: 100%;
+    }
+    #slide-stage-content .max-w-4xl {
+      max-width: min(86rem, 100%) !important;
+      width: 100%;
+    }
+    #slide-stage-content .max-w-3xl {
+      max-width: min(74rem, 100%) !important;
+      width: 100%;
+    }
+    #slide-stage-content .max-w-2xl {
+      max-width: min(62rem, 100%) !important;
+      width: 100%;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(100, 116, 139, 0.4);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(100, 116, 139, 0.7);
+    }
+    @keyframes subtlePulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+    .badge-overtime {
+      animation: subtlePulse 1s infinite ease-in-out;
+    }
+    .mermaid svg {
+      max-width: 70% !important;
+      height: auto !important;
+      margin: 0 auto;
+      display: block;
+    }
+    pre.mermaid.mermaid-lg svg {
+      max-width: 100% !important;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 dark:bg-utn-navy text-slate-800 dark:text-slate-100 min-h-screen flex flex-col antialiased transition-colors duration-200 selection:bg-utn-lightBlue selection:text-white">
+
+  <header class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50 px-4 py-2.5 transition-colors">
+    <div class="max-w-[96rem] w-full mx-auto flex flex-wrap items-center justify-between gap-3">
+      
+      <!-- Academic Brand & Block Badge -->
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-utn-blue to-sky-600 flex items-center justify-center text-white font-extrabold text-xs sm:text-sm shadow-md tracking-wider font-heading">
+          UTN
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-semibold uppercase tracking-wider text-utn-lightBlue dark:text-sky-400 font-heading">FR San Rafael</span>
+            <span id="slide-badge-block" class="hidden px-2 py-0.5 text-2xs font-bold rounded bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+              B1: Marco y Principios
+            </span>
+          </div>
+          <h1 class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white truncate max-w-[220px] sm:max-w-xs md:max-w-md">
+            Unidad 2: Prompt Engineering y Estructuración de Datos
+          </h1>
+        </div>
+      </div>
+
+      <!-- Timers Center -->
+      <div class="flex items-center gap-2 sm:gap-4">
+        <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-xs">
+          <span class="text-slate-400 font-medium">Unidad:</span>
+          <span id="global-timer" class="font-mono font-bold text-utn-lightBlue dark:text-sky-400">00:00</span>
+          <span class="text-slate-400 font-mono text-xs">/ 120:00</span>
+          <button id="btn-timer-toggle" onclick="toggleGlobalTimer()" class="ml-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 focus:outline-none" title="Iniciar/Pausar cronómetro global (P)">
+            ▶️
+          </button>
+        </div>
+
+        <div id="slide-timer-pill" class="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800/80 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-xs font-mono">
+          <span class="text-slate-400">Slide:</span>
+          <span id="slide-elapsed" class="font-bold text-emerald-600 dark:text-emerald-400">00:00</span>
+          <span class="text-slate-400">/</span>
+          <span id="slide-target" class="text-slate-500 dark:text-slate-400">05:00</span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <div id="screen-role-indicator" class="flex items-center"></div>
+
+        <button id="btn-notes" onclick="handleNotesClick()" title="Abrir Notas Docente (2ª Pantalla o panel)" class="px-3 py-1.5 text-xs rounded-lg font-semibold transition-all bg-indigo-600 hover:bg-indigo-700 text-white flex items-center gap-1.5 shadow-md">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+          <span>Notas</span>
+        </button>
+
+        <div class="hidden sm:flex items-center rounded-lg bg-slate-100 dark:bg-slate-800 p-0.5 border border-slate-200 dark:border-slate-700 text-xs" title="Ajuste fino manual de escala (+ / -)">
+          <button onclick="adjustScale(-0.05)" class="px-2 py-1 rounded text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 font-bold font-mono">A-</button>
+          <span id="scale-indicator" class="px-1.5 text-2xs font-mono text-slate-500 dark:text-slate-400">100%</span>
+          <button onclick="adjustScale(0.05)" class="px-2 py-1 rounded text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 font-bold font-mono">A+</button>
+        </div>
+
+        <button id="btn-fullscreen" onclick="toggleFullScreen()" title="Pantalla Completa (F)" class="p-2 rounded-lg text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+          <svg id="fullscreen-icon-expand" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5"/></svg>
+          <svg id="fullscreen-icon-compress" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v4a2 2 0 01-2 2H3m18 0h-4a2 2 0 01-2-2V3m0 18v-4a2 2 0 012-2h4M3 15h4a2 2 0 012 2v4"/></svg>
+        </button>
+
+        <button onclick="toggleDarkMode()" title="Alternar Modo Oscuro / Claro" class="p-2 rounded-lg text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+          <svg id="theme-sun-icon" class="w-4 h-4 hidden dark:block text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+          <svg id="theme-moon-icon" class="w-4 h-4 block dark:hidden text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Progress Indicator -->
+    <div class="w-full bg-slate-200 dark:bg-slate-800 h-1 mt-2 rounded-full overflow-hidden">
+      <div id="global-progress-bar" class="bg-gradient-to-r from-utn-lightBlue via-utn-teal to-utn-indigo h-full w-0 transition-all duration-300"></div>
+    </div>
+  </header>
+
+  <main id="main-container" class="flex-1 max-w-[96rem] w-full mx-auto p-3 sm:p-5 flex flex-col md:flex-row gap-5 overflow-hidden relative">
+
+    <!-- STAGE / PROJECTION PANEL -->
+    <section id="stage-panel" class="w-full flex-1 flex flex-col bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden min-h-[560px] relative transition-all">
+      <div class="px-5 py-3 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/70 dark:bg-slate-800/40">
+        <div class="flex items-center gap-2">
+          <span id="slide-badge-index" class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300">
+            Slide 01 de 20
+          </span>
+          <span id="slide-badge-duration" class="text-xs font-mono font-medium px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300">
+            03 min
+          </span>
+        </div>
+      </div>
+      <div id="slide-stage-content" class="flex-1 p-5 sm:p-8 flex flex-col items-center justify-center overflow-y-auto">
+        <!-- Injected dynamically -->
+      </div>
+    </section>
+
+    <!-- TELEPROMPTER PANEL -->
+    <aside id="teleprompter-panel" class="hidden flex-col bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden transition-all">
+      <div class="px-5 py-3.5 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 flex flex-wrap items-center justify-between gap-2">
+        <div class="flex items-center gap-2">
+          <span id="prompter-slide-badge" class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300">
+            Slide 01 de 20
+          </span>
+          <span id="prompter-slide-duration" class="text-xs font-mono font-medium px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300">
+            03 min
+          </span>
+          <h2 id="prompter-slide-title" class="text-xs sm:text-sm font-bold text-slate-800 dark:text-white truncate max-w-md ml-1">
+            Título
+          </h2>
+        </div>
+        <div class="flex items-center gap-2">
+          <span id="prompter-words-count" class="text-xs font-mono text-slate-400">~240 palabras</span>
+          <button id="btn-close-drawer" onclick="toggleNotesDrawer(false)" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" title="Cerrar notas">
+            ✕
+          </button>
+        </div>
+      </div>
+      <div class="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4">
+        
+        <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 space-y-1">
+          <div class="text-2xs uppercase font-bold text-slate-400 tracking-wider">Objetivo:</div>
+          <p id="prompter-cognitive-goal" class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-medium"></p>
+        </div>
+
+        <div class="space-y-2">
+          <div class="text-2xs uppercase font-bold text-slate-400 tracking-wider flex items-center justify-between">
+            <span>Discurso Textual Recomendado (Tono Tech Lead):</span>
+            <span class="text-xs">🎙️</span>
+          </div>
+          <div id="prompter-verbatim-text" class="p-4 sm:p-5 rounded-xl bg-slate-100 dark:bg-utn-card/70 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 text-sm sm:text-base leading-relaxed space-y-3 font-normal">
+            <!-- Injected dynamically -->
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-900/50 space-y-2.5">
+          <div class="text-xs uppercase font-bold text-utn-indigo dark:text-indigo-400 flex items-center gap-1.5">
+            <span>💡</span> Pausa de Validación & Pregunta Disparadora
+          </div>
+          <p id="prompter-validation-question" class="text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200"></p>
+          <div class="mt-2 pt-2.5 border-t border-indigo-100 dark:border-indigo-900/60">
+            <span class="text-2xs uppercase tracking-wider font-bold text-indigo-600 dark:text-indigo-300">Respuesta Modelo Sugerida:</span>
+            <p id="prompter-validation-answer" class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1 italic leading-relaxed"></p>
+          </div>
+        </div>
+
+      </div>
+    </aside>
+
+  </main>
+
+  <footer class="bg-white/95 dark:bg-slate-900/95 border-t border-slate-200 dark:border-slate-800 py-2.5 px-4 sticky bottom-0 z-40">
+    <div class="max-w-[96rem] w-full mx-auto flex items-center justify-between gap-4">
+      
+      <button id="btn-prev" onclick="prevSlide()" class="px-3.5 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium text-xs sm:text-sm flex items-center gap-1 transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+        <span>Anterior</span>
+      </button>
+
+      <div class="flex items-center gap-2 flex-1 justify-center max-w-md">
+        <select id="slide-select" onchange="goToSlide(parseInt(this.value))" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs sm:text-sm text-slate-800 dark:text-slate-200 font-medium focus:ring-1 focus:ring-utn-lightBlue focus:outline-none">
+          <!-- Populated dynamically -->
+        </select>
+        <span id="nav-indicator" class="text-xs sm:text-sm font-mono text-slate-400 whitespace-nowrap">01 / 20</span>
+      </div>
+
+      <button id="btn-next" onclick="nextSlide()" class="px-3.5 py-1.5 rounded-lg bg-utn-blue dark:bg-utn-lightBlue hover:bg-blue-800 dark:hover:bg-blue-600 text-white font-medium text-xs sm:text-sm flex items-center gap-1 transition-all shadow-sm disabled:opacity-40 disabled:cursor-not-allowed">
+        <span>Siguiente</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+      </button>
+
+    </div>
+  </footer>
+
+  <script>
+    const SLIDES_DATA = [
+
+      {
+        id: 1,
+        title: "Portada y Encuadre de la Unidad 2",
+        block: "",
+        targetTimeMinutes: 3,
+        purpose: "Encuadrar la Unidad 2 como el salto desde 'dónde corre el modelo' hacia 'cómo se gobierna su comportamiento' sin tocar un solo peso de la red.",
+        screenHTML: `
+          <div class="text-center max-w-3xl mx-auto space-y-6">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-100 dark:bg-blue-950/70 border border-blue-200 dark:border-blue-800 text-utn-blue dark:text-sky-300 text-xs sm:text-sm font-bold uppercase tracking-wider font-heading">
+              <span>🏛️</span> UTN Facultad Regional San Rafael · Ingeniería en Sistemas de Información
+            </div>
+            <div class="text-xs sm:text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider font-heading">
+              Materia Electiva: Desarrollo de Aplicaciones con LLMs y Modelos Generativos
+            </div>
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
+              Desarrollo de Aplicaciones con LLMs <br/>
+              <span class="text-transparent bg-clip-text bg-gradient-to-r from-utn-lightBlue via-utn-teal to-utn-indigo">
+                y Modelos Generativos
+              </span>
+            </h1>
+            <div class="space-y-2">
+              <h2 class="text-base sm:text-lg font-semibold text-slate-800 dark:text-slate-200">
+                Unidad 2: Prompt Engineering y Estructuración de Datos
+              </h2>
+              <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+                De la intuición al diseño sistemático: gobernar el comportamiento del modelo sin alterar sus pesos.
+              </p>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Bienvenidas y bienvenidos a la segunda unidad de la materia electiva. La semana pasada resolvimos una pregunta de infraestructura: <strong>dónde corre el modelo</strong>. Calculamos VRAM, comparamos gastos de operación contra inversión de capital, cuantizamos a cuatro bits y armamos una arquitectura híbrida para FinNova.</p>
+          <p>Hoy el motor ya está encendido. La pregunta cambia por completo: <strong>¿cómo lo conducimos?</strong> En la Unidad 1 aprendimos a calibrar el muestreo —temperature, top-p—, que es el volante fino. Hoy vamos por la otra superficie de control, la que decide de verdad qué hace el modelo: <strong>lo que le escribimos</strong>. El prompt, los ejemplos y el esquema de salida.</p>
+          <p>Quiero anticiparles algo que va a ser el hilo de toda la unidad: <strong>el prompt engineering no es un recetario de frases mágicas</strong>. Es una disciplina de ingeniería con trade-offs medibles, costos en tokens, latencia atribuible y criterios de aceptación. Cada técnica que veamos hoy tiene un precio, y parte del trabajo profesional es saber cuándo ese precio se justifica y cuándo no.</p>
+        `,
+        validationPause: {
+          question: "Si el prompt no modifica los pesos del modelo, ¿por qué puede cambiar radicalmente la calidad de una salida productiva?",
+          answer: "Porque el prompt reconfigura la distribución de probabilidad condicional sobre la que el modelo muestrea cada token. No cambia lo que el modelo sabe, pero sí qué región de ese conocimiento activa y con qué formato lo emite."
+        }
+      },
+
+      {
+        id: 2,
+        title: "Caso FinTech Horizon: El Colapso de la Automatización",
+        block: "",
+        targetTimeMinutes: 6,
+        purpose: "Presentar el caso transversal de la unidad mediante tres modos de falla reales de un despliegue LLM y plantear la disyuntiva estratégica: descartar, reentrenar o gobernar.",
+        screenHTML: `
+          <div class="space-y-4 max-w-4xl mx-auto">
+            <div class="border-l-4 border-utn-indigo pl-3">
+              <span class="text-xs uppercase font-bold text-utn-indigo">Caso de Estudio Transversal</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">FinTech Horizon: 12.000 solicitudes diarias y un piloto que no llega a producción</h2>
+              <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Créditos, reclamos y consultas de auditoría clasificados por un modelo fundacional. Primer mes de despliegue.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-utn-indigo border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                <div>
+                  <div class="flex items-center gap-1.5 mb-2">
+                    <span class="text-base">🎲</span>
+                    <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Variabilidad Descontrolada</h3>
+                  </div>
+                  <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                    Un mismo reclamo enviado tres veces arrojaba <strong>tres categorías distintas</strong> y resoluciones dispares. Imposible construir métricas ni acuerdos de nivel de servicio.
+                  </p>
+                </div>
+                <div class="mt-3 pt-2.5 border-t border-slate-200 dark:border-slate-700/60 text-xs font-semibold text-indigo-700 dark:text-indigo-300">
+                  ✗ No reproducible → no auditable
+                </div>
+              </div>
+
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-semantic-warning border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                <div>
+                  <div class="flex items-center gap-1.5 mb-2">
+                    <span class="text-base">🌀</span>
+                    <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Alucinaciones y Saltos Lógicos</h3>
+                  </div>
+                  <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                    En reclamos por cargos duplicados, el modelo emitía dictámenes directos contradictorios <strong>sin explicitar el cálculo intermedio</strong>, generando inconsistencias normativas imposibles de auditar.
+                  </p>
+                </div>
+                <div class="mt-3 pt-2.5 border-t border-slate-200 dark:border-slate-700/60 text-xs font-semibold text-amber-600 dark:text-amber-400">
+                  ✗ Sin trazabilidad del razonamiento
+                </div>
+              </div>
+
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-semantic-error border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                <div>
+                  <div class="flex items-center gap-1.5 mb-2">
+                    <span class="text-base">🧩</span>
+                    <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Salidas Desestructuradas</h3>
+                  </div>
+                  <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                    El sistema que da curso al trámite esperaba un dato de sí o no y un código numérico de rechazo. El modelo devolvía prosa:
+                  </p>
+                  <div class="mt-2 p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 font-mono text-2xs text-slate-600 dark:text-slate-400 italic">
+                    "Considero que la solicitud no es viable debido a ingresos insuficientes"
+                  </div>
+                </div>
+                <div class="mt-3 pt-2.5 border-t border-slate-200 dark:border-slate-700/60 text-xs font-semibold text-red-600 dark:text-red-400">
+                  ✗ Falla de lectura → reintentos y caídas
+                </div>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-gradient-to-r from-blue-50 via-teal-50 to-indigo-50 dark:from-slate-800 dark:via-slate-800/90 dark:to-slate-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-700 dark:text-slate-300 flex items-start gap-2.5">
+              <span class="text-xl">⚖️</span>
+              <div>
+                <strong class="text-slate-900 dark:text-white">La disyuntiva del directorio:</strong>
+                <span> ¿Descartar la iniciativa por inviable, invertir miles de dólares en <em>fine-tuning</em> de un modelo, o aprender a controlar el modelo disponible mediante técnicas sistemáticas de comunicación y estructuración?</span>
+              </div>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Les presento el caso que va a atravesar toda la unidad de hoy: <strong>FinTech Horizon</strong>, una compañía de servicios financieros que procesa más de <strong>doce mil solicitudes diarias</strong> entre créditos, reclamos y consultas de auditoría. Para descomprimir al equipo de operaciones, la gerencia técnica desplegó un modelo fundacional que clasificaba solicitudes y redactaba respuestas iniciales.</p>
+          <p>El primer mes fue un desastre, y quiero que miren los tres modos de falla en el orden en que la propia empresa los fue descubriendo, porque son <strong>exactamente</strong> los que van a encontrar en sus propios proyectos.</p>
+          <p>Lo primero que saltó a la vista fue la <strong>variabilidad descontrolada</strong>. El mismo reclamo, enviado tres veces, devolvía tres categorías distintas. Y esto es lo que se nota apenas uno empieza a probar en serio: alcanza con repetir un caso para que el sistema se contradiga solo. Fíjense lo que implica: no se puede construir una métrica, no se puede firmar un acuerdo de nivel de servicio, no se puede defender una decisión ante un ente regulador.</p>
+          <p>Cuando empezaron a mirar las respuestas una por una, apareció el segundo problema: <strong>alucinaciones y saltos de lógica</strong>. En reclamos complejos sobre cargos duplicados, el modelo tiraba el dictamen final directamente, sin mostrar el cálculo intermedio. Y cuando no hay cálculo intermedio, no hay nada que auditar: solo una afirmación que a veces está bien y a veces no.</p>
+          <p>Y el tercero es el que finalmente frenó el proyecto: <strong>salidas desestructuradas</strong>. El sistema que recibe esa respuesta y le da curso al trámite esperaba dos cosas muy concretas: un dato de sí o no, y un código numérico de motivo de rechazo. El modelo contestaba: <em>"Considero que la solicitud no es viable debido a ingresos insuficientes"</em>. Impecable en castellano, y completamente inútil para el software, que no sabe leer una opinión: espera un casillero completo. La lectura automática fallaba, había reintentos costosos y caídas de servicio.</p>
+          <p>El liderazgo del proyecto quedó frente a tres caminos: dar de baja la iniciativa, gastar una fortuna en reentrenar, o profesionalizar la interacción. Spoiler: la solución fue la tercera, y es lo que vamos a construir hoy.</p>
+        `,
+        validationPause: {
+          question: "De los tres modos de falla, ¿cuál consideran que es el más barato de resolver y cuál el más caro?",
+          answer: "El más barato es la variabilidad: se resuelve bajando la temperatura a cero, que ya sabemos hacer desde la Unidad 1 y no cuesta un solo token extra. El más caro es el salto lógico, porque exige Chain-of-Thought y eso multiplica los tokens de salida, que son los más costosos. La salida desestructurada está en el medio: el modo JSON o las gramáticas tienen costo casi nulo en una API comercial. Fíjense que el orden de la unidad de hoy sigue exactamente esa escalera de costos."
+        }
+      },
+
+      {
+        id: 3,
+        title: "Hoja de Ruta de la Jornada (120 Min)",
+        block: "",
+        targetTimeMinutes: 3,
+        purpose: "Pautar la estructura de la sesión sincrónica y decodificar el glosario de siglas técnicas de prompt engineering que se usarán durante la unidad.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-4">
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Estructura de la Sesión Sincrónica (120 Min)</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div class="p-3.5 rounded-xl bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800">
+                <div class="text-xs font-bold text-utn-blue dark:text-blue-400 mb-1">BLOQUE 1 · 28 MIN</div>
+                <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white mb-2">Marco y Principios</h3>
+                <ul class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 space-y-1.5 list-disc list-inside">
+                  <li>Prompt Engineering como disciplina</li>
+                  <li>Los Cinco Principios Universales</li>
+                  <li>Especificidad vs. ventana de contexto</li>
+                  <li>Prompting vs. fine-tuning</li>
+                  <li>Dilución de atención y contaminación por ejemplo</li>
+                </ul>
+              </div>
+              <div class="p-3.5 rounded-xl bg-teal-50 dark:bg-teal-950/30 border border-teal-200 dark:border-teal-800">
+                <div class="text-xs font-bold text-utn-teal mb-1">BLOQUES 2-3 · 46 MIN</div>
+                <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white mb-2">Contexto y Razonamiento</h3>
+                <ul class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 space-y-1.5 list-disc list-inside">
+                  <li>Zero-Shot vs. Few-Shot Prompting</li>
+                  <li>Few-Shot dinámico con base vectorial</li>
+                  <li>Chain-of-Thought (CoT)</li>
+                  <li>Meta-Prompting y descomposición</li>
+                  <li>Costo vs. trazabilidad regulatoria</li>
+                </ul>
+              </div>
+              <div class="p-3.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-800">
+                <div class="text-xs font-bold text-utn-indigo mb-1">BLOQUES 4-5 · 34 MIN</div>
+                <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white mb-2">Estructura, Lab y Cierre</h3>
+                <ul class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 space-y-1.5 list-disc list-inside">
+                  <li>Modo JSON y Constrained Sampling</li>
+                  <li>Los tres niveles de garantía de esquema</li>
+                  <li>Laboratorio 2 en Google Colab</li>
+                  <li>Matriz maestra de decisión</li>
+                  <li>Puente a Unidad 3: RAGs y Tool Calling</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-2">
+              <div class="text-xs uppercase tracking-wider font-bold text-slate-500 dark:text-slate-400">
+                📖 Glosario de Siglas Técnicas que abordaremos hoy:
+              </div>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-mono text-slate-700 dark:text-slate-300">
+                <div class="p-2 rounded bg-white dark:bg-slate-900 border"><strong class="text-utn-lightBlue">ICL:</strong> In-Context Learning</div>
+                <div class="p-2 rounded bg-white dark:bg-slate-900 border"><strong class="text-utn-lightBlue">CoT:</strong> Chain-of-Thought</div>
+                <div class="p-2 rounded bg-white dark:bg-slate-900 border"><strong class="text-amber-500">Copy bias:</strong> Contaminación por ejemplo</div>
+                <div class="p-2 rounded bg-white dark:bg-slate-900 border"><strong class="text-utn-teal">SFT:</strong> Fine-Tuning Supervisado</div>
+                <div class="p-2 rounded bg-white dark:bg-slate-900 border"><strong class="text-indigo-400">GBNF:</strong> Gramática de Muestreo</div>
+                <div class="p-2 rounded bg-white dark:bg-slate-900 border"><strong class="text-semantic-error">LITM:</strong> Lost in the Middle</div>
+                <div class="p-2 rounded bg-white dark:bg-slate-900 border"><strong class="text-purple-400">Persona:</strong> Rol asignado al modelo</div>
+                <div class="p-2 rounded bg-white dark:bg-slate-900 border"><strong class="text-emerald-400">Schema:</strong> Contrato de salida</div>
+              </div>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Este es el mapa de las dos horas. Van a notar que la unidad tiene una progresión deliberada: arrancamos por lo más barato y terminamos por lo más caro.</p>
+          <p>En el <strong>bloque uno</strong> establecemos el marco conceptual y los cinco principios universales de diseño de prompts, y estudiamos los trade-offs: cuánto cuesta detallar, cuánto espacio de contexto consume, y de qué dos maneras <strong>detallar mal empeora el resultado</strong>. Es el bloque más barato: todo lo que vemos ahí se resuelve escribiendo mejor.</p>
+          <p>En los <strong>bloques dos y tres</strong> subimos un escalón, y acá cada técnica ya tiene un precio. El <strong>aprendizaje en contexto</strong> nos cuesta tokens de entrada, porque inyectamos ejemplos. El <strong>Chain-of-Thought</strong> nos cuesta tokens de salida, que son los más caros, y además latencia.</p>
+          <p>Y en los <strong>bloques cuatro y cinco</strong> cerramos con la estructuración garantizada: modo JSON, gramáticas de muestreo, el laboratorio en Colab con GPU T4 y la matriz maestra de decisión que se llevan como herramienta de trabajo.</p>
+          <p>Una aclaración importante sobre el alcance de hoy: los <strong>hiperparámetros de muestreo</strong> —temperature, top-p y top-k— ya los trabajamos en la Unidad 1 y en el Laboratorio 1, así que no los volvemos a explicar. Los vamos a <em>usar</em>: cada técnica viene con su configuración recomendada y en el laboratorio van a mover esos controles. Pero el foco de hoy es <strong>qué le escribimos al modelo</strong>, no cómo muestrea.</p>
+          <p>Presten atención al glosario de abajo. Hay dos siglas que quiero que les queden grabadas desde ahora: <strong>ICL</strong>, aprendizaje en contexto, que es aprender sin actualizar pesos; y <strong>LITM</strong>, <em>Lost in the Middle</em>, que es el fenómeno por el cual un modelo ignora sistemáticamente la información que ubicamos en el medio de un contexto largo.</p>
+        `,
+        validationPause: {
+          question: "¿Por qué ordenamos las técnicas de menor a mayor costo en lugar de ir directo a la más potente?",
+          answer: "Porque en ingeniería la regla es aplicar la intervención mínima que resuelve el problema. Si reescribir el prompt con los cinco principios ya alcanza, no hace falta gastar tokens de entrada en ejemplos ni tokens de salida en Chain-of-Thought. Empezar por la técnica más cara es un antipatrón de costos que se paga en cada llamada, para siempre."
+        }
+      },
+
+      {
+        id: 4,
+        title: "Prompt Engineering: De la Intuición al Diseño Sistemático",
+        block: "B1: Marco y Principios (27m)",
+        targetTimeMinutes: 6,
+        purpose: "Mostrar sobre el propio caso FinTech Horizon que el fallo no está en el modelo sino en la solicitud, y traducir las cinco preguntas que toda solicitud debe responder a los componentes del prompt que se verán en el bloque.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-4">
+            <div class="border-l-4 border-utn-teal pl-3">
+              <span class="text-xs uppercase font-bold text-utn-teal tracking-wider">Bloque 1</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">La Solicitud Mal Especificada (FinTech Horizon)</h2>
+              <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Así se le pedía al modelo que clasificara los 12.000 reclamos diarios. El problema nunca fue su capacidad: fue la forma del pedido.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div class="p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                <div class="text-2xs uppercase font-bold text-semantic-error tracking-wider mb-1 text-center">Solicitud mal especificada · Preguntas sin responder</div>
+                <pre class="mermaid text-xs">
+                  flowchart LR
+                    I1["'Clasificá este<br/>reclamo'"] --> L1["LLM Base"]
+                    L1 --> O1["Respuesta conversacional<br/>Categoría inventada<br/>Sin formato"]
+                </pre>
+              </div>
+              <div class="p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                <div class="text-2xs uppercase font-bold text-emerald-600 dark:text-emerald-400 tracking-wider mb-1 text-center">Solicitud sistemática · Preguntas con respuestas especificas</div>
+                <pre class="mermaid text-xs">
+                  flowchart LR
+                    I2["Rol + Taxonomía cerrada<br/>Reglas de negocio<br/>Formato + Ejemplos + <br/>'Clasificá este reclamo'<br/>"] --> L2["LLM Base"]
+                    L2 --> O2["Categoría válida<br/>Severidad y acción<br/>Lista para el sistema"]
+                </pre>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">
+              <div class="text-2xs uppercase font-bold text-slate-400 tracking-wider mb-2">
+                Las 5 preguntas que <span class="text-semantic-error">"Clasificá este reclamo"</span> deja sin responder · <span class="text-slate-500 dark:text-slate-500">Y lo que el modelo puede o no terminar adivinando</span>
+              </div>
+              <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-2xs">
+                <div class="p-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 flex flex-col">
+                  <div class="text-slate-500 dark:text-slate-400 italic leading-snug">¿Quién tiene que resolverlo?</div>
+                  <div class="font-bold text-utn-lightBlue mt-1 leading-snug">→ Rol (Persona)</div>
+                  <div class="mt-1.5 pt-1.5 border-t border-slate-200 dark:border-slate-700/60 text-semantic-error leading-snug">Adivina: ¿analista de riesgo o agente de atención?</div>
+                </div>
+                <div class="p-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 flex flex-col">
+                  <div class="text-slate-500 dark:text-slate-400 italic leading-snug">¿Bajo qué reglas?</div>
+                  <div class="font-bold text-utn-teal mt-1 leading-snug">→ Contexto y reglas de negocio</div>
+                  <div class="mt-1.5 pt-1.5 border-t border-slate-200 dark:border-slate-700/60 text-semantic-error leading-snug">Adivina: no conoce la circular interna de FinTech Horizon</div>
+                </div>
+                <div class="p-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 flex flex-col">
+                  <div class="text-slate-500 dark:text-slate-400 italic leading-snug">¿Qué categorías son válidas?</div>
+                  <div class="font-bold text-amber-500 mt-1 leading-snug">→ Restricciones</div>
+                  <div class="mt-1.5 pt-1.5 border-t border-slate-200 dark:border-slate-700/60 text-semantic-error leading-snug">Adivina: inventa etiquetas fuera de la taxonomía</div>
+                </div>
+                <div class="p-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 flex flex-col">
+                  <div class="text-slate-500 dark:text-slate-400 italic leading-snug">¿Cómo se entrega?</div>
+                  <div class="font-bold text-utn-indigo mt-1 leading-snug">→ Formato de salida</div>
+                  <div class="mt-1.5 pt-1.5 border-t border-slate-200 dark:border-slate-700/60 text-semantic-error leading-snug">Adivina: prosa en vez de datos estructurados</div>
+                </div>
+                <div class="p-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 flex flex-col">
+                  <div class="text-slate-500 dark:text-slate-400 italic leading-snug">¿Hay casos ya resueltos?</div>
+                  <div class="font-bold text-emerald-600 dark:text-emerald-400 mt-1 leading-snug">→ Ejemplos (Few-Shot)</div>
+                  <div class="mt-1.5 pt-1.5 border-t border-slate-200 dark:border-slate-700/60 text-semantic-error leading-snug">Adivina: aplica su criterio genérico, no el de la empresa</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/60 text-xs sm:text-sm text-slate-700 dark:text-slate-300 flex items-start gap-2.5">
+              <span class="text-xl">⚠️</span>
+              <div>
+                <strong class="text-slate-900 dark:text-white">Regla operativa:</strong>
+                <span> Una persona con experiencia, ante estas cinco preguntas sin responder, <strong>las pregunta</strong>. El modelo no: <strong>las responde igual</strong>, completándolas con el <em>"promedio estadístico de Internet"</em>. La solicitud sistemática no lo hace "más inteligente": <strong>simplemente no le delega al modelo las decisiones que nunca le correspondió tomar</strong>.</span>
+              </div>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Volvamos a FinTech Horizon, porque el diagnóstico de la falla está acá. Imaginen que la empresa incorpora a una analista con quince años en el rubro y el primer día le dejan una nota: <em>"clasificá este reclamo"</em>. ¿Qué hace? <strong>Pregunta.</strong> Pregunta con qué criterio, qué categorías existen, dónde lo tiene que cargar.</p>
+          <p>Eso es exactamente lo que le pedían al modelo. Y acá está el punto: <strong>el modelo es tan capaz como esa analista, pero no pregunta. Adivina.</strong> El fallo no estaba en el modelo; estaba en la solicitud.</p>
+          <p>Miren la banda del medio: esa frase de tres palabras <strong>deja cinco preguntas sin responder</strong>, y cada una es un componente concreto del prompt. <em>¿Quién tiene que resolverlo?</em> El <strong>rol</strong>: el modelo no sabe si responde como analista de riesgo o como agente de atención. <em>¿Bajo qué reglas de la casa?</em> El <strong>contexto</strong>: no conoce la circular interna. <em>¿Qué categorías son válidas?</em> Las <strong>restricciones</strong>: sin una taxonomía cerrada, inventa etiquetas. <em>¿Cómo se entrega?</em> El <strong>formato</strong>, que nos ocupa el bloque cuatro. Y <em>¿hay casos ya resueltos?</em> Eso es <strong>few-shot</strong>, el bloque dos.</p>
+          <p>Ahora comparen los dos diagramas de arriba. A la izquierda, cero de cinco: respuesta conversacional, categoría inventada, sin formato. A la derecha, las cinco respondidas: categoría válida, severidad, acción, lista para el sistema. <strong>Mismo modelo, misma temperatura, misma infraestructura.</strong> Lo único que cambió fue la solicitud.</p>
+          <p>Por eso el prompt engineering <strong>no es</strong> un recetario de frases mágicas ni una habilidad atada a un proveedor: <strong>es la disciplina de diseñar entradas para obtener resultados confiables, reproducibles e integrables</strong>. Y tiene impacto económico directo: sube la tasa de éxito de las automatizaciones y baja el gasto en reintentos.</p>
+          <p>En la próxima slide van a reconocer esta misma lista en los cinco principios universales. No son reglas caídas del cielo: son <strong>las preguntas que cualquier persona con experiencia hace antes de empezar</strong>. Y este experimento exacto lo van a correr ustedes en el laboratorio.</p>
+        `,
+        validationPause: {
+          question: "Sigamos con la analista de FinTech Horizon. Si el prompt es la solicitud que le entregamos, ¿qué sería el fine-tuning en esta misma analogía? ¿Y por qué importa la diferencia a la hora de decidir?",
+          answer: "Conviene completar el mapa entero antes de responder. La ANALISTA es el modelo ya preentrenado: trae una formación general enorme, que ni ustedes pagaron ni pueden modificar en el día a día. La SOLICITUD es el prompt: lo único que ustedes controlan en cada pedido. Los CASOS YA RESUELTOS que se le adjuntan como referencia son el few-shot. Y el FINE-TUNING sería mandarla a capacitarse durante meses en las políticas de FinTech Horizon: al volver, ya no hace falta explicarle la taxonomía ni la circular interna, porque las internalizó.\n\nLa diferencia clave es DÓNDE queda el conocimiento. La solicitud vive fuera de la analista: hay que repetirla entera en cada pedido, se paga en tokens todas las veces, pero se corrige en minutos, se versiona y se audita. La capacitación vive dentro: se paga una vez, no consume contexto en cada llamada, pero tarda semanas, cuesta órdenes de magnitud más y si el criterio cambia hay que rehacerla.\n\nDe ahí la regla práctica: el prompt es siempre la primera línea de acción, y el fine-tuning se justifica solo en dos casos: cuando la solicitud se volvió tan larga que ya no entra en la ventana de contexto (o su costo acumulado supera el de capacitar), o cuando hace falta terminología ultracerrada que el modelo nunca vio.\n\nY noten el límite de la analogía, que también es importante: a diferencia de una persona, el modelo NO recuerda el pedido anterior. Cada llamada arranca de cero, con amnesia total. Por eso la solicitud tiene que ser autosuficiente todas y cada una de las veces."
+        }
+      },
+
+      {
+        id: 5,
+        title: "Los Cinco Principios Universales del Prompting",
+        block: "B1: Marco y Principios (27m)",
+        targetTimeMinutes: 8,
+        purpose: "Presentar los cinco principios agnósticos del proveedor con su definición operativa y un ejemplo de implementación funcional para cada uno.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-3">
+            <div class="border-l-4 border-utn-lightBlue pl-3">
+              <span class="text-xs uppercase font-bold text-utn-lightBlue tracking-wider">Mecanismo Práctico</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Los Cinco Principios Universales</h2>
+              <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Agnósticos del proveedor: transferibles entre modelos de lenguaje e incluso modelos multimodales.</p>
+            </div>
+
+            <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700">
+              <table class="w-full text-xs sm:text-sm text-left">
+                <thead class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 uppercase text-2xs tracking-wider">
+                  <tr>
+                    <th class="px-3 py-2.5 font-bold">Principio</th>
+                    <th class="px-3 py-2.5 font-bold">Definición Operativa</th>
+                    <th class="px-3 py-2.5 font-bold">Implementación Funcional</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-700 bg-white dark:bg-slate-900">
+                  <tr>
+                    <td class="px-3 py-2.5 font-bold text-utn-lightBlue whitespace-nowrap">1 · Dar Dirección</td>
+                    <td class="px-3 py-2.5 text-slate-600 dark:text-slate-300">Describir el estilo en detalle o asignar un rol profesional específico (<em>persona</em>).</td>
+                    <td class="px-3 py-2.5 text-slate-500 dark:text-slate-400 italic">"Actuá como oficial senior de cumplimiento normativo bancario especializado en prevención de lavado."</td>
+                  </tr>
+                  <tr>
+                    <td class="px-3 py-2.5 font-bold text-utn-teal whitespace-nowrap">2 · Especificar Formato</td>
+                    <td class="px-3 py-2.5 text-slate-600 dark:text-slate-300">Delimitar taxativamente la estructura de salida y las restricciones sintácticas.</td>
+                    <td class="px-3 py-2.5 text-slate-500 dark:text-slate-400 italic">"Entregá la evaluación en Markdown con tres columnas: Riesgo, Severidad (Bajo/Medio/Alto) y Acción Mitigante."</td>
+                  </tr>
+                  <tr>
+                    <td class="px-3 py-2.5 font-bold text-utn-indigo whitespace-nowrap">3 · Proveer Ejemplos</td>
+                    <td class="px-3 py-2.5 text-slate-600 dark:text-slate-300">Incorporar casos de referencia resueltos con éxito (<em>in-context learning</em>).</td>
+                    <td class="px-3 py-2.5 text-slate-500 dark:text-slate-400 italic">Incluir 2 o 3 pares de transacciones previas con su clasificación correcta antes del caso actual.</td>
+                  </tr>
+                  <tr>
+                    <td class="px-3 py-2.5 font-bold text-amber-500 whitespace-nowrap">4 · Evaluar la Calidad</td>
+                    <td class="px-3 py-2.5 text-slate-600 dark:text-slate-300">Definir criterios de aceptación medibles y contrastar iterativamente el desempeño.</td>
+                    <td class="px-3 py-2.5 text-slate-500 dark:text-slate-400 italic">Batería de 50 casos de prueba midiendo precisión de clasificación ante cada cambio de redacción.</td>
+                  </tr>
+                  <tr>
+                    <td class="px-3 py-2.5 font-bold text-semantic-error whitespace-nowrap">5 · Dividir el Trabajo</td>
+                    <td class="px-3 py-2.5 text-slate-600 dark:text-slate-300">Fragmentar procesos complejos en subtareas encadenadas o inducir razonamiento paso a paso.</td>
+                    <td class="px-3 py-2.5 text-slate-500 dark:text-slate-400 italic">Primero extraer las cláusulas relevantes del contrato; después evaluar el riesgo civil sobre lo extraído.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-gradient-to-r from-blue-50 via-teal-50 to-indigo-50 dark:from-slate-800 dark:via-slate-800/90 dark:to-slate-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-700 dark:text-slate-300 flex items-start gap-2.5">
+              <span class="text-xl">🧪</span>
+              <div>
+                <strong class="text-slate-900 dark:text-white">Experimento 1 del Laboratorio:</strong>
+                <span> compararán un <em>System Prompt Ingenuo</em> ("Eres un Asistente Financiero en FinTech Horizon") contra uno <em>Sistemático</em> que aplica los principios 1 y 2 sobre el mismo reclamo de cargo duplicado.</span>
+              </div>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Estos cinco principios vienen del trabajo de Phoenix y Taylor, y tienen una propiedad que los hace muy valiosos en la industria: son <strong>agnósticos del proveedor</strong>. Funcionan igual en un GPT, en un Claude, en un Gemini, en un Qwen local, e incluso en generadores de imágenes. No caducan con la próxima versión.</p>
+          <p><strong>Principio uno: Dar Dirección.</strong> Asignar una persona o rol profesional. Esto no es teatro: cuando ustedes escriben "actuá como oficial senior de cumplimiento normativo especializado en prevención de lavado", están condicionando la distribución de probabilidad hacia una región del espacio semántico donde viven los términos técnicos correctos y el registro formal apropiado.</p>
+          <p><strong>Principio dos: Especificar el Formato.</strong> Y acá quiero que sean taxativos. No digan "respondeme de forma ordenada". Digan: "tres columnas, con estos nombres exactos, y la severidad restringida a Bajo, Medio o Alto". Toda ambigüedad que ustedes dejen, el modelo la va a resolver con su promedio estadístico.</p>
+          <p><strong>Principio tres: Proveer Ejemplos.</strong> Lo vamos a ver en profundidad en el bloque dos. Dos o tres pares resueltos de transacciones previas hacen más por la precisión que diez párrafos de instrucciones abstractas.</p>
+          <p><strong>Principio cuatro: Evaluar la Calidad.</strong> Este es el que más se saltea y el que más distingue a un equipo profesional. Si no tienen una batería de casos de prueba con una métrica, no están haciendo ingeniería: están haciendo intuición. Cincuenta casos etiquetados y una medición de precisión antes y después de cada cambio de redacción.</p>
+          <p><strong>Principio cinco: Dividir el Trabajo.</strong> No le pidan a una sola llamada que extraiga, valide, convierta moneda y redacte. Primero extraer las cláusulas del contrato, después evaluar el riesgo sobre el texto ya extraído. Dos pasos verificables por separado.</p>
+          <p>En el laboratorio, el <strong>Experimento 1</strong> pone esto a prueba de forma muy concreta: van a ejecutar un system prompt ingenuo que dice apenas "sos un asistente financiero", y después el sistemático con taxonomía cerrada y estructura tabular. Sobre el mismo reclamo. La diferencia se ve a simple vista.</p>
+        `,
+        validationPause: {
+          question: "¿Cuál de los cinco principios es el que con más frecuencia se omite en proyectos reales, y por qué es el más costoso omitirlo?",
+          answer: "El cuarto, Evaluar la Calidad. Se omite porque exige construir un dataset etiquetado y eso no se ve en la demo. Es el más costoso porque sin métrica objetiva cada cambio de prompt es una apuesta: el equipo 'mejora' el prompt basándose en dos o tres ejemplos anecdóticos y degrada silenciosamente el rendimiento sobre el resto de la distribución."
+        }
+      },
+
+      {
+        id: 6,
+        title: "Trade-offs: ¿Hasta dónde conviene detallar un prompt?",
+        block: "B1: Marco y Principios (27m)",
+        targetTimeMinutes: 6,
+        purpose: "Analizar los dos trade-offs centrales del diseño de prompts: especificidad frente a ventana de contexto (con su doble costo, espacio y factura) y prompting frente a fine-tuning.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-3.5">
+            <div class="border-l-4 border-amber-500 pl-3">
+              <span class="text-xs uppercase font-bold text-amber-500 tracking-wider">Criterios de Decisión</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Trade-offs: ¿Hasta dónde conviene detallar un prompt?</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-utn-lightBlue border-slate-200 dark:border-slate-700">
+                <div class="flex items-center gap-1.5 mb-2">
+                  <span class="text-base">📏</span>
+                  <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Especificidad vs. Ventana de Contexto</h3>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                  A mayor detalle, mayor precisión. Pero las directivas <strong>no son gratis ni infinitas</strong>: ocupan lugar en cada llamada y ese lugar es finito y se factura.
+                </p>
+                <div class="mt-3 pt-2.5 border-t border-slate-200 dark:border-slate-700/60 space-y-1.5 text-xs">
+                  <div class="text-slate-600 dark:text-slate-300">
+                    <strong class="text-utn-lightBlue">Ocupa ventana:</strong> en los 4.096 tokens del laboratorio, 800 tokens de directivas son <strong>el 20% consumido antes de leer el primer reclamo</strong>. Lo que sobra se reparte entre el caso, los ejemplos y la respuesta: si el reclamo es largo, <strong>algo se trunca</strong>.
+                  </div>
+                  <div class="text-slate-600 dark:text-slate-300">
+                    <strong class="text-utn-teal">Y se factura:</strong> esos mismos 800 tokens × 1M de llamadas/mes = <strong>800M de tokens de entrada</strong>, todos los meses.
+                  </div>
+                </div>
+              </div>
+
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-utn-teal border-slate-200 dark:border-slate-700">
+                <div class="flex items-center gap-1.5 mb-2">
+                  <span class="text-base">🔧</span>
+                  <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Prompting vs. Fine-Tuning</h3>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                  La optimización del prompt es <strong>siempre la primera línea de acción</strong>. El fine-tuning se justifica solo cuando el volumen de instrucciones excede la ventana de contexto, o cuando hace falta alterar de forma permanente el conocimiento intrínseco para terminología ultracerrada.
+                </p>
+                <div class="mt-3 pt-2.5 border-t border-slate-200 dark:border-slate-700/60 text-xs font-semibold text-teal-700 dark:text-teal-300">
+                  ✓ Prompt primero. Fine-tuning como excepción justificada.
+                </div>
+              </div>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Ahora los trade-offs, que es donde se separa el que leyó un tutorial del que diseña sistemas.</p>
+          <p>El primero es <strong>especificidad contra ventana de contexto</strong>, y quiero que vean que tiene <strong>dos costos distintos</strong>, no uno. El obvio es el económico: ochocientos tokens de system prompt por un millón de llamadas mensuales son ochocientos millones de tokens de entrada facturados todos los meses.</p>
+          <p>Pero el que más sorprende en producción es el otro: <strong>la ventana es finita</strong>. En el laboratorio de hoy vamos a trabajar con una ventana de cuatro mil noventa y seis tokens. Si el system prompt se lleva ochocientos, <strong>ya arrancamos con el veinte por ciento consumido antes de leer el primer reclamo</strong>. Lo que queda se reparte entre el caso, los ejemplos y la respuesta. Y cuando no alcanza, el modelo no avisa: <strong>algo se trunca</strong>. Por eso cada palabra que agregan es una decisión doble: económica y de presupuesto de espacio.</p>
+          <p>El segundo trade-off es <strong>prompting contra fine-tuning</strong>. Mi recomendación es taxativa: <strong>el prompt es siempre la primera línea de acción</strong>. El fine-tuning se justifica en dos escenarios y solo dos: cuando el volumen de instrucciones ya no entra en la ventana, o cuando hay que alterar de forma permanente el conocimiento del modelo para terminología ultracerrada.</p>
+          <p>Ahora bien, fíjense que los dos trade-offs que acabamos de ver tratan a las directivas como algo que <strong>cuesta dinero y ocupa espacio</strong>. Como si el único límite para detallar fuera el presupuesto. En la próxima slide vamos a ver que no: <strong>detallar mal también degrada la calidad</strong>, y de dos maneras muy distintas.</p>
+        `,
+        validationPause: {}
+      },
+
+      {
+        id: 7,
+        title: "Cuando Agregar Más al Prompt Empeora el Resultado",
+        block: "B1: Marco y Principios (27m)",
+        targetTimeMinutes: 7,
+        purpose: "Presentar los dos fenómenos por los que ampliar el prompt degrada la calidad en lugar de mejorarla: dilución de atención al sumar reglas y contaminación por ejemplo al sumar ejemplos.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-3.5">
+            <div class="border-l-4 border-semantic-error pl-3">
+              <span class="text-xs uppercase font-bold text-semantic-error tracking-wider">Modos de Falla del Diseño</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Cuando Agregar Más Empeora el Resultado</h2>
+              <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Detallar cuesta dinero y espacio, ya lo vimos. Pero detallar <strong>mal</strong> además degrada la calidad, y hay dos maneras distintas de que eso pase.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+              <div class="p-3.5 rounded-xl bg-red-50 dark:bg-red-950/25 border border-red-200 dark:border-red-900/50 space-y-2">
+                <div class="text-xs sm:text-sm font-bold text-semantic-error flex items-center gap-1.5">
+                  <span>🌀</span> Dilución de Atención · al sumar REGLAS
+                </div>
+                <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+                  Al acumular reglas dispares —redactar, validar normativa, convertir moneda, traducir— crece la probabilidad de que el modelo <strong>ignore una consigna</strong>. El fallo es silencioso: no da error, omite.
+                </p>
+                <div class="p-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                  <div class="text-2xs uppercase font-bold text-semantic-error mb-0.5">✗ Un prompt con 15 restricciones</div>
+                  <p class="text-2xs text-slate-600 dark:text-slate-300">Cada regla compite por la atención. Difícil de atribuir cuál falló.</p>
+                </div>
+                <div class="p-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                  <div class="text-2xs uppercase font-bold text-emerald-600 dark:text-emerald-400 mb-0.5">✓ Dos llamadas encadenadas simples</div>
+                  <p class="text-2xs text-slate-600 dark:text-slate-300">Suma algo de latencia, pero <strong>cada fase queda verificable de forma aislada</strong>.</p>
+                </div>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/25 border border-amber-200 dark:border-amber-900/50 space-y-2">
+                <div class="text-xs sm:text-sm font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1.5">
+                  <span>🧲</span> Contaminación por Ejemplo · al sumar EJEMPLOS
+                </div>
+                <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+                  El ejemplo debía enseñar <strong>la forma</strong> de la respuesta, pero el modelo <strong>arrastra también su contenido</strong>: copia un valor literal o fuerza el dato real al molde del ejemplo.
+                </p>
+                <div class="p-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 font-mono text-2xs leading-snug">
+                  <div class="text-slate-400">Ejemplo en el prompt:</div>
+                  <div class="text-slate-600 dark:text-slate-300">"…debitaron <strong>45.000</strong> el <strong>12/03/2024</strong>" → <span class="text-utn-teal">{"monto": 45000, "fecha": "2024-03-12"}</span></div>
+                  <div class="text-slate-400 mt-1">Caso real:</div>
+                  <div class="text-slate-600 dark:text-slate-300">"…debitaron <strong>80.000</strong> en <strong>marzo de 2024</strong>" → <span class="text-semantic-error mt-1">{"monto": 80000, "fecha": "2024-03-12"}</span></div>
+                </div>
+                <div class="p-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                  <div class="text-2xs uppercase font-bold text-emerald-600 dark:text-emerald-400 mb-0.5">✓ Mitigación</div>
+                  <p class="text-2xs text-slate-600 dark:text-slate-300">Marcadores en vez de valores verosímiles (<span class="font-mono">&lt;MONTO&gt;</span>, <span class="font-mono">AAAA-MM-DD</span>), <strong>variar valores entre ejemplos</strong> y delimitar bien ejemplo vs. caso.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Esta es, para mí, la slide que más les va a servir del bloque uno. Hay <strong>dos maneras distintas</strong> en que agregar más al prompt lo empeora, y conviene distinguirlas bien, porque <strong>se arreglan de formas opuestas</strong>.</p>
+          <p>La primera es la <strong>dilución de atención</strong>, y ocurre al sumar <strong>reglas</strong>. Piensen en un modelo al que le exigen quince restricciones simultáneas: redactar en cierto tono, validar tres reglas de negocio, convertir moneda y traducir. Las reglas <strong>compiten entre sí por la atención</strong> y el modelo empieza a ignorar alguna. Y lo peor es que el fallo es silencioso: no da error, simplemente omite. La alternativa es encadenar dos pasos más simples: suma algo de latencia, pero cada fase queda verificable por separado.</p>
+          <p>La segunda es la <strong>contaminación por ejemplo</strong>, y ocurre al sumar <strong>ejemplos</strong>. Les adelanto algo del bloque dos, porque es el error más difícil de detectar de toda la unidad. Nosotros ponemos un ejemplo para enseñarle <strong>la forma</strong> de la respuesta. Pero el modelo no distingue tan limpiamente forma de contenido: <strong>arrastra también los valores</strong>.</p>
+          <p>Miren el recuadro. En el ejemplo escribimos un reclamo por cuarenta y cinco mil pesos del doce de marzo de 2024, con su JSON resuelto. Llega el caso real: ochenta mil pesos, marzo de 2019. ¿Y qué devuelve? <strong>Cuarenta y cinco mil. Y año 2024.</strong> No leyó el caso: copió el ejemplo. O peor, hace un híbrido: toma el ochenta mil pero le encaja el año del ejemplo porque la fecha real venía en otro formato.</p>
+          <p>¿Por qué es tan peligroso? Porque <strong>la salida es sintácticamente perfecta</strong>. Valida contra el esquema, pasa el parser, entra a la base de datos. Nadie se entera hasta que alguien concilia contra el extracto real. Un JSON roto se detecta solo; un JSON <em>correcto con el dato equivocado</em>, no.</p>
+          <p>La mitigación es simple y la tienen en verde: usen <strong>marcadores en lugar de valores verosímiles</strong> —MONTO entre corchetes angulares, A-A-A-A guión M-M en vez de una fecha real—, <strong>varíen los valores entre ejemplos</strong> para que ningún número parezca "la respuesta", y delimiten sin ambigüedad dónde termina el ejemplo y dónde empieza el caso a resolver.</p>
+        `,
+        validationPause: {
+          question: "Los dos fenómenos degradan la calidad, pero fallan de formas muy distintas. ¿Cuál de las dos es más peligrosa en un sistema productivo y por qué?",
+          answer: "La contaminación por ejemplo, por una razón operativa. La dilución produce una salida OMITIDA o incompleta —falta un campo, no se aplicó una regla— y eso suele romper una validación posterior o saltar a la vista en una revisión. La contaminación produce una salida COMPLETA, bien formada y plausible, con el dato equivocado adentro: valida contra el esquema, pasa el parser y entra a la base de datos sin una sola alarma.\n\nEn términos de detección: la dilución falla de forma ruidosa; la contaminación falla en silencio. Y el daño escala distinto: un campo faltante detiene un trámite, un monto equivocado lo ejecuta.\n\nDe ahí que el control no pueda ser solo sintáctico. Contra la dilución sirve descomponer en llamadas simples y verificar fase por fase. Contra la contaminación hacen falta dos cosas: ejemplos con marcadores en vez de valores verosímiles, y validación semántica contra la fuente —que el monto extraído aparezca literalmente en el texto original."
+        }
+      },
+
+      {
+        id: 8,
+        title: "In-Context Learning: La Inducción del Nuevo Empleado",
+        block: "B2: In-Context Learning (24m)",
+        targetTimeMinutes: 8,
+        purpose: "Establecer que el modelo puede alinearse a criterios corporativos sin actualizar pesos, contrastando el flujo Zero-Shot contra el Few-Shot con el modelo mental de la inducción laboral.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-4">
+            <div class="border-l-4 border-utn-teal pl-3">
+              <span class="text-xs uppercase font-bold text-utn-teal tracking-wider">Bloque 2</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Aprender sin actualizar un solo peso</h2>
+              <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">A una persona que entra a auditar facturas no se le transmite o induce todo el conocimiento y experiencia desde cero: se le dan 9 expedientes aprobados y 5 rechazados.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div class="p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                <div class="text-2xs uppercase font-bold text-amber-500 tracking-wider mb-1 text-center">Zero-Shot</div>
+                <pre class="mermaid text-xs">
+                  flowchart LR
+                    A1["Instrucción<br/>+ Caso Nuevo"] --> B1["LLM"]
+                    B1 --> C1["Resultado basado en<br/>patrones generales previos"]
+                </pre>
+              </div>
+              <div class="p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                <div class="text-2xs uppercase font-bold text-utn-teal tracking-wider mb-1 text-center">Few-Shot</div>
+                <pre class="mermaid text-xs">
+                  flowchart LR
+                    A2["Instrucción + Ejemplo 1<br/>+ Ejemplo 2 + Caso Nuevo"] --> B2["LLM"]
+                    B2 --> C2["Resultado adaptado al<br/>patrón específico demostrado"]
+                </pre>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-semantic-error border-slate-200 dark:border-slate-700">
+                <div class="text-xs sm:text-sm font-bold text-semantic-error mb-1.5">El falso dilema del equipo</div>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                  "Este problema no lo resuelve el modelo: necesitamos <strong>semanas de entrenamiento especializado</strong> y recolectar miles de datos etiquetados."
+                </p>
+              </div>
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-emerald-500 border-slate-200 dark:border-slate-700">
+                <div class="text-xs sm:text-sm font-bold text-emerald-600 dark:text-emerald-400 mb-1.5">Lo que muestra la práctica</div>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                  Un pequeño grupo de <strong>ejemplos bien curados</strong> dentro de la instrucción eleva la precisión desde niveles inaceptables hasta estándares de grado productivo <strong>en cuestión de minutos</strong>.
+                </p>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-900/50 text-xs sm:text-sm text-slate-700 dark:text-slate-300 flex items-start gap-2.5">
+              <span class="text-xl">🧪</span>
+              <div>
+                <strong class="text-slate-900 dark:text-white">Regla interna de FinTech Horizon (Experimento 2):</strong>
+                <span> los trabajadores independientes con ingresos variables pero historial intachable y más de 3 años de actividad <strong>no se rechazan</strong>: se clasifican como <span class="font-mono text-utn-teal">REVISION_MANUAL_RIESGO</span>. Ningún modelo fundacional conoce esa política. En Zero-Shot rechaza; en Few-Shot se alinea al instante.</span>
+              </div>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Bloque dos. Uno de los descubrimientos más impactantes del despliegue de modelos fundacionales es su capacidad de <strong>aprender sin actualizar pesos</strong>. Se llama aprendizaje en contexto, <em>in-context learning</em>, y es probablemente la técnica con mejor relación costo-beneficio de toda la unidad.</p>
+          <p>El modelo mental es la <strong>inducción de una persona nueva en un puesto</strong>. Cuando alguien se incorpora a auditar facturas, nadie la manda de vuelta a la universidad a reestudiar Contabilidad. Eso sería el equivalente del <em>pretraining</em> o el <em>fine-tuning</em>: caro, lento, desproporcionado.</p>
+          <p>Lo que se hace es entregarle un manual básico y, sobre todo, <strong>una carpeta con tres expedientes aprobados del mes anterior y dos rechazados</strong>, marcando el criterio aplicado. El cerebro humano detecta el patrón y lo replica de inmediato. Eso es few-shot.</p>
+          <p>Fíjense en el diagrama la diferencia estructural. En zero-shot le damos instrucción más caso nuevo, y el modelo responde con sus patrones generales previos, los que trajo del entrenamiento. En few-shot le damos instrucción, ejemplos resueltos y recién después el caso nuevo. Y ahí el resultado se adapta al <strong>patrón específico que le demostramos</strong>.</p>
+          <p>Miren el recuadro de abajo, porque esto lo van a ejecutar en el laboratorio. FinTech Horizon tiene una regla interna que dice: los trabajadores independientes con ingresos variables, pero historial crediticio intachable y más de tres años de actividad, <strong>no se rechazan</strong>; se derivan a revisión manual de riesgo.</p>
+          <p>Pregunta clave: ¿algún modelo fundacional del mundo conoce esa política? <strong>Ninguno.</strong> No está en Internet. Es una circular interna. Entonces, en zero-shot, el modelo aplica su sesgo estadístico genérico —ingresos variables igual a riesgo— y rechaza a Laura Morales. Con dos ejemplos de calibración, adopta el criterio corporativo exacto. Sin reentrenar nada, sin una GPU, en segundos.</p>
+        `,
+        validationPause: {
+          question: "Si el few-shot alinea el criterio en segundos, ¿queda algún caso donde el fine-tuning siga siendo la respuesta correcta?",
+          answer: "Sí, dos. Primero, cuando la cantidad de reglas y excepciones ya no entra en la ventana de contexto, o entra pero a un costo por llamada inaceptable a gran escala. Segundo, cuando se busca reducir latencia y costo llevando el conocimiento a un modelo más chico: un modelo de 3B ajustado puede igualar a uno de 70B con few-shot, a una fracción del costo de inferencia."
+        }
+      },
+
+      {
+        id: 9,
+        title: "Comparativa de Estrategias de Entrada",
+        block: "B2: In-Context Learning (24m)",
+        targetTimeMinutes: 4,
+        purpose: "Comparar Zero-Shot, Few-Shot estático y Few-Shot dinámico en cinco dimensiones operativas, con código de color por impacto para que el perfil de cada estrategia se lea de un vistazo.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-3.5">
+            <div class="border-l-4 border-utn-lightBlue pl-3">
+              <span class="text-xs uppercase font-bold text-utn-lightBlue tracking-wider">Mecanismo Práctico</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Comparativa de Estrategias de Entrada</h2>
+              <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Cinco dimensiones, coloreadas por impacto: qué es, cuánto cuesta por llamada, cuánto acierta, cuánto cuesta mantenerla y cuánto cuesta montarla.</p>
+            </div>
+
+            <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700">
+              <table class="w-full text-xs sm:text-sm text-left">
+                <thead class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 uppercase text-2xs tracking-wider">
+                  <tr>
+                    <th class="px-3 py-2.5 font-bold">Dimensión</th>
+                    <th class="px-3 py-2.5 font-bold">Zero-Shot</th>
+                    <th class="px-3 py-2.5 font-bold">One / Few-Shot</th>
+                    <th class="px-3 py-2.5 font-bold">Few-Shot Dinámico (Vector DB)</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-700 bg-white dark:bg-slate-900">
+                  <tr>
+                    <td class="px-3 py-2.5 font-bold text-slate-700 dark:text-slate-200">Definición</td>
+                    <td class="px-3 py-2.5 text-slate-600 dark:text-slate-300">La orden sin ejemplos de apoyo.</td>
+                    <td class="px-3 py-2.5 text-slate-600 dark:text-slate-300">De 1 a 5 ejemplos estáticos fijos en la instrucción.</td>
+                    <td class="px-3 py-2.5 text-slate-600 dark:text-slate-300">Se recuperan por similitud semántica los ejemplos más parecidos al caso entrante.</td>
+                  </tr>
+                  <tr>
+                    <td class="px-3 py-2.5 font-bold text-slate-700 dark:text-slate-200">Consumo de Tokens<br/><span class="text-2xs font-normal text-slate-400">menos es mejor</span></td>
+                    <td class="px-3 py-2.5">
+                      <span class="flex items-start gap-1.5">
+                        <span class="mt-[0.45em] w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+                        <span class="text-emerald-600 dark:text-emerald-400">Mínimo · muy bajo costo unitario.</span>
+                      </span>
+                    </td>
+                    <td class="px-3 py-2.5">
+                      <span class="flex items-start gap-1.5">
+                        <span class="mt-[0.45em] w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0"></span>
+                        <span class="text-amber-600 dark:text-amber-400">Moderado · crece con cada ejemplo agregado.</span>
+                      </span>
+                    </td>
+                    <td class="px-3 py-2.5">
+                      <span class="flex items-start gap-1.5">
+                        <span class="mt-[0.45em] w-1.5 h-1.5 rounded-full bg-red-500 shrink-0"></span>
+                        <span class="text-red-600 dark:text-red-400">Alto · tokens del prompt <strong>más</strong> cómputo de búsqueda vectorial.</span>
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="px-3 py-2.5 font-bold text-slate-700 dark:text-slate-200">Precisión Esperada<br/><span class="text-2xs font-normal text-slate-400">más es mejor</span></td>
+                    <td class="px-3 py-2.5">
+                      <span class="flex items-start gap-1.5">
+                        <span class="mt-[0.45em] w-1.5 h-1.5 rounded-full bg-red-500 shrink-0"></span>
+                        <span class="text-red-600 dark:text-red-400">Deficiente en tareas atípicas · y toda regla interna lo es.</span>
+                      </span>
+                    </td>
+                    <td class="px-3 py-2.5">
+                      <span class="flex items-start gap-1.5">
+                        <span class="mt-[0.45em] w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+                        <span class="text-emerald-600 dark:text-emerald-400">Alta · alinea formato, estilo y excepciones de negocio.</span>
+                      </span>
+                    </td>
+                    <td class="px-3 py-2.5">
+                      <span class="flex items-start gap-1.5">
+                        <span class="mt-[0.45em] w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+                        <span class="text-emerald-600 dark:text-emerald-400">Óptima a gran escala con miles de clases posibles.</span>
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="px-3 py-2.5 font-bold text-slate-700 dark:text-slate-200">Mantenimiento<br/><span class="text-2xs font-normal text-slate-400">menos fricción es mejor</span></td>
+                    <td class="px-3 py-2.5">
+                      <span class="flex items-start gap-1.5">
+                        <span class="mt-[0.45em] w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+                        <span class="text-emerald-600 dark:text-emerald-400">Muy simple · solo se ajusta el texto base.</span>
+                      </span>
+                    </td>
+                    <td class="px-3 py-2.5">
+                      <span class="flex items-start gap-1.5">
+                        <span class="mt-[0.45em] w-1.5 h-1.5 rounded-full bg-red-500 shrink-0"></span>
+                        <span class="text-red-600 dark:text-red-400">Costoso · cada cambio de política exige editar el prompt y redesplegar.</span>
+                      </span>
+                    </td>
+                    <td class="px-3 py-2.5">
+                      <span class="flex items-start gap-1.5">
+                        <span class="mt-[0.45em] w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+                        <span class="text-emerald-600 dark:text-emerald-400">Escalable · solo se añaden casos validados a la base.</span>
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="px-3 py-2.5 font-bold text-slate-700 dark:text-slate-200">Complejidad de Montaje<br/><span class="text-2xs font-normal text-slate-400">menos es mejor</span></td>
+                    <td class="px-3 py-2.5">
+                      <span class="flex items-start gap-1.5">
+                        <span class="mt-[0.45em] w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+                        <span class="text-emerald-600 dark:text-emerald-400">Ninguna · es escribir un texto.</span>
+                      </span>
+                    </td>
+                    <td class="px-3 py-2.5">
+                      <span class="flex items-start gap-1.5">
+                        <span class="mt-[0.45em] w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0"></span>
+                        <span class="text-amber-600 dark:text-amber-400">Baja · curar y versionar los ejemplos.</span>
+                      </span>
+                    </td>
+                    <td class="px-3 py-2.5">
+                      <span class="flex items-start gap-1.5">
+                        <span class="mt-[0.45em] w-1.5 h-1.5 rounded-full bg-red-500 shrink-0"></span>
+                        <span class="text-red-600 dark:text-red-400">Alta · embeddings, base vectorial y una pieza más que puede fallar.</span>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-2xs text-slate-500 dark:text-slate-400">
+              <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Favorable</span>
+              <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Intermedio</span>
+              <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> Desfavorable</span>
+              <span class="italic">· Ninguna columna es toda verde: <strong class="not-italic text-slate-600 dark:text-slate-300">no hay estrategia ganadora, hay estrategia adecuada al caso</strong>.</span>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-gradient-to-r from-blue-50 via-teal-50 to-indigo-50 dark:from-slate-800 dark:via-slate-800/90 dark:to-slate-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-700 dark:text-slate-300 flex items-start gap-2.5">
+              <span class="text-xl">🔎</span>
+              <div>
+                <strong class="text-slate-900 dark:text-white">Elegida la estrategia, queda lo difícil:</strong>
+                <span> esta tabla dice <em>cuál</em> usar, pero no <em>cómo escribirla</em>. Y en few-shot el resultado depende menos de cuántos ejemplos pongamos que de <strong>cómo estén construidos</strong>. Eso es lo que desarmamos en la slide siguiente.</span>
+              </div>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Esta tabla resume las tres estrategias y las cuatro dimensiones que importan al decidir. Quiero que se fijen especialmente en la fila de <strong>precisión esperada</strong> del zero-shot: dice "moderada en tareas estándar, <strong>deficiente en tareas atípicas</strong>". Y toda regla interna de una empresa es, por definición, una tarea atípica. Ningún modelo la vio durante el entrenamiento. Ahí es donde el few-shot deja de ser un lujo.</p>
+          <p>Ahora léanla por color, que es la forma rápida. <strong>Zero-shot</strong> es verde en costo, en mantenimiento y en montaje, y rojo en lo único que realmente importa: la precisión. <strong>Few-shot estático</strong> invierte eso: verde en precisión, pero rojo en mantenimiento. Y el <strong>dinámico</strong> es verde en precisión y en mantenimiento, y rojo en costo y en complejidad de montaje.</p>
+          <p>Y fíjense en lo que dice la línea de la leyenda, porque es la conclusión de la slide: <strong>ninguna columna es toda verde</strong>. No hay una estrategia ganadora; hay una estrategia adecuada a cada caso. Si alguien les dice "usá siempre few-shot", esa persona está ignorando tres de las cuatro filas.</p>
+          <p>Y sobre la tercera columna, el few-shot dinámico: noten que su ventaja no está solo en la precisión. Está en la última fila, el <strong>mantenimiento</strong>. Con plantilla estática, cada cambio de política obliga a editar el prompt y redesplegar. Con base vectorial, se agrega un caso validado a la base y listo: <strong>el sistema aprende sin tocar código</strong>. Eso, en una organización con un área de producto que cambia reglas todos los meses, vale muchísimo.</p>
+          <p>Ahora bien, y con esto paso a la slide que viene: esta tabla les dice <strong>cuál</strong> estrategia usar, pero no les dice <strong>cómo escribirla</strong>. Y acá va algo que sorprende a mucha gente: en few-shot, el resultado depende bastante menos de <em>cuántos</em> ejemplos pongan que de <strong>cómo estén construidos esos ejemplos</strong>. Vamos a desarmar una plantilla real pieza por pieza.</p>
+        `,
+        validationPause: {
+          question: "Si el few-shot estático mejora tanto la precisión y es mucho más simple que el dinámico, ¿cuál es la fila de la tabla que más debería preocupar a un equipo que ya lo tiene en producción?",
+          answer: "La de mantenimiento. La fila de precisión es la que enamora en la demo, pero la que duele a los seis meses es la otra: los ejemplos quedan incrustados en el prompt, que vive en el código. Cada vez que negocio cambia una política hay que editar el prompt, revisarlo, testearlo y redesplegar —un ciclo de ingeniería completo para un cambio que conceptualmente es solo 'agregar un caso más'.\n\nY hay un efecto derivado peor: como cambiar el prompt es caro, los equipos lo cambian poco, y los ejemplos se van desactualizando respecto de la política vigente. El sistema sigue alineado… con el criterio del año pasado. Ese es el momento en que la base vectorial empieza a amortizar su complejidad."
+        }
+      },
+
+      {
+        id: 10,
+        title: "Anatomía de una Plantilla Few-Shot",
+        block: "B2: In-Context Learning (24m)",
+        targetTimeMinutes: 5,
+        purpose: "Desarmar una plantilla few-shot real para mostrar las dos decisiones de ingeniería que determinan su eficacia: el corte final abierto y la elección de ejemplos contrastantes.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-3.5">
+            <div class="border-l-4 border-utn-teal pl-3">
+              <span class="text-xs uppercase font-bold text-utn-teal tracking-wider">Mecanismo Práctico · del qué al cómo</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Anatomía de una Plantilla Few-Shot</h2>
+              <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">No alcanza con "poner ejemplos": dos decisiones de ingeniería deciden si la plantilla funciona o no.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div class="p-3.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                <div class="text-2xs uppercase font-bold text-slate-400 tracking-wider mb-2">Plantilla real · clasificación de urgencia</div>
+                <pre class="text-2xs sm:text-xs font-mono text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-wrap"><span class="text-utn-lightBlue font-bold">[Directiva General del Sistema]</span>
+Clasificá la urgencia de estos correos (Alta, Media, Baja).
+
+<span class="text-utn-teal font-bold">[Ejemplo 1]</span>
+Correo: "El servidor de facturación dejó de
+responder y las sucursales están detenidas."
+Urgencia: <span class="text-semantic-error font-bold">Alta</span>
+
+<span class="text-utn-teal font-bold">[Ejemplo 2]</span>
+Correo: "Recordamos que el viernes vence el plazo
+para actualizar la foto de perfil."
+Urgencia: <span class="text-emerald-500 font-bold">Baja</span>
+
+<span class="text-utn-teal font-bold">[Ejemplo 3]</span>
+Correo: "El reporte de conciliación mensual llegó con
+dos partidas sin identificar; hay que revisarlo
+antes del cierre del viernes."
+Urgencia: <span class="text-amber-500 font-bold">Media</span>
+
+<span class="text-utn-indigo font-bold">[Caso Real a Procesar]</span>
+Correo: "\${texto_a_clasificar}"
+Urgencia:</pre>
+              </div>
+
+              <div class="space-y-3">
+                <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
+                  <div class="text-xs sm:text-sm font-bold text-utn-indigo mb-1">✂️ El corte final no es decorativo</div>
+                  <p class="text-xs text-slate-600 dark:text-slate-300">
+                    La plantilla termina en <span class="font-mono">"Urgencia:"</span> sin nada después. Eso deja al modelo en una posición donde la continuación estadísticamente más probable <strong>es exactamente la etiqueta buscada</strong>, y nada más.
+                  </p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
+                  <div class="text-xs sm:text-sm font-bold text-utn-teal mb-1">📌 Uno por clase, y el intermedio al final</div>
+                  <p class="text-xs text-slate-600 dark:text-slate-300">
+                    Lo que el modelo infiere no es la clase: es <strong>la frontera entre clases</strong>. Con tres categorías hacen falta <strong>dos fronteras</strong>, y ninguna queda definida sin un caso de la clase del medio: sin él, <span class="font-mono text-2xs">Media</span> existe en la directiva pero <strong>nunca fue demostrada</strong>.
+                  </p>
+                  <p class="text-xs text-slate-600 dark:text-slate-300 mt-1.5">
+                    Va último a propósito: por <strong>sesgo de recencia</strong> el modelo pondera de más el ejemplo más cercano al caso, y ante un entrante ambiguo conviene que ese sesgo empuje hacia <span class="font-mono text-2xs">Media</span> y no hacia un extremo.
+                  </p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/25 border border-amber-200 dark:border-amber-900/50">
+                  <div class="text-xs sm:text-sm font-bold text-amber-600 dark:text-amber-400 mb-1">🧲 Acá vuelve la contaminación (Bloque 1)</div>
+                  <p class="text-xs text-slate-600 dark:text-slate-300">
+                    Los valores de estos ejemplos son <strong>etiquetas cerradas</strong> —Alta, Media, Baja—, así que el riesgo de copia es bajo. Si en vez de etiquetar estuviéramos <strong>extrayendo montos o fechas</strong>, esta misma plantilla sería el vehículo de la contaminación. <strong>Misma estructura, riesgo distinto</strong> según qué tipo de dato devuelva.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Acá está la plantilla, y quiero desarmarla con ustedes porque tiene <strong>dos detalles de ingeniería</strong> que suelen pasarse por alto y que hacen toda la diferencia.</p>
+          <p>El primero: fíjense cómo <strong>termina</strong> la plantilla. Termina en la palabra "Urgencia:", dos puntos, y nada más. Eso no es casualidad ni descuido. Al dejar esa línea abierta, el modelo queda en una posición donde la continuación estadísticamente más probable <strong>es exactamente la etiqueta que buscamos</strong>. No hay lugar para un "¡Claro! Con gusto clasifico este correo". Le cortamos el camino a la charla <strong>por construcción</strong>, no por pedido. Y noten la diferencia con rogarle "no agregues texto de cortesía": acá no se lo pedimos, simplemente no le dejamos lugar.</p>
+          <p>El segundo detalle: miren <strong>qué ejemplos elegimos</strong>. Uno de urgencia Alta —el servidor de facturación caído, las sucursales detenidas—, uno de urgencia Baja —la foto de perfil—, y uno de urgencia Media —el reporte de conciliación con partidas sin identificar, que hay que resolver pero tiene plazo. <strong>Uno por cada clase de la taxonomía.</strong></p>
+          <p>¿Por qué importa tanto? Si ponen dos ejemplos de urgencia Alta, el modelo no aprende la frontera de decisión: aprende que todo es urgente. Lo que el modelo infiere de un conjunto de ejemplos <strong>no es la clase: es dónde está el límite entre las clases</strong>.</p>
+          <p>Y acá está la razón de fondo para el tercer ejemplo, que es el que más cuesta ver. Con tres categorías <strong>no hay una frontera: hay dos</strong>. Si solo muestro Alta y Baja, el modelo ve un único corte en el medio y tiene que adivinar dónde meter todo lo que no es ni catástrofe ni trivialidad. <strong>La categoría Media existe en la directiva, pero nunca fue demostrada.</strong> Y una categoría declarada y no demostrada es, en la práctica, una categoría que el modelo casi no va a usar.</p>
+          <p>Un detalle fino sobre el orden: lo puse <strong>último</strong> a propósito. Por el <strong>sesgo de recencia</strong> —que vamos a ver enseguida—, el modelo pondera de más el ejemplo más cercano al caso a resolver. Y si me va a sesgar hacia algo ante un caso ambiguo, prefiero que me sesgue hacia Media y no hacia un extremo. Prestar atención al orden de los ejemplos <strong>es parte del diseño</strong>, no un detalle de presentación.</p>
+          <p>Y les dejo el puente con lo que vimos en el bloque uno: acá los valores de los ejemplos son etiquetas cerradas —Alta, Media, Baja—, así que el riesgo de contaminación es bajo. Pero si en lugar de etiquetas estuviéramos extrayendo montos o fechas, <strong>estos mismos ejemplos serían el vehículo de la contaminación</strong>. Misma plantilla, riesgo completamente distinto según qué tipo de dato devuelva.</p>
+        `,
+        validationPause: {
+          question: "¿Por qué dos ejemplos de la misma clase enseñan menos que dos de clases opuestas?",
+          answer: "Porque el modelo infiere una frontera de decisión, no un prototipo. Con dos ejemplos de urgencia Alta, lo único que puede deducir es que existe la clase Alta y que estos casos la ejemplifican; no obtiene ninguna señal sobre dónde deja de serlo. Con un caso de cada extremo, el espacio entre ambos define implícitamente el criterio de corte.\n\nDe ahí una regla práctica para armar el banco de ejemplos: no elijan los casos más representativos de cada clase, elijan los casos que están más cerca del límite. Un caso obvio confirma lo que el modelo ya haría solo; un caso limítrofe es el único que le enseña algo que no sabía."
+        }
+      },
+
+      {
+        id: 11,
+        title: "Few-Shot Dinámico, Lost in the Middle y Sesgo de Orden",
+        block: "B2: In-Context Learning (24m)",
+        targetTimeMinutes: 7,
+        purpose: "Presentar la arquitectura de selección dinámica de ejemplos y los dos sesgos posicionales que afectan al few-shot: Lost in the Middle y sensibilidad al orden.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-4">
+            <div class="border-l-4 border-amber-500 pl-3">
+              <span class="text-xs uppercase font-bold text-amber-500 tracking-wider">Arquitectura y Trade-offs</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Selección Dinámica de Ejemplos</h2>
+              <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Resuelve el límite crítico del few-shot estático: el agotamiento de la ventana de contexto ante cientos de tipologías de casos.</p>
+            </div>
+
+            <div class="p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+              <pre class="mermaid mermaid-lg text-xs">
+                flowchart LR
+                  UserReq["Requerimiento de Entrada"] --> Embedder["Cálculo de Similitud Semántica"]
+                  Embedder --> VecDB[("Base de Ejemplos Históricos")]
+                  VecDB --> RetEx["Recuperación de los 3 casos más similares"]
+                  RetEx --> PromptBuilder["Ensamblado del Prompt Few-Shot"]
+                  UserReq --> PromptBuilder
+                  PromptBuilder --> FinalModel["Inferencia del LLM"]
+              </pre>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-utn-lightBlue border-slate-200 dark:border-slate-700">
+                <div class="flex items-center gap-1.5 mb-2">
+                  <span class="text-base">💰</span>
+                  <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Costo Acumulado vs. Inversión en Datos</h3>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                  Agregar 5 ejemplos detallados puede <strong>triplicar los tokens por llamada</strong>. Con un millón de solicitudes mensuales, ese sobrecosto puede superar la inversión de un fine-tuning sobre un modelo más chico y económico.
+                </p>
+              </div>
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-semantic-error border-slate-200 dark:border-slate-700">
+                <div class="flex items-center gap-1.5 mb-2">
+                  <span class="text-base">📍</span>
+                  <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Sesgo de Recencia y Orden</h3>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                  Los LLMs sufren <em class="font-semibold">Lost in the Middle</em> y son sensibles al orden. Si los últimos dos ejemplos son de la misma categoría, el modelo <strong>sobrepondera esa clasificación</strong> ante casos ambiguos.
+                </p>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-gradient-to-r from-blue-50 via-teal-50 to-indigo-50 dark:from-slate-800 dark:via-slate-800/90 dark:to-slate-800 border border-slate-200 dark:border-slate-700 space-y-2">
+              <div class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <span>🧭</span> ¿Cuándo se justifica la complejidad de una base vectorial?
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                  <div class="text-2xs uppercase font-bold text-emerald-600 dark:text-emerald-400 mb-1">Plantilla fija alcanza</div>
+                  <p class="text-xs text-slate-600 dark:text-slate-300">Un único servicio con tres tipos de reclamos predecibles: 3 ejemplos canónicos son suficientes, económicos y <strong>fáciles de auditar</strong>.</p>
+                </div>
+                <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                  <div class="text-2xs uppercase font-bold text-utn-indigo mb-1">Selección dinámica se amortiza</div>
+                  <p class="text-xs text-slate-600 dark:text-slate-300">Catálogo financiero con decenas de líneas de crédito, seguros e inversiones: 3 ejemplos fijos serían <strong>irrelevantes para la mayoría</strong> de las consultas.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Veamos la arquitectura del few-shot dinámico, que resuelve el límite crítico del estático: <strong>el agotamiento de la ventana de contexto</strong> cuando una organización tiene cientos de tipologías de casos.</p>
+          <p>El flujo del diagrama es directo. Llega el requerimiento, se calcula su representación semántica, se consulta una base de datos vectorial con el histórico de casos ya resueltos y validados, se recuperan los tres más parecidos, se ensambla el prompt few-shot al vuelo con esos tres, y recién ahí se invoca al modelo. <strong>Cada consulta recibe sus propios ejemplos, los más relevantes para ella.</strong></p>
+          <p>Ahora los trade-offs, y quiero que hagan la cuenta conmigo. Agregar cinco ejemplos detallados puede <strong>triplicar la cantidad de tokens por llamada</strong>. Si el sistema procesa un millón de solicitudes mensuales, ese sobrecosto acumulado <strong>puede superar tranquilamente la inversión de hacer un fine-tuning</strong> sobre un modelo más chico. Repito esto porque es contraintuitivo: hay un punto de volumen a partir del cual el few-shot deja de ser la opción barata.</p>
+          <p>El segundo trade-off es un fenómeno que quiero que conozcan por su nombre: <strong>Lost in the Middle</strong>. Los modelos atienden mucho mejor al principio y al final del contexto que al medio. Si ponen el ejemplo crítico en la posición cuatro de siete, hay chances reales de que lo ignoren.</p>
+          <p>Y ligado a esto, <strong>la sensibilidad al orden</strong>. Si los últimos dos ejemplos pertenecen a la misma categoría, el modelo tiende a sobreponderar esa clasificación ante casos ambiguos. Esto significa algo muy concreto para ustedes: <strong>el orden de los ejemplos es un hiperparámetro</strong>, no un detalle de presentación. Hay que alternarlos deliberadamente.</p>
+          <p>Para cerrar: ¿cuándo justifica la complejidad de una base vectorial? Miren el criterio de abajo. Si la compañía ofrece un servicio con tres tipos de reclamos predecibles, la plantilla fija gana: es suficiente, barata y sobre todo <strong>fácil de auditar</strong>. Si opera un catálogo financiero complejo con decenas de líneas de crédito, seguros e inversiones, tres ejemplos fijos van a ser irrelevantes para la mayoría de las consultas, y ahí la selección dinámica amortiza plenamente su costo de arquitectura.</p>
+        `,
+        validationPause: {
+          question: "Un equipo propone almacenar 200 casos históricos en una base vectorial para inyectar los 3 más parecidos a cada reclamo. ¿Cuándo se justifica frente a 3 ejemplos fijos bien explicados?",
+          answer: "Se justifica cuando la varianza del dominio es alta: muchas líneas de producto con políticas distintas, donde tres ejemplos fijos serían irrelevantes para la mayoría de las consultas. Con 200 casos pero un dominio homogéneo, la base vectorial agrega infraestructura, latencia y una superficie más de fallo sin ganancia real de precisión."
+        }
+      },
+
+      {
+        id: 12,
+        title: "Chain-of-Thought: El Pizarrón como Memoria de Trabajo",
+        block: "B3: Razonamiento Guiado (23m)",
+        targetTimeMinutes: 8,
+        purpose: "Explicar por qué la inferencia directa dispara la alucinación en tareas deductivas y cómo los tokens intermedios funcionan como memoria de trabajo activa del modelo.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-4">
+            <div class="border-l-4 border-utn-indigo pl-3">
+              <span class="text-xs uppercase font-bold text-utn-indigo tracking-wider">Bloque 3</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Resolver la Ecuación en el Pizarrón</h2>
+              <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Nadie resuelve cuatro operaciones encadenadas en un parpadeo. El modelo tampoco.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div class="p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                <div class="text-2xs uppercase font-bold text-semantic-error tracking-wider mb-1 text-center">Inferencia Directa · sin memoria de trabajo</div>
+                <pre class="mermaid text-xs">
+                  flowchart LR
+                    Q1["Problema<br/>Complejo"] --> M1["LLM"]
+                    M1 --> R1["Respuesta final errónea<br/>Salto lógico"]
+                </pre>
+              </div>
+              <div class="p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                <div class="text-2xs uppercase font-bold text-emerald-600 dark:text-emerald-400 tracking-wider mb-1 text-center">Chain-of-Thought · con memoria de trabajo</div>
+                <pre class="mermaid text-xs">
+                  flowchart LR
+                    Q2["Problema Complejo<br/>+ 'Razoná paso a paso'"] --> M2["LLM"]
+                    M2 --> S2["Tokens intermedios<br/>Paso 1, 2, 3"]
+                    S2 --> R2["Conclusión<br/>verificable"]
+                </pre>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-semantic-error border-slate-200 dark:border-slate-700">
+                <div class="text-xs sm:text-sm font-bold text-semantic-error mb-1.5">Por qué falla la inferencia directa</div>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                  El modelo debe predecir el token final <strong>sin haber computado previamente los pasos intermedios</strong>. Cada token de salida se genera con una cantidad de cómputo acotada: no hay "pensar más fuerte" en un solo paso.
+                </p>
+              </div>
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-emerald-500 border-slate-200 dark:border-slate-700">
+                <div class="text-xs sm:text-sm font-bold text-emerald-600 dark:text-emerald-400 mb-1.5">Por qué funciona el CoT</div>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                  El texto que el modelo genera <strong>vuelve a entrar como contexto</strong>. Al escribir el Paso 1, ese resultado queda fijo y el Paso 2 se apoya en una base sólida y visible. El propio texto es la memoria de trabajo.
+                </p>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-900/50 text-xs sm:text-sm text-slate-700 dark:text-slate-300 flex items-start gap-2.5">
+              <span class="text-xl">🧮</span>
+              <div>
+                <strong class="text-slate-900 dark:text-white">El caso del laboratorio (Experimento 3):</strong>
+                <span> transferencia de 12.500 USD, comisión base 2%, bonificación corporativa del 25% sobre esa comisión, más un impuesto regulatorio del 10% sobre la comisión final. </span>
+                <span class="font-mono text-2xs block mt-1 text-slate-600 dark:text-slate-400">250 → ×0,75 = 187,50 → +10% = 18,75 → <strong class="text-utn-teal">total: 206,25 USD</strong></span>
+              </div>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Bloque tres, y acá está, para mí, la técnica con mayor impacto sobre la confiabilidad de un sistema.</p>
+          <p>Cuando a un LLM se le exige una respuesta directa a una consulta que involucra deducciones, cálculos o ponderación de criterios contrapuestos, <strong>su tasa de alucinación se dispara</strong>. Y la razón es estructural, no es un defecto de entrenamiento: el modelo tiene que predecir el token final <strong>sin haber computado los pasos intermedios</strong>. Cada token se genera con una cantidad de cómputo fija. No existe el "pensar más fuerte" dentro de un solo paso.</p>
+          <p>El modelo mental es un examen de finanzas. Si a una persona le ponen un balance con quince partidas contables y le exigen escribir directamente el flujo de caja neto en la última casilla, <strong>sin hacer un solo cálculo en borrador</strong>, la probabilidad de error es altísima. No por ignorancia: por falta de espacio de trabajo.</p>
+          <p>Ahora, si le dicen "mostrá paso a paso el despeje de ingresos, restá amortizaciones y explicitá los impuestos antes del saldo final", esa persona usa <strong>el propio papel como memoria de trabajo</strong>. Y cada paso registrado orienta probabilísticamente el paso siguiente hacia el resultado correcto.</p>
+          <p>Eso es exactamente lo que ocurre en el modelo, y quiero que quede muy claro el mecanismo: <strong>el texto que el modelo genera vuelve a entrar como contexto</strong>. Cuando escribe "Paso 1: la comisión base es 250 dólares", ese 250 queda <strong>fijo en su ventana de contexto</strong>. Ya no tiene que recordarlo ni recalcularlo: lo tiene escrito adelante. El Paso 2 se apoya en una base sólida y visible.</p>
+          <p>En el laboratorio van a ver esto de forma brutal con el Experimento 3: una transferencia de 12.500 dólares, comisión del 2%, bonificación del 25% sobre esa comisión, más un impuesto del 10% sobre la comisión final. Son cuatro operaciones encadenadas. El resultado correcto es <strong>206,25 dólares</strong>. Van a comprobar que en inferencia directa el modelo tira una cifra que suena plausible y está mal.</p>
+        `,
+        validationPause: {
+          question: "Si el CoT mejora tanto la precisión, ¿por qué no activarlo siempre por defecto en todos los prompts?",
+          answer: "Porque tiene un costo real y recurrente: multiplica los tokens de salida, que son los más caros, y aumenta la latencia percibida. En tareas de clasificación simple no aporta precisión y sí encarece cada llamada. Además, en tareas donde no hay deducción real, el razonamiento generado puede ser una racionalización a posteriori que da falsa sensación de rigor."
+        }
+      },
+
+      {
+        id: 13,
+        title: "Variantes de CoT: Zero-Shot y Few-Shot Guiado",
+        block: "B3: Razonamiento Guiado (23m)",
+        targetTimeMinutes: 6,
+        purpose: "Distinguir las dos modalidades de Chain-of-Thought con sus referencias fundacionales, mostrando en cada caja el ejemplo concreto tal como se escribe en el prompt.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-3.5">
+            <div class="border-l-4 border-utn-lightBlue pl-3">
+              <span class="text-xs uppercase font-bold text-utn-lightBlue tracking-wider">Mecanismo Práctico</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Dos Modalidades de Encadenamiento</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-utn-teal border-slate-200 dark:border-slate-700">
+                <div class="flex items-center justify-between mb-2">
+                  <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Zero-Shot CoT</h3>
+                  <span class="text-2xs font-mono text-slate-400">Kojima et al., 2022</span>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-2.5">
+                  Agregar una <strong>directiva de activación cognitiva</strong> al final de la instrucción. Esa simple frase cambia el espacio probabilístico del modelo, forzándolo a generar una secuencia explicativa antes del veredicto.
+                </p>
+                <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 font-mono text-2xs text-utn-teal">
+                  "Pensemos paso a paso."<br/>
+                </div>
+                <div class="mt-2.5 pt-2 border-t border-slate-200 dark:border-slate-700/60 text-2xs font-semibold text-emerald-600 dark:text-emerald-400">
+                  ✓ Costo de implementación: una línea de texto
+                </div>
+              </div>
+
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-utn-indigo border-slate-200 dark:border-slate-700">
+                <div class="flex items-center justify-between mb-2">
+                  <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Few-Shot CoT</h3>
+                  <span class="text-2xs font-mono text-slate-400">Wei et al., 2022</span>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-2.5">
+                  Se proveen ejemplos resueltos donde la solución <strong>no es solo la respuesta</strong>, sino la demostración explícita de la cadena deductiva completa.
+                </p>
+                <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 font-mono text-2xs text-utn-indigo leading-relaxed">
+                  [Ejemplo en el prompt]<br/>
+                  <span class="text-slate-500 dark:text-slate-400">Reclamo: "Cobro duplicado de $150 el mismo día."</span><br/>
+                  Paso 1: Verificar dos cargos idénticos en 24 h.<br/>
+                  Paso 2: Confirmar mismo comercio y monto.<br/>
+                  Veredicto: <span class="text-emerald-600 dark:text-emerald-400">REEMBOLSO_AUTOMATICO</span>
+                </div>
+                <div class="mt-2.5 pt-2 border-t border-slate-200 dark:border-slate-700/60 text-2xs font-semibold text-indigo-700 dark:text-indigo-300">
+                  ✓ Control fino sobre la forma del razonamiento
+                </div>
+              </div>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>El encadenamiento de razonamiento opera bajo dos modalidades, y conviene conocer las dos porque resuelven problemas distintos.</p>
+          <p>La primera es <strong>Zero-Shot CoT</strong>, descubierta empíricamente por Kojima y su equipo en 2022. Consiste en agregar una directiva de activación cognitiva al final de la instrucción: <em>"pensemos paso a paso"</em>. Y sé que suena a magia barata, pero el mecanismo es concreto: esa frase <strong>cambia el espacio probabilístico del modelo</strong>. Después de "pensemos paso a paso", la continuación más probable en el corpus de entrenamiento es una enumeración razonada, no un veredicto. Le estamos cambiando el género discursivo.</p>
+          <p>La segunda es <strong>Few-Shot CoT</strong>, de Wei y su equipo, también 2022. Miren el recuadro de la derecha: ahí no les describo el concepto, les muestro <strong>el ejemplo tal como va en el prompt</strong>. Un reclamo, dos pasos de verificación puntuales —cargos idénticos en 24 horas, mismo comercio y monto— y recién ahí el veredicto. Ese es el patrón exacto que el modelo va a copiar.</p>
+          <p>La diferencia práctica con zero-shot es importante: con "pensemos paso a paso" el modelo razona <strong>como quiere</strong>; con este ejemplo ustedes le imponen <strong>la estructura del razonamiento</strong>: cuántos pasos, en qué orden y con qué nivel de detalle. En dominios regulados, donde el procedimiento de análisis está normado —dos verificaciones puntuales antes de cualquier reembolso, por ejemplo—, esto no es un lujo: es un requisito de auditoría.</p>
+        `,
+        validationPause: {
+          question: "¿Cuándo conviene invertir en Few-Shot CoT en lugar de quedarse con el simple 'pensemos paso a paso'?",
+          answer: "Cuando el procedimiento de análisis está normado y debe seguirse en un orden específico: auditoría contable, evaluación crediticia bajo circular regulatoria, triaje clínico. Zero-Shot CoT produce un razonamiento correcto pero con estructura libre y variable entre llamadas, lo que dificulta auditar sistemáticamente si se siguió el procedimiento obligatorio."
+        }
+      },
+
+      {
+        id: 14,
+        title: "Meta-Prompting, Descomposición y el Costo del Razonamiento",
+        block: "B3: Razonamiento Guiado (23m)",
+        targetTimeMinutes: 9,
+        purpose: "Presentar la descomposición de tareas complejas en cadenas de llamadas y cerrar el bloque con el trade-off entre latencia/costo y trazabilidad regulatoria.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-4">
+            <div class="border-l-4 border-utn-teal pl-3">
+              <span class="text-xs uppercase font-bold text-utn-teal tracking-wider">Principio 5 en Acción</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Dividir el Trabajo: Cadenas y Meta-Prompting</h2>
+              <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Cuando el problema excede la capacidad de un solo razonamiento lineal.</p>
+            </div>
+
+            <div class="p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+              <pre class="mermaid mermaid-lg text-xs">
+                flowchart LR
+                  Doc["Contrato de 20 Páginas"] --> T1["Paso 1: Extracción de Cláusulas Relevantes"]
+                  T1 --> R1["JSON con Cláusulas de Rescisión"]
+                  R1 --> T2["Paso 2: Evaluación Legal con CoT"]
+                  T2 --> R2["Dictamen de Riesgo Paso a Paso"]
+                  R2 --> T3["Paso 3: Redacción Ejecutiva para Directorio"]
+                  T3 --> Memo["Memorándum Final Aprobado"]
+              </pre>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
+                <div class="text-xs sm:text-sm font-bold text-utn-indigo mb-1">🔁 Meta-Prompting</div>
+                <p class="text-xs text-slate-600 dark:text-slate-300">
+                  Usar un LLM superior para <strong>redactar y optimizar los propios prompts</strong> del flujo de trabajo, en lugar de ajustarlos a mano por intuición.
+                </p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
+                <div class="text-xs sm:text-sm font-bold text-semantic-error mb-1">⏱️ Latencia y Costo por Token</div>
+                <p class="text-xs text-slate-600 dark:text-slate-300">
+                  CoT incrementa sustancialmente los <strong>tokens de salida</strong>, habitualmente los más caros. El tiempo de respuesta total para la persona usuaria también aumenta.
+                </p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
+                <div class="text-xs sm:text-sm font-bold text-emerald-600 dark:text-emerald-400 mb-1">🔍 Trazabilidad y Cumplimiento</div>
+                <p class="text-xs text-slate-600 dark:text-slate-300">
+                  En sectores regulados, el sobrecosto se compensa con <strong>explicabilidad</strong>: un dictamen que expone sus premisas permite identificar <em>en qué paso</em> falló el modelo.
+                </p>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-gradient-to-r from-blue-50 via-teal-50 to-indigo-50 dark:from-slate-800 dark:via-slate-800/90 dark:to-slate-800 border border-slate-200 dark:border-slate-700 space-y-2">
+              <div class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <span>⚖️</span> Contrastá el costo del error con el costo de cómputo
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                  <div class="text-2xs uppercase font-bold text-amber-500 mb-1">500.000 tickets de soporte menores</div>
+                  <p class="text-xs text-slate-600 dark:text-slate-300">Un error ocasional no paraliza la empresa y el volumen exige mínima latencia. <strong>Sin CoT: Zero-Shot con temperatura baja.</strong></p>
+                </div>
+                <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                  <div class="text-2xs uppercase font-bold text-utn-teal mb-1">Crédito hipotecario de 200.000 USD</div>
+                  <p class="text-xs text-slate-600 dark:text-slate-300">El impacto de un falso positivo es devastador. <strong>Unos centavos de tokens y 3 segundos son marginales</strong> frente al valor de la precisión.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Cerramos el bloque tres conectando con el quinto principio: <strong>dividir el trabajo</strong>. Cuando el problema excede la capacidad de un solo razonamiento lineal, en lugar de pedirle a un único agente que analice, audite, traduzca y redacte, se articulan <strong>llamadas sucesivas</strong>.</p>
+          <p>Miren el pipeline del contrato de veinte páginas. Paso uno: extracción de cláusulas relevantes, y el resultado es un JSON con las cláusulas de rescisión. Paso dos: evaluación legal con CoT <strong>sobre ese JSON</strong>, no sobre las veinte páginas originales. Paso tres: redacción ejecutiva para el directorio. Cada paso tiene una entrada acotada, una salida verificable y un prompt que hace una sola cosa.</p>
+          <p>Y acá aparece una técnica que vale la pena conocer: el <strong>meta-prompting</strong>. Consiste en usar un modelo superior para redactar y optimizar los propios prompts del flujo. En vez de que ustedes ajusten la redacción por intuición durante tres días, le piden a un modelo potente que genere y refine variantes contra su batería de casos de prueba. Es el principio cuatro, evaluar la calidad, aplicado de forma automatizada.</p>
+          <p>Ahora el cierre del bloque, que es una decisión de negocio pura. El CoT <strong>incrementa sustancialmente los tokens de salida</strong>, que en casi todos los proveedores son los más caros, y además aumenta la latencia percibida.</p>
+          <p>La pregunta correcta no es "¿el CoT es bueno?". La pregunta es: <strong>¿cuánto cuesta el error contra cuánto cuesta el cómputo?</strong></p>
+          <p>Etiquetado masivo de quinientos mil tickets triviales: un error ocasional no paraliza a nadie y el volumen exige latencia y costo mínimos. Ahí <strong>no usen CoT</strong>: zero-shot con temperatura baja y a otra cosa.</p>
+          <p>Análisis de solvencia para un crédito hipotecario de doscientos mil dólares: el impacto financiero y legal de un falso positivo es devastador. Invertir unos centavos extra en tokens de razonamiento y tres segundos más de procesamiento es <strong>marginal</strong> frente al valor de acertar. Y en sectores regulados hay un beneficio adicional que a veces vale más que la precisión misma: si se produce un error, un dictamen que expone sus premisas permite identificar <strong>exactamente en qué paso falló el modelo</strong>. Eso es defendible ante un ente de control; una cifra sin justificación, no.</p>
+        `,
+        validationPause: {
+          question: "Si CoT duplica el tiempo de respuesta y aumenta el costo un 150%, ¿en qué casos es mandatorio y en cuáles un gasto ineficiente?",
+          answer: "Es mandatorio cuando el resultado debe defenderse ante un tercero —auditoría, regulador, litigio— o cuando el costo unitario del error supera ampliamente el costo de la llamada. Es ineficiente en tareas de alto volumen y bajo impacto individual, donde la latencia agregada degrada la experiencia y el error ocasional se absorbe con revisión por muestreo."
+        }
+      },
+
+      {
+        id: 15,
+        title: "Estructuración Garantizada: Los Tres Niveles de Control",
+        block: "B4: Estructuración (10m)",
+        targetTimeMinutes: 10,
+        purpose: "Presentar los tres niveles de garantía sintáctica (prompting, modo JSON, gramáticas) y explicar el mecanismo de enmascaramiento de logits del constrained sampling.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-3.5">
+            <div class="border-l-4 border-utn-indigo pl-3">
+              <span class="text-xs uppercase font-bold text-utn-indigo tracking-wider">Bloque 4</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Salida Estructurada</h2>
+              <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Confiar en que el modelo "no agregue texto de cortesía" mediante súplicas en el prompt es una de las principales causas de fallas en software productivo.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-semantic-error border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                <div>
+                  <div class="text-2xs uppercase font-bold text-semantic-error mb-1">Nivel 1 · Frágil</div>
+                  <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-1.5">Instrucción por Prompting</h3>
+                  <p class="text-xs text-slate-600 dark:text-slate-300 mb-2">
+                    <em>"Respondé únicamente con un objeto JSON válido, no incluyas explicaciones."</em>
+                  </p>
+                  <p class="text-xs text-slate-600 dark:text-slate-300">
+                    <strong>Riesgo:</strong> ante cambios de versión del modelo o entradas atípicas, antepone <span class="font-mono text-2xs">"Acá está tu JSON:"</span> y rompe la canalización de datos.
+                  </p>
+                </div>
+                <div class="mt-2.5 pt-2 border-t border-slate-200 dark:border-slate-700/60 text-2xs font-semibold text-red-600 dark:text-red-400">✗ Sin garantía alguna</div>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-amber-500 border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                <div>
+                  <div class="text-2xs uppercase font-bold text-amber-500 mb-1">Nivel 2 · Robusto</div>
+                  <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-1.5">Modo JSON (<span class="font-mono text-xs">response_format</span>)</h3>
+                  <p class="text-xs text-slate-600 dark:text-slate-300">
+                    Soportado nativamente por la mayoría de las APIs comerciales (OpenAI, Gemini, Anthropic). El motor del proveedor <strong>obliga a que la sintaxis cierre correctamente</strong> llaves y corchetes, evitando fallas de parseo elementales.
+                  </p>
+                </div>
+                <div class="mt-2.5 pt-2 border-t border-slate-200 dark:border-slate-700/60 text-2xs font-semibold text-amber-600 dark:text-amber-400">✓ Sintaxis válida garantizada</div>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-emerald-500 border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                <div>
+                  <div class="text-2xs uppercase font-bold text-emerald-600 dark:text-emerald-400 mb-1">Nivel 3 · Máximo</div>
+                  <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-1.5">Constrained Sampling</h3>
+                  <p class="text-xs text-slate-600 dark:text-slate-300">
+                    La técnica más avanzada, usada en modelos locales y de pesos abiertos mediante <strong>Outlines, Guidance o Llama.cpp</strong>. Restringe los tokens que el modelo <em>tiene permitido emitir</em> en cada momento sintáctico.
+                  </p>
+                </div>
+                <div class="mt-2.5 pt-2 border-t border-slate-200 dark:border-slate-700/60 text-2xs font-semibold text-emerald-600 dark:text-emerald-400">✓ Esquema completo garantizado</div>
+              </div>
+            </div>
+
+            <div class="p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+              <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-1.5">Constrained Sampling</h3>
+              <pre class="mermaid mermaid-lg text-xs">
+                flowchart LR
+                  LogitsFull["Logits de todo el vocabulario"] --> Filter["Máscara de Gramática: solo caracteres válidos del esquema"]
+                  Filter --> LogitsValid["Logits sintácticamente válidos"]
+                  LogitsValid --> Sampler["Softmax y Muestreo"]
+                  Sampler --> OutToken["Token Emitido Garantizado"]
+              </pre>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-900/50 text-xs sm:text-sm text-slate-700 dark:text-slate-300 flex items-start gap-2.5">
+              <span class="text-xl">🔒</span>
+              <div>
+                <strong class="text-slate-900 dark:text-white">La garantía es matemática, no exhortativa:</strong>
+                <span> si el esquema exige que <span class="font-mono">"edad"</span> sea entero, la gramática <strong>anula la probabilidad</strong> de emitir letras o signos incompatibles tras abrir esa clave. No es que el modelo "prefiera" cumplir: no puede hacer otra cosa.</span>
+              </div>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Bloque cuatro, el último técnico, y para mí el más importante si su trabajo es conectar un LLM con los sistemas de una organización.</p>
+          <p>El desafío es estructural: <strong>el modelo genera lenguaje natural fluido y abierto, mientras que el software empresarial requiere datos estructurados y predecibles</strong>. Bases SQL, CRMs, ERPs, APIs de terceros: todos esperan un contrato rígido.</p>
+          <p>El modelo mental es la <strong>ficha notarial contra la conversación informal</strong>. Si un banco le pide a un cliente que redacte libremente cómo están compuestos sus bienes, va a recibir textos dispersos, omisiones y coloquialismos imposibles de automatizar. Si en cambio le entrega un formulario notarial preimpreso con casilleros rígidos —nombre, documento, monto, fecha— <strong>es físicamente imposible que complete algo fuera de esos límites</strong>.</p>
+          <p>Ahora, los tres niveles de control, y quiero que noten que la diferencia entre ellos es <strong>dónde vive la garantía</strong>.</p>
+          <p><strong>Nivel uno, instrucción por prompting.</strong> Le pedimos por favor: "respondé únicamente con JSON válido, sin explicaciones". La garantía vive en la buena voluntad estadística del modelo, o sea, no existe. Ante un cambio de versión o una entrada rara, aparece el clásico "Acá está tu JSON:" y el parser explota en producción. Ojo con esto, porque es el nivel en el que está el noventa por ciento de los prototipos que veo.</p>
+          <p><strong>Nivel dos, modo JSON.</strong> Ya lo soportan nativamente OpenAI, Gemini y Anthropic. El motor del proveedor obliga a que la sintaxis cierre bien: llaves, corchetes, comas. La garantía vive en el proveedor. Ojo con el matiz: garantiza <strong>JSON sintácticamente válido</strong>, no necesariamente que cumpla <em>su</em> esquema.</p>
+          <p><strong>Nivel tres, muestreo constreñido o gramáticas.</strong> Acá la garantía es matemática. Miren el diagrama: en cada paso de generación, antes del softmax, se aplica <strong>una máscara sobre los logits</strong> que anula todos los tokens sintácticamente inválidos para el estado actual del esquema. Si el esquema dice que "edad" es un entero, después de abrir esa clave la probabilidad de emitir una letra <strong>no es baja: es cero</strong>. El modelo no "prefiere" cumplir. No puede hacer otra cosa.</p>
+          <p>En el laboratorio van a recorrer los tres niveles con el Experimento 4, y van a ver el marcador rojo de parser fallido convertirse en verde.</p>
+        `,
+        validationPause: {
+          question: "El modo JSON del proveedor garantiza sintaxis válida. ¿Qué es lo que NO garantiza y por qué importa?",
+          answer: "No garantiza conformidad con su esquema: puede devolver un JSON perfectamente válido con nombres de campo distintos, campos faltantes o un string donde esperaban un número. Importa porque el parser no falla, el error pasa silenciosamente a la base de datos. Por eso el modo JSON siempre debe ir acompañado de validación de esquema del lado del cliente, con Pydantic o equivalente."
+        }
+      },
+
+      {
+        id: 16,
+        title: "Laboratorio 2: Cuatro Bancos de Experimentación en Colab",
+        block: "B5: Laboratorio y Cierre (24m)",
+        targetTimeMinutes: 11,
+        purpose: "Presentar la consigna del Laboratorio 2, su encuadre de evaluación como cierre del TP1 y los cuatro experimentos interactivos con motor local GGUF sobre GPU T4.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-3.5">
+            <div class="border-l-4 border-utn-teal pl-3">
+              <span class="text-xs uppercase font-bold text-utn-teal tracking-wider">Práctica Guiada · Google Colab (GPU T4)</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Laboratorio 2: Prompt Engineering y Estructuración</h2>
+              <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Motor <span class="font-mono">llama-cpp-python</span> con CUDA · Qwen 2.5 3B Instruct en GGUF Q4_K_M (~2 GB VRAM) · costo cero y soberanía total sobre los datos.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-l-4 border-utn-lightBlue border-slate-200 dark:border-slate-700">
+                <div class="flex items-center justify-between mb-1">
+                  <h3 class="font-bold text-sm text-slate-900 dark:text-white">🧪 Exp. 1 · Cinco Principios</h3>
+                  <span class="text-2xs font-mono text-slate-400">Naive vs. Sistemático</span>
+                </div>
+                <p class="text-xs text-slate-600 dark:text-slate-300">
+                  Mismo reclamo por cargo duplicado, dos system prompts. Del <em>"sos un asistente financiero"</em> a la taxonomía cerrada con severidad, riesgo de churn y acción operativa en formato tabular.
+                </p>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-l-4 border-utn-teal border-slate-200 dark:border-slate-700">
+                <div class="flex items-center justify-between mb-1">
+                  <h3 class="font-bold text-sm text-slate-900 dark:text-white">🧪 Exp. 2 · In-Context Learning</h3>
+                  <span class="text-2xs font-mono text-slate-400">Zero-Shot vs. Few-Shot</span>
+                </div>
+                <p class="text-xs text-slate-600 dark:text-slate-300">
+                  Caso Laura Morales: freelance con ingresos variables y cero mora. Zero-Shot aplica sesgo genérico; con 2 precedentes adopta la circular 4B y dictamina <span class="font-mono text-2xs">REVISION_MANUAL_RIESGO</span>.
+                </p>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-l-4 border-utn-indigo border-slate-200 dark:border-slate-700">
+                <div class="flex items-center justify-between mb-1">
+                  <h3 class="font-bold text-sm text-slate-900 dark:text-white">🧪 Exp. 3 · Chain-of-Thought</h3>
+                  <span class="text-2xs font-mono text-slate-400">Directa vs. CoT</span>
+                </div>
+                <p class="text-xs text-slate-600 dark:text-slate-300">
+                  Liquidación con comisión bonificada e impuesto cruzado. La inferencia directa alucina una cifra plausible; el desglose en 4 pasos llega a <strong class="font-mono">206,25 USD</strong>.
+                </p>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-l-4 border-emerald-500 border-slate-200 dark:border-slate-700">
+                <div class="flex items-center justify-between mb-1">
+                  <h3 class="font-bold text-sm text-slate-900 dark:text-white">🧪 Exp. 4 · Esquemas Garantizados</h3>
+                  <span class="text-2xs font-mono text-slate-400">3 niveles de control</span>
+                </div>
+                <p class="text-xs text-slate-600 dark:text-slate-300">
+                  Transcripción caótica de un reclamo por cajero. Libre 🔴 → esquema por prompting 🟡 → gramática estricta <span class="font-mono text-2xs">LlamaGrammar</span> 🟢 con validación de <span class="font-mono text-2xs">json.loads()</span>.
+                </p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div class="p-3.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-900/50">
+                <div class="text-xs sm:text-sm font-bold text-utn-indigo dark:text-indigo-400 mb-1.5">📌 Encuadre de Evaluación</div>
+                <p class="text-xs text-slate-600 dark:text-slate-300">
+                  Este laboratorio es la <strong>Parte 2 y cierre del Trabajo Práctico 1</strong>. Junto con el Laboratorio 1 integra la primera entrega formal del programa.
+                </p>
+                <p class="text-xs text-slate-600 dark:text-slate-300 mt-1.5">
+                  <strong>Aprobación:</strong> ejecutar los 4 bancos de experimentación y completar los recuadros <span class="font-mono text-2xs">✍️ Tu análisis aquí</span> al pie de cada experimento.
+                </p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/60">
+                <div class="text-xs sm:text-sm font-bold text-amber-600 dark:text-amber-400 mb-1.5">⚙️ Antes de arrancar</div>
+                <ul class="text-xs text-slate-600 dark:text-slate-300 space-y-1">
+                  <li>• <strong>Entorno de ejecución → Cambiar tipo → GPU T4.</strong></li>
+                  <li>• Duplicá la celda <em>"🚀 Ejecutar Experimento"</em> para comparar corridas sin perder el historial anterior.</li>
+                  <li>• Los 4 modelos alternativos (Llama 3.2, Gemma 2, Gemma 4, DeepSeek) son exploración opcional.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Pasamos a la parte práctica. Abran el <strong>Laboratorio 2</strong> en Google Colab, y lo primero, antes que nada: <strong>Entorno de ejecución, Cambiar tipo de entorno, GPU T4, Guardar</strong>. Sin eso, el modelo corre en CPU y van a esperar una eternidad por cada inferencia.</p>
+          <p>Igual que la unidad pasada, trabajamos con <strong>llama-cpp-python compilado con CUDA</strong> y un modelo de pesos abiertos en formato GGUF cuantizado a cuatro bits. Por defecto, Qwen 2.5 3B Instruct, unos dos gigas de VRAM. Costo cero, privacidad estricta y soberanía total sobre lo que procesan.</p>
+          <p>Son cuatro bancos de experimentación, y cada uno corresponde exactamente a un bloque de la unidad de hoy.</p>
+          <p><strong>Experimento uno</strong>: los cinco principios. El mismo reclamo por cargo duplicado, con dos system prompts. Y quiero que presten atención a una pregunta capciosa del cuaderno: la salida sistemática llega en formato tabular Markdown. ¿Es <em>consumible</em> por un sistema? Piénsenlo, porque la respuesta los va a llevar directo al experimento cuatro.</p>
+          <p><strong>Experimento dos</strong>: Laura Morales, freelance con ingresos variables y cero mora. Ejecuten primero en zero-shot con temperatura alta, varias veces. Van a ver el sesgo genérico y la variabilidad juntos. Después activen los dos precedentes, <strong>con la misma temperatura</strong>, y observen cómo se alinea a la circular 4B.</p>
+          <p><strong>Experimento tres</strong>: la liquidación financiera. Ejecuten primero en inferencia directa. Van a obtener una cifra que suena razonable y está mal. Después activen el desglose en cuatro pasos. El resultado correcto es 206,25 dólares.</p>
+          <p><strong>Experimento cuatro</strong>: la transcripción caótica de un reclamo por cajero automático. Van a recorrer los tres niveles: extracción libre y el parser en rojo, esquema por prompting que a veces funciona, y gramática estricta con <em>LlamaGrammar</em>, donde aparece el verde.</p>
+          <p>Un consejo operativo que está en el cuaderno y les va a servir mucho: <strong>dupliquen la celda de ejecución</strong> antes de cambiar parámetros. Así comparan corridas una debajo de otra sin perder el historial.</p>
+          <p>Y el encuadre formal: este laboratorio es la <strong>parte dos y cierre del Trabajo Práctico 1</strong>. La aprobación exige ejecutar los cuatro bancos y, sobre todo, completar con argumentos propios los recuadros de análisis. Esos recuadros son lo que evaluamos: no la ejecución de las celdas, sino <strong>el criterio con el que interpretan lo que vieron</strong>.</p>
+        `,
+        validationPause: {
+          question: "En el Experimento 1, la salida sistemática llega en formato tabular Markdown. ¿Es esa una buena salida estructurada? ¿Qué le falta?",
+          answer: "Es mucho mejor que la ingenua porque tiene taxonomía cerrada y campos fijos, pero sigue sin ser consumible directamente: un pipeline tendría que parsear Markdown con expresiones regulares, exactamente el antipatrón que queremos eliminar. Le falta el salto al Experimento 4: el mismo contenido emitido como JSON validado por esquema."
+        }
+      },
+
+      {
+        id: 17,
+        title: "Cuadro Maestro de Decisión: ¿Qué técnica y cuándo?",
+        block: "B5: Laboratorio y Cierre (24m)",
+        targetTimeMinutes: 7,
+        purpose: "Entregar el árbol de decisión y la matriz síntesis que articulan todas las técnicas de la unidad como una herramienta de trabajo aplicable a proyectos reales.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-3">
+            <div class="border-l-4 border-utn-indigo pl-3">
+              <span class="text-xs uppercase font-bold text-utn-indigo tracking-wider">Síntesis Operativa</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Árbol y Matriz de Decisión Estratégica</h2>
+            </div>
+
+            <div class="space-y-1">
+              <div class="flex items-stretch gap-2">
+                <div class="w-7 shrink-0 flex items-center justify-center rounded-lg bg-slate-200 dark:bg-slate-800 text-2xs font-mono font-bold text-slate-500 dark:text-slate-400">1</div>
+                <div class="flex-1 p-2.5 rounded-lg bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 flex items-center text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200">
+                  ¿El resultado debe integrarse con código o base de datos?
+                </div>
+                <div class="w-5 shrink-0 flex items-center justify-center text-slate-400 dark:text-slate-500 font-bold">→</div>
+                <div class="w-[42%] shrink-0 p-2.5 rounded-lg bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 flex items-center gap-2 text-xs sm:text-sm text-slate-700 dark:text-slate-200">
+                  <span class="text-2xs font-mono font-bold text-emerald-600 dark:text-emerald-400 shrink-0">SÍ</span>
+                  <span><strong>Modo JSON / Gramáticas</strong> de muestreo + Temp 0.0</span>
+                </div>
+              </div>
+              <div class="pl-9 py-0.5 text-2xs font-mono font-bold text-slate-400 dark:text-slate-500">NO ↓</div>
+              <div class="flex items-stretch gap-2">
+                <div class="w-7 shrink-0 flex items-center justify-center rounded-lg bg-slate-200 dark:bg-slate-800 text-2xs font-mono font-bold text-slate-500 dark:text-slate-400">2</div>
+                <div class="flex-1 p-2.5 rounded-lg bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 flex items-center text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200">
+                  ¿Requiere lógica de negocio, cálculo o análisis legal?
+                </div>
+                <div class="w-5 shrink-0 flex items-center justify-center text-slate-400 dark:text-slate-500 font-bold">→</div>
+                <div class="w-[42%] shrink-0 p-2.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800 flex items-center gap-2 text-xs sm:text-sm text-slate-700 dark:text-slate-200">
+                  <span class="text-2xs font-mono font-bold text-emerald-600 dark:text-emerald-400 shrink-0">SÍ</span>
+                  <span><strong>Chain-of-Thought</strong> Zero-Shot o Few-Shot</span>
+                </div>
+              </div>
+              <div class="pl-9 py-0.5 text-2xs font-mono font-bold text-slate-400 dark:text-slate-500">NO ↓</div>
+              <div class="flex items-stretch gap-2">
+                <div class="w-7 shrink-0 flex items-center justify-center rounded-lg bg-slate-200 dark:bg-slate-800 text-2xs font-mono font-bold text-slate-500 dark:text-slate-400">3</div>
+                <div class="flex-1 p-2.5 rounded-lg bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 flex items-center text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200">
+                  ¿La tarea tiene un criterio corporativo único o estilo propio?
+                </div>
+                <div class="w-5 shrink-0 flex items-center justify-center text-slate-400 dark:text-slate-500 font-bold">→</div>
+                <div class="w-[42%] shrink-0 p-2.5 rounded-lg bg-teal-50 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-800 flex items-center gap-2 text-xs sm:text-sm text-slate-700 dark:text-slate-200">
+                  <span class="text-2xs font-mono font-bold text-emerald-600 dark:text-emerald-400 shrink-0">SÍ</span>
+                  <span><strong>Few-Shot Prompting</strong> · 2 a 5 ejemplos curados</span>
+                </div>
+              </div>
+              <div class="flex items-stretch gap-2 pt-1">
+                <div class="w-7 shrink-0"></div>
+                <div class="flex-1 p-2.5 rounded-lg bg-slate-100 dark:bg-slate-800/60 border border-dashed border-slate-300 dark:border-slate-700 flex items-center gap-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                  <span class="text-2xs font-mono font-bold text-slate-400 shrink-0">NINGUNA</span>
+                  <span><strong class="text-slate-800 dark:text-slate-200">Zero-Shot</strong> con los 5 Principios bien aplicados · la opción más económica y con frecuencia suficiente.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700">
+              <table class="w-full text-xs sm:text-sm text-left">
+                <thead class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 uppercase text-2xs tracking-wider">
+                  <tr>
+                    <th class="px-3 py-2 font-bold">Desafío Operativo</th>
+                    <th class="px-3 py-2 font-bold">Técnica Recomendada</th>
+                    <th class="px-3 py-2 font-bold text-center">Inferencia</th>
+                    <th class="px-3 py-2 font-bold">Trade-off a Monitorear</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-700 bg-white dark:bg-slate-900">
+                  <tr>
+                    <td class="px-3 py-2 text-slate-700 dark:text-slate-200 font-semibold">Clasificación masiva estándar</td>
+                    <td class="px-3 py-2 text-slate-600 dark:text-slate-300">Zero-Shot con directivas explícitas</td>
+                    <td class="px-3 py-2 text-center font-mono text-2xs text-emerald-600 dark:text-emerald-400">T 0,0–0,2<br/>p 0,9</td>
+                    <td class="px-3 py-2 text-slate-600 dark:text-slate-300">Económica y veloz; vigilar sesgos en casos límite.</td>
+                  </tr>
+                  <tr>
+                    <td class="px-3 py-2 text-slate-700 dark:text-slate-200 font-semibold">Alineación con políticas internas</td>
+                    <td class="px-3 py-2 text-slate-600 dark:text-slate-300">Few-Shot estático o dinámico</td>
+                    <td class="px-3 py-2 text-center font-mono text-2xs text-emerald-600 dark:text-emerald-400">T 0,0–0,1<br/>p 0,8</td>
+                    <td class="px-3 py-2 text-slate-600 dark:text-slate-300">Más tokens de entrada; exige curar ejemplos representativos.</td>
+                  </tr>
+                  <tr>
+                    <td class="px-3 py-2 text-slate-700 dark:text-slate-200 font-semibold">Auditoría legal, riesgo y deducción</td>
+                    <td class="px-3 py-2 text-slate-600 dark:text-slate-300">Chain-of-Thought estructurado</td>
+                    <td class="px-3 py-2 text-center font-mono text-2xs text-amber-500">T 0,0<br/>max &gt; 350</td>
+                    <td class="px-3 py-2 text-slate-600 dark:text-slate-300">Mayor latencia y tokens de salida; máxima trazabilidad del error.</td>
+                  </tr>
+                  <tr>
+                    <td class="px-3 py-2 text-slate-700 dark:text-slate-200 font-semibold">Alimentar bases de datos y APIs</td>
+                    <td class="px-3 py-2 text-slate-600 dark:text-slate-300">Salida estructurada con validación</td>
+                    <td class="px-3 py-2 text-center font-mono text-2xs text-emerald-600 dark:text-emerald-400">T 0,0<br/>p 0,1–0,5</td>
+                    <td class="px-3 py-2 text-slate-600 dark:text-slate-300">Previene rotura de pipelines; suprime enriquecimiento cualitativo.</td>
+                  </tr>
+                  <tr>
+                    <td class="px-3 py-2 text-slate-700 dark:text-slate-200 font-semibold">Redacción comercial y creatividad</td>
+                    <td class="px-3 py-2 text-slate-600 dark:text-slate-300">Prompting abierto con Persona</td>
+                    <td class="px-3 py-2 text-center font-mono text-2xs text-semantic-error">T 0,7–1,0<br/>p 0,95</td>
+                    <td class="px-3 py-2 text-slate-600 dark:text-slate-300">Respuestas variadas; riesgo latente de inconsistencia factual.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Esta slide es la herramienta que se llevan a sus trabajos. Si de las dos horas de hoy retienen una sola imagen, que sea esta.</p>
+          <p>Arriba tienen el <strong>árbol de decisión</strong>, y noten que las preguntas están ordenadas deliberadamente por prioridad, no al azar.</p>
+          <p>La primera pregunta es siempre: <strong>¿el resultado tiene que integrarse con código o con una base de datos?</strong> Si la respuesta es sí, va directo a modo JSON o gramáticas con temperatura cero, porque un pipeline roto es un incidente de producción, no una molestia estética.</p>
+          <p>Si no, la segunda: <strong>¿requiere lógica de negocio, cálculo o análisis legal?</strong> Ahí entra Chain-of-Thought.</p>
+          <p>Si tampoco, la tercera: <strong>¿la tarea tiene un criterio corporativo propio?</strong> Esa circular interna que ningún modelo del mundo vio. Ahí entra few-shot con dos a cinco ejemplos.</p>
+          <p>Y si ninguna aplica, zero-shot con los cinco principios bien aplicados, que es la opción más barata y muchas veces suficiente.</p>
+          <p>Fíjense que <strong>estas técnicas no son excluyentes: se combinan</strong>. El caso completo de FinTech Horizon es gramática JSON estricta, con un campo de razonamiento previo al inicio para el CoT, dos ejemplos de calibración de la política interna, temperatura cero y los cinco principios en el system prompt. Todo junto, en una sola llamada.</p>
+          <p>Y en la tabla de abajo tienen la misma decisión leída desde el desafío de negocio, con parámetros sugeridos y, sobre todo, <strong>el trade-off que hay que monitorear en cada caso</strong>. Porque ninguna de estas opciones es gratis, y un profesional sabe qué está pagando en cada una.</p>
+        `,
+        validationPause: {
+          question: "¿Por qué la primera pregunta del árbol es sobre la integración con código y no sobre la complejidad de la tarea?",
+          answer: "Porque es la restricción más dura y la de consecuencias más inmediatas: si el pipeline no puede parsear la salida, la calidad del contenido es irrelevante, el proceso ya falló. La complejidad del razonamiento afecta la calidad de forma gradual; el formato inválido es binario. En ingeniería se resuelven primero las restricciones duras y después se optimiza dentro de ellas."
+        }
+      },
+
+      {
+        id: 18,
+        title: "Cierre: Lo que nos llevamos de la Unidad 2",
+        block: "B5: Laboratorio y Cierre (24m)",
+        targetTimeMinutes: 6,
+        purpose: "Sintetizar los aprendizajes de la jornada, resolver dudas abiertas y tender el puente conceptual hacia la Unidad 3 de Sistemas RAG, Agentes y RAG.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-4">
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Cierre: Lo que nos llevamos de la Unidad 2</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
+                <div class="text-xs sm:text-sm font-bold text-utn-lightBlue mb-1">1. Diseño Sistemático</div>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                  Los cinco principios convierten una instrucción vaga en un pliego de condiciones. Sin dirección ni formato, el modelo converge al promedio estadístico de Internet.
+                </p>
+              </div>
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
+                <div class="text-xs sm:text-sm font-bold text-utn-teal mb-1">2. Aprendizaje en Contexto</div>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                  Un puñado de ejemplos bien curados alinea el criterio corporativo <strong>sin tocar un solo peso de la red</strong>. Pero el ejemplo también contamina: marcadores, no valores verosímiles.
+                </p>
+              </div>
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
+                <div class="text-xs sm:text-sm font-bold text-utn-indigo mb-1">3. Razonamiento y Contrato</div>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                  El CoT convierte el texto emitido en memoria de trabajo auditable. Las gramáticas hacen que cumplir el esquema sea matemáticamente inevitable, no una súplica.
+                </p>
+              </div>
+            </div>
+
+            <!-- Bridge to Class 3 -->
+            <div class="p-4 rounded-xl bg-gradient-to-r from-utn-blue/20 via-utn-indigo/20 to-utn-teal/20 border border-utn-indigo/30 text-xs sm:text-sm space-y-1.5">
+              <div class="font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <span>🚀</span> Próxima Sesión | Unidad 3: Sistemas RAG · Consulta Documental Fundamentada
+              </div>
+              <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+                Un modelo fundacional aislado, por más optimizado que esté su prompt, sigue circunscrito a su entrenamiento estático: <strong>no conoce el manual de políticas de su empresa ni la circular que se dictó el mes pasado</strong>. Ningún prompt hace aparecer un dato que el modelo nunca vio.
+                En la <strong>Unidad 3</strong> damos el salto de gobernar <strong>cómo habla</strong> el modelo a gobernar <strong>sobre qué habla</strong>: lo conectamos a la biblioteca documental de la organización con <strong>RAG</strong> —segmentación, embeddings, bases vectoriales y generación fundamentada con citas verificables—, para que antes de responder <strong>vaya a buscar la evidencia</strong>.
+              </p>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Cerramos la segunda unidad. Repasemos los tres pilares que construimos hoy.</p>
+          <p><strong>Primero, el diseño sistemático.</strong> Dejamos atrás la idea del prompt como frase mágica y lo tratamos como lo que es: un pliego de condiciones con rol, formato, ejemplos, criterios de aceptación y descomposición. Y entendimos el costo de no hacerlo: sin dirección ni formato, el modelo converge al promedio estadístico de Internet, que no conoce ninguna de las reglas de sus organizaciones.</p>
+          <p><strong>Segundo, el aprendizaje en contexto.</strong> Descubrimos algo poderoso: con un puñado de ejemplos bien elegidos alineamos el criterio corporativo <strong>sin tocar un solo peso de la red</strong>. Y también su lado oscuro, que es el error más difícil de cazar: el ejemplo que debía enseñar la forma termina contaminando el contenido. Marcadores, no valores verosímiles.</p>
+          <p><strong>Y tercero, razonamiento y contrato.</strong> El Chain-of-Thought convierte el texto emitido en memoria de trabajo, y de paso en evidencia auditable ante un regulador. Las gramáticas de muestreo hacen que cumplir el esquema sea <strong>matemáticamente inevitable</strong>, no una súplica en el prompt que a veces funciona.</p>
+          <p>Ahora, la limitación honesta de todo lo que vimos hoy, y es el puente a la próxima unidad. Podemos tener el mejor prompt del mundo, con temperatura cero y gramáticas estrictas, y el modelo <strong>sigue sin conocer el manual de políticas de su empresa</strong>. No lo vio nunca: no estaba en Internet cuando lo entrenaron. Y ninguna instrucción, por rigurosa que sea, hace aparecer un dato que el modelo no tiene.</p>
+          <p>En la <strong>Unidad 3</strong> damos el salto de gobernar <strong>cómo habla</strong> el modelo a gobernar <strong>sobre qué habla</strong>: entramos en <strong>RAG</strong>, que lo conecta a la biblioteca documental de la organización. Segmentación, embeddings, bases vectoriales y generación fundamentada con citas. Y les adelanto la conexión con lo de hoy: <strong>la regla de abstención que escribimos en el prompt es la que va a decidir si el sistema dice "no sé" o inventa una cláusula</strong>. Lo que hoy fue un contrato de formato, la semana que viene va a ser un contrato de evidencia.</p>
+          <p>Antes de cortar, dejo abierto el espacio para preguntas. ¡Muchas gracias a todas y todos por la participación de hoy!</p>
+        `,
+        validationPause: {
+          question: "¿Quedó alguna duda abierta sobre cuándo aplicar cada técnica, o sobre la consigna del Laboratorio 2 que cierra el TP1?",
+          answer: "Espacio abierto para responder las últimas preguntas del chat y recordar la fecha de entrega del TP1 antes de cerrar la sesión sincrónica."
+        }
+      }
+    ];
+
+    let currentSlideIndex = 0;
+    let globalSeconds = 0;
+    let slideSeconds = 0;
+    let isGlobalTimerRunning = false;
+    let globalTimerInterval = null;
+    let slideTimerInterval = null;
+    let userScaleMultiplier = 1.0;
+    let isNotesDrawerOpen = false;
+
+    let syncChannel = null;
+    try {
+      if (typeof BroadcastChannel !== 'undefined') {
+        syncChannel = new BroadcastChannel('utn_presentation_sync_channel_c2');
+        syncChannel.onmessage = (event) => {
+          if (!event.data) return;
+          handleRemoteSync(event.data.action, event.data.payload);
+        };
+      }
+    } catch (e) {
+      console.warn("BroadcastChannel not supported in this frame, running in single-window mode:", e);
+    }
+
+    function broadcastState(action, payload) {
+      if (syncChannel) {
+        try {
+          syncChannel.postMessage({ action, payload, timestamp: Date.now() });
+        } catch (e) {
+          console.warn("Failed to broadcast state:", e);
+        }
+      }
+    }
+
+    function handleRemoteSync(action, payload) {
+      switch (action) {
+        case 'NAVIGATE':
+          if (payload.slideIndex !== undefined && payload.slideIndex !== currentSlideIndex) {
+            currentSlideIndex = payload.slideIndex;
+            renderCurrentSlide(false);
+          }
+          break;
+        case 'GLOBAL_TIMER_TOGGLE':
+          if (isGlobalTimerRunning !== payload.running) {
+            toggleGlobalTimer(false);
+          }
+          break;
+        case 'GLOBAL_TIMER_SYNC':
+          if (Math.abs(globalSeconds - payload.seconds) > 2) {
+            globalSeconds = payload.seconds;
+            document.getElementById('global-timer').innerText = formatTime(globalSeconds);
+          }
+          break;
+        case 'THEME_SYNC':
+          const isDark = document.documentElement.classList.contains('dark');
+          if (isDark !== payload.dark) {
+            toggleDarkMode(false);
+          }
+          break;
+        case 'SCALE_SYNC':
+          if (payload.scale && Math.abs(userScaleMultiplier - payload.scale) > 0.01) {
+            userScaleMultiplier = payload.scale;
+            document.documentElement.style.setProperty('--scale-multiplier', userScaleMultiplier);
+            const ind = document.getElementById('scale-indicator');
+            if (ind) ind.innerText = `${Math.round(userScaleMultiplier * 100)}%`;
+          }
+          break;
+      }
+    }
+
+    function adjustScale(delta, shouldBroadcast = true) {
+      userScaleMultiplier = Math.max(0.75, Math.min(1.4, Math.round((userScaleMultiplier + delta) * 100) / 100));
+      document.documentElement.style.setProperty('--scale-multiplier', userScaleMultiplier);
+      const indicator = document.getElementById('scale-indicator');
+      if (indicator) indicator.innerText = `${Math.round(userScaleMultiplier * 100)}%`;
+      if (shouldBroadcast) {
+        broadcastState('SCALE_SYNC', { scale: userScaleMultiplier });
+      }
+    }
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          console.warn("Fullscreen request warning:", err);
+        });
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    document.addEventListener('fullscreenchange', () => {
+      const isFs = !!document.fullscreenElement;
+      const expandIcon = document.getElementById('fullscreen-icon-expand');
+      const compressIcon = document.getElementById('fullscreen-icon-compress');
+      if (expandIcon && compressIcon) {
+        if (isFs) {
+          expandIcon.classList.add('hidden');
+          compressIcon.classList.remove('hidden');
+        } else {
+          expandIcon.classList.remove('hidden');
+          compressIcon.classList.add('hidden');
+        }
+      }
+      setTimeout(() => {
+        try { mermaid.run({ querySelector: '.mermaid' }); } catch(e){}
+      }, 100);
+    });
+
+    function handleNotesClick() {
+      const cleanUrl = window.location.href.split('?')[0];
+      const targetUrl = `${cleanUrl}?role=teleprompter&slide=${currentSlideIndex + 1}`;
+      
+      let presenterWin = null;
+      try {
+        presenterWin = window.open(
+          targetUrl,
+          'UTN_Presenter_Teleprompter_C2',
+          'width=1280,height=880,menubar=no,toolbar=no,location=no,status=no'
+        );
+      } catch (err) {
+        console.warn("Window open prevented by sandbox:", err);
+      }
+
+      if (!presenterWin || presenterWin.closed || typeof presenterWin.closed === 'undefined') {
+        toggleNotesDrawer();
+      }
+    }
+
+    function toggleNotesDrawer(forceState) {
+      const prompterPanel = document.getElementById('teleprompter-panel');
+      const stagePanel = document.getElementById('stage-panel');
+      if (!prompterPanel) return;
+
+      isNotesDrawerOpen = (forceState !== undefined) ? forceState : !isNotesDrawerOpen;
+
+      if (isNotesDrawerOpen) {
+        prompterPanel.className = "w-full md:w-[480px] lg:w-[540px] flex flex-col bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden transition-all z-30 shrink-0";
+        if (stagePanel) stagePanel.classList.remove('w-full');
+      } else {
+        prompterPanel.classList.add('hidden');
+        if (stagePanel) stagePanel.classList.add('w-full');
+      }
+    }
+
+    try {
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: 'dark',
+        securityLevel: 'loose',
+        flowchart: { useMaxWidth: true, htmlLabels: true }
+      });
+    } catch(e) {
+      console.warn("Mermaid init note:", e);
+    }
+
+    function safeSetText(id, text) {
+      const el = document.getElementById(id);
+      if (el) el.innerText = text;
+    }
+
+    function safeSetHTML(id, html) {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = html;
+    }
+
+    function renderCurrentSlide(shouldBroadcast = true) {
+      const slide = SLIDES_DATA[currentSlideIndex];
+      if (!slide) return;
+
+      const blockBadge = document.getElementById('slide-badge-block');
+      if (blockBadge) {
+        if (slide.block && slide.block.trim() !== "") {
+          blockBadge.innerText = slide.block;
+          blockBadge.classList.remove('hidden');
+        } else {
+          blockBadge.innerText = "";
+          blockBadge.classList.add('hidden');
+        }
+      }
+
+      safeSetText('slide-badge-index', `Slide ${String(slide.id).padStart(2, '0')} de ${SLIDES_DATA.length}`);
+      safeSetText('slide-badge-duration', `${slide.targetTimeMinutes} min`);
+      safeSetText('slide-target', `${String(slide.targetTimeMinutes).padStart(2, '0')}:00`);
+      safeSetText('nav-indicator', `${String(slide.id).padStart(2, '0')} / ${String(SLIDES_DATA.length).padStart(2, '0')}`);
+
+      safeSetHTML('slide-stage-content', slide.screenHTML || '');
+
+      safeSetText('prompter-slide-badge', `Slide ${String(slide.id).padStart(2, '0')} de ${SLIDES_DATA.length}`);
+      safeSetText('prompter-slide-duration', `${slide.targetTimeMinutes} min`);
+      safeSetText('prompter-slide-title', slide.title || '');
+      safeSetText('prompter-cognitive-goal', slide.purpose || '');
+      safeSetHTML('prompter-verbatim-text', slide.verbatimScript || '');
+      
+      if (slide.verbatimScript) {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = slide.verbatimScript;
+        const wordCount = tempDiv.innerText.trim().split(/\s+/).filter(Boolean).length;
+        safeSetText('prompter-words-count', `~${wordCount} palabras (${slide.targetTimeMinutes}m)`);
+      }
+
+      if (slide.validationPause) {
+        safeSetText('prompter-validation-question', slide.validationPause.question || '');
+        safeSetText('prompter-validation-answer', slide.validationPause.answer || '');
+      }
+
+      const selectEl = document.getElementById('slide-select');
+      if (selectEl) selectEl.value = slide.id;
+
+      const btnPrev = document.getElementById('btn-prev');
+      if (btnPrev) btnPrev.disabled = (currentSlideIndex === 0);
+
+      const btnNext = document.getElementById('btn-next');
+      if (btnNext) btnNext.disabled = (currentSlideIndex === SLIDES_DATA.length - 1);
+
+      resetSlideTimer();
+
+      if (shouldBroadcast) {
+        broadcastState('NAVIGATE', { slideIndex: currentSlideIndex });
+      }
+
+      setTimeout(() => {
+        try {
+          if (typeof mermaid !== 'undefined') {
+            mermaid.run({ querySelector: '.mermaid' });
+          }
+        } catch (e) {
+          console.warn("Mermaid layout note:", e);
+        }
+      }, 60);
+    }
+
+    function formatTime(totalSeconds) {
+      const mins = Math.floor(totalSeconds / 60);
+      const secs = totalSeconds % 60;
+      return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
+    function startGlobalTimer() {
+      if (globalTimerInterval) clearInterval(globalTimerInterval);
+      globalTimerInterval = setInterval(() => {
+        if (!isGlobalTimerRunning) return;
+        globalSeconds++;
+        document.getElementById('global-timer').innerText = formatTime(globalSeconds);
+
+        const progressPct = Math.min(100, (globalSeconds / 7200) * 100);
+        document.getElementById('global-progress-bar').style.width = `${progressPct}%`;
+
+        if (globalSeconds % 5 === 0) {
+          broadcastState('GLOBAL_TIMER_SYNC', { seconds: globalSeconds });
+        }
+      }, 1000);
+    }
+
+    function toggleGlobalTimer(shouldBroadcast = true) {
+      isGlobalTimerRunning = !isGlobalTimerRunning;
+      const btn = document.getElementById('btn-timer-toggle');
+      if (btn) btn.innerText = isGlobalTimerRunning ? '⏸️' : '▶️';
+      if (shouldBroadcast) {
+        broadcastState('GLOBAL_TIMER_TOGGLE', { running: isGlobalTimerRunning });
+      }
+    }
+
+    function resetSlideTimer() {
+      if (slideTimerInterval) clearInterval(slideTimerInterval);
+      slideSeconds = 0;
+      const slidePill = document.getElementById('slide-timer-pill');
+      if (slidePill) {
+        slidePill.classList.remove('badge-overtime', 'border-red-500', 'bg-red-50', 'dark:bg-red-950/50', 'text-red-600');
+      }
+
+      safeSetText('slide-elapsed', '00:00');
+
+      const targetSecs = (SLIDES_DATA[currentSlideIndex]?.targetTimeMinutes || 5) * 60;
+
+      slideTimerInterval = setInterval(() => {
+        slideSeconds++;
+        safeSetText('slide-elapsed', formatTime(slideSeconds));
+
+        if (slideSeconds > targetSecs && slidePill) {
+          slidePill.classList.add('badge-overtime', 'border-red-500', 'bg-red-50', 'dark:bg-red-950/50', 'text-red-600');
+        }
+      }, 1000);
+    }
+
+    function goToSlide(slideId) {
+      const idx = SLIDES_DATA.findIndex(s => s.id === slideId);
+      if (idx !== -1) {
+        currentSlideIndex = idx;
+        renderCurrentSlide();
+      }
+    }
+
+    function nextSlide() {
+      if (currentSlideIndex < SLIDES_DATA.length - 1) {
+        currentSlideIndex++;
+        renderCurrentSlide();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlideIndex > 0) {
+        currentSlideIndex--;
+        renderCurrentSlide();
+      }
+    }
+
+    function toggleDarkMode(shouldBroadcast = true) {
+      const htmlEl = document.documentElement;
+      let isDark = false;
+      if (htmlEl.classList.contains('dark')) {
+        htmlEl.classList.remove('dark');
+        try { mermaid.initialize({ theme: 'default' }); } catch(e){}
+      } else {
+        htmlEl.classList.add('dark');
+        try { mermaid.initialize({ theme: 'dark' }); } catch(e){}
+        isDark = true;
+      }
+
+      if (shouldBroadcast) {
+        broadcastState('THEME_SYNC', { dark: isDark });
+      }
+
+      setTimeout(() => {
+        try { mermaid.run({ querySelector: '.mermaid' }); } catch(e){}
+      }, 50);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const isTeleprompterRole = urlParams.get('role') === 'teleprompter';
+      const initialSlideParam = parseInt(urlParams.get('slide'), 10);
+
+      if (!isNaN(initialSlideParam) && initialSlideParam >= 1 && initialSlideParam <= SLIDES_DATA.length) {
+        currentSlideIndex = initialSlideParam - 1;
+      }
+
+      if (isTeleprompterRole) {
+        document.title = "🎙️ Notas Docente · Unidad 2 (UTN FRSR)";
+
+        const notesBtn = document.getElementById('btn-notes');
+        if (notesBtn) notesBtn.classList.add('hidden');
+
+        const roleBadge = document.getElementById('screen-role-indicator');
+        if (roleBadge) {
+          roleBadge.innerHTML = `
+            <span class="px-2.5 py-1 text-xs rounded-lg font-bold bg-indigo-50 dark:bg-indigo-950/70 text-indigo-600 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 flex items-center gap-1.5 shadow-sm">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              Notas Docente
+            </span>
+          `;
+        }
+
+        const stagePanel = document.getElementById('stage-panel');
+        if (stagePanel) stagePanel.classList.add('hidden');
+
+        const prompterPanel = document.getElementById('teleprompter-panel');
+        if (prompterPanel) {
+          prompterPanel.className = "w-full flex-1 flex flex-col bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden transition-all";
+        }
+
+        const closeBtn = document.getElementById('btn-close-drawer');
+        if (closeBtn) closeBtn.classList.add('hidden');
+      } else {
+        document.title = "Materia Electiva: Desarrollo de Aplicaciones con LLMs y Modelos Generativos - Unidad 2 (UTN FRSR)";
+
+        const prompterPanel = document.getElementById('teleprompter-panel');
+        if (prompterPanel) prompterPanel.classList.add('hidden');
+
+        const stagePanel = document.getElementById('stage-panel');
+        if (stagePanel) {
+          stagePanel.className = "w-full flex-1 flex flex-col bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden min-h-[560px] relative transition-all";
+        }
+      }
+
+      const selectEl = document.getElementById('slide-select');
+      SLIDES_DATA.forEach(slide => {
+        const option = document.createElement('option');
+        option.value = slide.id;
+        option.text = `S${String(slide.id).padStart(2, '0')}: ${slide.title} (${slide.targetTimeMinutes}m)`;
+        selectEl.appendChild(option);
+      });
+
+      const timerBtn = document.getElementById('btn-timer-toggle');
+      if (timerBtn) timerBtn.innerText = '▶️';
+
+      window.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') {
+          return;
+        }
+
+        if (e.key === 'ArrowRight' || e.key === ' ') {
+          e.preventDefault();
+          nextSlide();
+        } else if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          prevSlide();
+        } else if (e.key.toLowerCase() === 'p') {
+          e.preventDefault();
+          toggleGlobalTimer();
+        } else if (e.key.toLowerCase() === 'f') {
+          e.preventDefault();
+          toggleFullScreen();
+        } else if (e.key.toLowerCase() === 'n') {
+          e.preventDefault();
+          handleNotesClick();
+        } else if (e.key === '+' || e.key === '=') {
+          e.preventDefault();
+          adjustScale(0.05);
+        } else if (e.key === '-' || e.key === '_') {
+          e.preventDefault();
+          adjustScale(-0.05);
+        }
+      });
+
+      startGlobalTimer();
+      renderCurrentSlide(false);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,2136 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Materia Electiva: Desarrollo de Aplicaciones con LLMs y Modelos Generativos - Unidad 1 (UTN FRSR)</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Mermaid.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            utn: {
+              navy: '#0B132B',       // UTN Deep Midnight Navy
+              card: '#16223F',       // UTN Dark Surface
+              blue: '#003882',       // Azul Institucional UTN (Pantone 286)
+              lightBlue: '#0284C7',  // Celeste Institucional UTN (#0284C7 / #009FE3)
+              teal: '#0891B2',       // Technological Cyan / Teal
+              indigo: '#4F46E5',     // Modern Tech Indigo
+              amber: '#F59E0B',      // UTN Gold / Amber accent
+            },
+            unc: { // Fallback alias
+              navy: '#0B132B',
+              card: '#16223F',
+              blue: '#003882',
+              lightBlue: '#0284C7',
+              teal: '#0891B2',
+              indigo: '#4F46E5',
+              amber: '#F59E0B',
+            },
+            semantic: {
+              error: '#EF4444',
+              success: '#10B981',
+              warning: '#F59E0B'
+            }
+          },
+          fontFamily: {
+            sans: ['Roboto', 'Inter', 'system-ui', 'sans-serif'],
+            heading: ['Montserrat', 'Roboto', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          },
+          fontSize: {
+            '2xs': ['0.78rem', { lineHeight: '1.15rem' }],
+            'xs': ['0.875rem', { lineHeight: '1.3rem' }],
+            'sm': ['0.975rem', { lineHeight: '1.45rem' }],
+            'base': ['1.075rem', { lineHeight: '1.6rem' }],
+            'lg': ['1.22rem', { lineHeight: '1.75rem' }],
+            'xl': ['1.4rem', { lineHeight: '1.9rem' }],
+            '2xl': ['1.7rem', { lineHeight: '2.15rem' }],
+            '3xl': ['2.15rem', { lineHeight: '2.5rem' }],
+            '4xl': ['2.65rem', { lineHeight: '2.9rem' }]
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    :root {
+      --scale-multiplier: 1;
+      /* Escala tipográfica base: el 80% del tamaño original pasa a ser el nuevo 100%. */
+      --base-font-scale: 0.8;
+    }
+    
+    html {
+      font-size: calc(clamp(15px, 0.8vw + 0.4vh + 5px, 21.5px) * var(--scale-multiplier) * var(--base-font-scale));
+      transition: font-size 0.2s ease-out;
+    }
+    @media (min-width: 1600px) {
+      html {
+        font-size: calc(clamp(17px, 0.85vw + 0.42vh + 5px, 23px) * var(--scale-multiplier) * var(--base-font-scale));
+      }
+    }
+    :fullscreen html,
+    :-webkit-full-screen html {
+      font-size: calc(clamp(17.5px, 0.9vw + 0.45vh + 5px, 24px) * var(--scale-multiplier) * var(--base-font-scale));
+    }
+
+    body {
+      font-family: 'Roboto', 'Inter', system-ui, sans-serif;
+    }
+    h1, h2, h3, .font-heading {
+      font-family: 'Montserrat', system-ui, sans-serif;
+      letter-spacing: -0.015em;
+    }
+    code, pre, .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    #slide-stage-content {
+      width: 100%;
+    }
+    #slide-stage-content .max-w-4xl {
+      max-width: min(86rem, 100%) !important;
+      width: 100%;
+    }
+    #slide-stage-content .max-w-3xl {
+      max-width: min(74rem, 100%) !important;
+      width: 100%;
+    }
+    #slide-stage-content .max-w-2xl {
+      max-width: min(62rem, 100%) !important;
+      width: 100%;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(100, 116, 139, 0.4);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(100, 116, 139, 0.7);
+    }
+    @keyframes subtlePulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+    .badge-overtime {
+      animation: subtlePulse 1s infinite ease-in-out;
+    }
+    .mermaid svg {
+      max-width: 100% !important;
+      height: auto !important;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 dark:bg-utn-navy text-slate-800 dark:text-slate-100 min-h-screen flex flex-col antialiased transition-colors duration-200 selection:bg-utn-lightBlue selection:text-white">
+
+  <header class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50 px-4 py-2.5 transition-colors">
+    <div class="max-w-[96rem] w-full mx-auto flex flex-wrap items-center justify-between gap-3">
+      
+      <!-- Academic Brand & Block Badge -->
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-utn-blue to-sky-600 flex items-center justify-center text-white font-extrabold text-xs sm:text-sm shadow-md tracking-wider font-heading">
+          UTN
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-semibold uppercase tracking-wider text-utn-lightBlue dark:text-sky-400 font-heading">FR San Rafael</span>
+            <span id="slide-badge-block" class="hidden px-2 py-0.5 text-2xs font-bold rounded bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+              B1: Fundamentos
+            </span>
+          </div>
+          <h1 class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white truncate max-w-[220px] sm:max-w-xs md:max-w-md">
+            Unidad 1: El Ecosistema de LLMs: Servicios Cloud vs. Modelos Abiertos
+          </h1>
+        </div>
+      </div>
+
+      <!-- Timers Center -->
+      <div class="flex items-center gap-2 sm:gap-4">
+        <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-xs">
+          <span class="text-slate-400 font-medium">Unidad:</span>
+          <span id="global-timer" class="font-mono font-bold text-utn-lightBlue dark:text-sky-400">00:00</span>
+          <span class="text-slate-400 font-mono text-xs">/ 120:00</span>
+          <button id="btn-timer-toggle" onclick="toggleGlobalTimer()" class="ml-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 focus:outline-none" title="Iniciar/Pausar cronómetro global (P)">
+            ▶️
+          </button>
+        </div>
+
+        <div id="slide-timer-pill" class="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800/80 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-xs font-mono">
+          <span class="text-slate-400">Slide:</span>
+          <span id="slide-elapsed" class="font-bold text-emerald-600 dark:text-emerald-400">00:00</span>
+          <span class="text-slate-400">/</span>
+          <span id="slide-target" class="text-slate-500 dark:text-slate-400">05:00</span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <div id="screen-role-indicator" class="flex items-center"></div>
+
+        <button id="btn-notes" onclick="handleNotesClick()" title="Abrir Notas Docente (2ª Pantalla o panel)" class="px-3 py-1.5 text-xs rounded-lg font-semibold transition-all bg-indigo-600 hover:bg-indigo-700 text-white flex items-center gap-1.5 shadow-md">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+          <span>Notas</span>
+        </button>
+
+        <div class="hidden sm:flex items-center rounded-lg bg-slate-100 dark:bg-slate-800 p-0.5 border border-slate-200 dark:border-slate-700 text-xs" title="Ajuste fino manual de escala (+ / -)">
+          <button onclick="adjustScale(-0.05)" class="px-2 py-1 rounded text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 font-bold font-mono">A-</button>
+          <span id="scale-indicator" class="px-1.5 text-2xs font-mono text-slate-500 dark:text-slate-400">100%</span>
+          <button onclick="adjustScale(0.05)" class="px-2 py-1 rounded text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 font-bold font-mono">A+</button>
+        </div>
+
+        <button id="btn-fullscreen" onclick="toggleFullScreen()" title="Pantalla Completa (F)" class="p-2 rounded-lg text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+          <svg id="fullscreen-icon-expand" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5"/></svg>
+          <svg id="fullscreen-icon-compress" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v4a2 2 0 01-2 2H3m18 0h-4a2 2 0 01-2-2V3m0 18v-4a2 2 0 012-2h4M3 15h4a2 2 0 012 2v4"/></svg>
+        </button>
+
+        <button onclick="toggleDarkMode()" title="Alternar Modo Oscuro / Claro" class="p-2 rounded-lg text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+          <svg id="theme-sun-icon" class="w-4 h-4 hidden dark:block text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+          <svg id="theme-moon-icon" class="w-4 h-4 block dark:hidden text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Progress Indicator -->
+    <div class="w-full bg-slate-200 dark:bg-slate-800 h-1 mt-2 rounded-full overflow-hidden">
+      <div id="global-progress-bar" class="bg-gradient-to-r from-utn-lightBlue via-utn-teal to-utn-indigo h-full w-0 transition-all duration-300"></div>
+    </div>
+  </header>
+
+  <main id="main-container" class="flex-1 max-w-[96rem] w-full mx-auto p-3 sm:p-5 flex flex-col md:flex-row gap-5 overflow-hidden relative">
+
+    <!-- STAGE / PROJECTION PANEL -->
+    <section id="stage-panel" class="w-full flex-1 flex flex-col bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden min-h-[560px] relative transition-all">
+      <div class="px-5 py-3 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/70 dark:bg-slate-800/40">
+        <div class="flex items-center gap-2">
+          <span id="slide-badge-index" class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300">
+            Slide 01 de 18
+          </span>
+          <span id="slide-badge-duration" class="text-xs font-mono font-medium px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300">
+            03 min
+          </span>
+        </div>
+      </div>
+      <div id="slide-stage-content" class="flex-1 p-5 sm:p-8 flex flex-col items-center justify-center overflow-y-auto">
+        <!-- Injected dynamically -->
+      </div>
+    </section>
+
+    <!-- TELEPROMPTER PANEL -->
+    <aside id="teleprompter-panel" class="hidden flex-col bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden transition-all">
+      <div class="px-5 py-3.5 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 flex flex-wrap items-center justify-between gap-2">
+        <div class="flex items-center gap-2">
+          <span id="prompter-slide-badge" class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300">
+            Slide 01 de 18
+          </span>
+          <span id="prompter-slide-duration" class="text-xs font-mono font-medium px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300">
+            03 min
+          </span>
+          <h2 id="prompter-slide-title" class="text-xs sm:text-sm font-bold text-slate-800 dark:text-white truncate max-w-md ml-1">
+            Título
+          </h2>
+        </div>
+        <div class="flex items-center gap-2">
+          <span id="prompter-words-count" class="text-xs font-mono text-slate-400">~240 palabras</span>
+          <button id="btn-close-drawer" onclick="toggleNotesDrawer(false)" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" title="Cerrar notas">
+            ✕
+          </button>
+        </div>
+      </div>
+      <div class="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4">
+        
+        <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 space-y-1">
+          <div class="text-2xs uppercase font-bold text-slate-400 tracking-wider">Objetivo:</div>
+          <p id="prompter-cognitive-goal" class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-medium"></p>
+        </div>
+
+        <div class="space-y-2">
+          <div class="text-2xs uppercase font-bold text-slate-400 tracking-wider flex items-center justify-between">
+            <span>Discurso Textual Recomendado (Tono Tech Lead):</span>
+            <span class="text-xs">🎙️</span>
+          </div>
+          <div id="prompter-verbatim-text" class="p-4 sm:p-5 rounded-xl bg-slate-100 dark:bg-utn-card/70 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 text-sm sm:text-base leading-relaxed space-y-3 font-normal">
+            <!-- Injected dynamically -->
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-900/50 space-y-2.5">
+          <div class="text-xs uppercase font-bold text-utn-indigo dark:text-indigo-400 flex items-center gap-1.5">
+            <span>💡</span> Pausa de Validación & Pregunta Disparadora
+          </div>
+          <p id="prompter-validation-question" class="text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200"></p>
+          <div class="mt-2 pt-2.5 border-t border-indigo-100 dark:border-indigo-900/60">
+            <span class="text-2xs uppercase tracking-wider font-bold text-indigo-600 dark:text-indigo-300">Respuesta Modelo Sugerida:</span>
+            <p id="prompter-validation-answer" class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1 italic leading-relaxed"></p>
+          </div>
+        </div>
+
+      </div>
+    </aside>
+
+  </main>
+
+  <footer class="bg-white/95 dark:bg-slate-900/95 border-t border-slate-200 dark:border-slate-800 py-2.5 px-4 sticky bottom-0 z-40">
+    <div class="max-w-[96rem] w-full mx-auto flex items-center justify-between gap-4">
+      
+      <button id="btn-prev" onclick="prevSlide()" class="px-3.5 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium text-xs sm:text-sm flex items-center gap-1 transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+        <span>Anterior</span>
+      </button>
+
+      <div class="flex items-center gap-2 flex-1 justify-center max-w-md">
+        <select id="slide-select" onchange="goToSlide(parseInt(this.value))" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs sm:text-sm text-slate-800 dark:text-slate-200 font-medium focus:ring-1 focus:ring-utn-lightBlue focus:outline-none">
+          <!-- Populated dynamically -->
+        </select>
+        <span id="nav-indicator" class="text-xs sm:text-sm font-mono text-slate-400 whitespace-nowrap">01 / 18</span>
+      </div>
+
+      <button id="btn-next" onclick="nextSlide()" class="px-3.5 py-1.5 rounded-lg bg-utn-blue dark:bg-utn-lightBlue hover:bg-blue-800 dark:hover:bg-blue-600 text-white font-medium text-xs sm:text-sm flex items-center gap-1 transition-all shadow-sm disabled:opacity-40 disabled:cursor-not-allowed">
+        <span>Siguiente</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+      </button>
+
+    </div>
+  </footer>
+
+  <script>
+    const SLIDES_DATA = [
+      {
+        id: 1,
+        title: "Portada y Encuadre del Curso",
+        block: "",
+        targetTimeMinutes: 3,
+        purpose: "Presentar el encuadre del curso 'Desarrollo de aplicaciones con LLMs y modelos generativos' en la materia electiva (UTN Facultad Regional San Rafael): decisiones de arquitectura, gobernanza y costos reales.",
+        screenHTML: `
+          <div class="text-center max-w-3xl mx-auto space-y-6">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-100 dark:bg-blue-950/70 border border-blue-200 dark:border-blue-800 text-utn-blue dark:text-sky-300 text-xs sm:text-sm font-bold uppercase tracking-wider font-heading">
+              <span>🏛️</span> UTN Facultad Regional San Rafael · Ingeniería en Sistemas de Información
+            </div>
+            <div class="text-xs sm:text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider font-heading">
+              Materia Electiva: Desarrollo de Aplicaciones con LLMs y Modelos Generativos
+            </div>
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
+              Desarrollo de Aplicaciones con LLMs <br/>
+              <span class="text-transparent bg-clip-text bg-gradient-to-r from-utn-lightBlue via-utn-teal to-utn-indigo">
+                y Modelos Generativos
+              </span>
+            </h1>
+            <div class="space-y-2">
+              <h2 class="text-base sm:text-lg font-semibold text-slate-800 dark:text-slate-200">
+                Unidad 1: El Ecosistema de LLMs: Servicios Cloud vs. Modelos Abiertos
+              </h2>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Quiero ser muy transparente con ustedes desde el minuto cero: este curso no es para aprender a pedirle recetas a un chatbot en una interfaz web. Nuestro objetivo es formar a profesionales, ingenieros, analistas funcionales y líderes de proyecto para que sean capaces de diseñar y evaluar sistemas de Inteligencia Artificial que funcionen de verdad en producción corporativa.</p>
+          <p>No vamos a abordar fórmulas matemáticas abstractas en pizarrón ni demostraciones desconectadas de la práctica. Vamos a analizar <strong>contratos de servicio (SLA), consumo de memoria VRAM, cuellos de botella de hardware, secreto bancario y la ecuación entre gastos de operación e inversiones de capital</strong>. Al finalizar la jornada, sabrán responder con solidez técnica a la pregunta fundamental de cualquier directorio: <em>¿Compramos tokens en una nube propietaria o desplegamos nuestro propio modelo de pesos abiertos?</em></p>
+        `,
+        validationPause: {
+          question: "¿Por qué un prototipo de LLM que funciona perfecto en una reunión de innovación suele fallar estrepitosamente al llegar a 10.000 usuarios concurrentes?",
+          answer: "Porque en el demo se evalúa únicamente la calidad lingüística de un turno aislado. En producción aparecen los problemas de saturación de límites de peticiones (rate limits), degradación por tiempo al primer token (TTFT), costos exponenciales de contexto y fugas imprevistas de datos sensibles."
+        }
+      },
+      {
+        id: 2,
+        title: "La IA en el Aprendizaje: Copiloto, no Piloto Automático",
+        block: "",
+        targetTimeMinutes: 4,
+        purpose: "Fijar una postura ética y pragmática sobre el uso de LLMs en el aprendizaje: la IA como amplificador de curiosidad y andamiaje cognitivo, evitando la atrofia del juicio crítico propio.",
+        screenHTML: `
+          <div class="space-y-4 max-w-4xl mx-auto">
+            <div class="border-l-4 border-utn-teal pl-3">
+              <span class="text-xs uppercase font-bold text-utn-teal tracking-wider">Reflexión Pedagógica & Ética Profesional</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">La IA en tu Aprendizaje: Copiloto, no Piloto Automático</h2>
+              <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Cómo aprovechar las herramientas generativas para potenciar tu formación sin anular tu criterio técnico.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-emerald-500 border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                <div>
+                  <div class="flex items-center gap-1.5 mb-2">
+                    <span class="text-base">🚀</span>
+                    <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Copiloto y Andamiaje</h3>
+                  </div>
+                  <div class="text-xs uppercase font-bold text-emerald-600 dark:text-emerald-400 mb-2">El uso virtuoso</div>
+                  <ul class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 space-y-2">
+                    <li>• <strong>Sparring conceptual:</strong> Pedirle contraejemplos, analogías y enfoques alternativos a un problema.</li>
+                    <li>• <strong>Desarmar errores:</strong> Consultarle por qué falla un pipeline o qué significa una excepción en consola.</li>
+                    <li>• <strong>Explorar hipótesis:</strong> Contrastar criterios técnicos antes de tomar una decisión.</li>
+                  </ul>
+                </div>
+                <div class="mt-3 pt-2.5 border-t border-slate-200 dark:border-slate-700/60 text-xs font-semibold text-emerald-700 dark:text-emerald-300">
+                  ✓ El volante y el criterio lo tenés vos
+                </div>
+              </div>
+
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-semantic-error border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                <div>
+                  <div class="flex items-center gap-1.5 mb-2">
+                    <span class="text-base">⚠️</span>
+                    <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">La Trampa Pasiva</h3>
+                  </div>
+                  <div class="text-xs uppercase font-bold text-semantic-error mb-2">Ilusión de Maestría</div>
+                  <ul class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 space-y-2">
+                    <li>• <strong>Copiar y pegar a ciegas:</strong> Resolver consignas en Claude/ChatGPT sin entender el código subyacente.</li>
+                    <li>• <strong>Sensación de dominio falsa:</strong> Confundir la elocuencia del modelo con aprendizaje asimilado.</li>
+                    <li>• <strong>Atrofia del juicio:</strong> Si no podés resolverlo sin la IA, tampoco podrás auditar si el modelo falló.</li>
+                  </ul>
+                </div>
+                <div class="mt-3 pt-2.5 border-t border-slate-200 dark:border-slate-700/60 text-xs font-semibold text-red-600 dark:text-red-400">
+                  ✗ Delegar el esfuerzo anula el aprendizaje
+                </div>
+              </div>
+
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-utn-indigo border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                <div>
+                  <div class="flex items-center gap-1.5 mb-2">
+                    <span class="text-base">🎯</span>
+                    <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">El Valor en la Industria</h3>
+                  </div>
+                  <div class="text-xs uppercase font-bold text-utn-indigo dark:text-indigo-400 mb-2">Rol del Arquitecto</div>
+                  <ul class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 space-y-2">
+                    <li>• <strong>Nadie cobra por dar Enter:</strong> El valor está en diseñar la arquitectura, auditar fallos y medir costos.</li>
+                    <li>• <strong>Cazar alucinaciones:</strong> Se necesita más conocimiento para auditar una IA que para escribir texto desde cero.</li>
+                    <li>• <strong>Soberanía intelectual:</strong> Usar la IA como palanca, nunca como sustituto del pensamiento.</li>
+                  </ul>
+                </div>
+                <div class="mt-3 pt-2.5 border-t border-slate-200 dark:border-slate-700/60 text-xs font-semibold text-indigo-700 dark:text-indigo-300">
+                  ✓ Auditor y Arquitecto &gt; Operador de prompts
+                </div>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-gradient-to-r from-blue-50 via-teal-50 to-indigo-50 dark:from-slate-800 dark:via-slate-800/90 dark:to-slate-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-700 dark:text-slate-300 flex items-center gap-2.5">
+              <span class="text-xl">💡</span>
+              <div>
+                <strong class="text-slate-900 dark:text-white">Regla de oro en este curso:</strong>
+                <span> Utilizá la IA para acelerar tu curiosidad y desafiar tus límites, nunca para esquivar el esfuerzo mental de aprender.</span>
+              </div>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Antes de meternos de lleno en el caso FinNova y en los fierros de la infraestructura, quiero abrir un paréntesis muy especial y necesario con ustedes.</p>
+          <p>Desde la organización en UTN Facultad Regional San Rafael compartimos una convicción profunda. Este curso se llama justamente <em>Desarrollo de aplicaciones con LLMs y modelos generativos</em>. Sería ingenuo, absurdo o hasta hipócrita que yo me pare acá a decirles: <em>'está prohibido usar ChatGPT o Claude para cursar'</em>. ¡Al contrario! Tienen que usarlos, tienen que abrirlos, testearlos al límite y ver exactamente dónde brillan y dónde fallan miserablemente.</p>
+          <p>Pero hay una línea ética y pedagógica fundamental entre usar la IA como <strong>copiloto</strong> y poner la formación en <strong>piloto automático</strong>. Cuando ustedes usan el modelo como un sparring para preguntarle <em>'explicame por qué la atención es cuadrática con otra analogía'</em> o <em>'mostrame qué significa este error de CUDA'</em>, el modelo actúa como un andamiaje cognitivo. El esfuerzo mental y la síntesis la están haciendo ustedes.</p>
+          <p>En cambio, cuando le tiran la consigna del trabajo práctico a Claude, copian el código que les escupe y lo pegan en el notebook sin leerlo... no están 'engañando a los docentes'. Se están haciendo trampa a ustedes mismos. En ciencia cognitiva esto se conoce como la <strong>ilusión de fluidez</strong>: como el modelo responde rápido y lindo, nuestro cerebro asume falsamente que nosotros ya entendimos el tema.</p>
+          <p>En el mercado laboral real, a nadie le pagan por apretar el botón 'Generate'. A un profesional o Tech Lead le pagan por la <strong>responsabilidad</strong>: por saber cuándo conviene usar un modelo abierto, por calcular la VRAM antes de fundir el presupuesto y por tener el criterio suficiente para cazar una alucinación sutil antes de que le cueste millones a la empresa. Usemos la IA como palanca, pero con las manos siempre en el volante.</p>
+        `,
+        validationPause: {
+          question: "¿Cómo podemos darnos cuenta si estamos usando la IA como una palanca de aprendizaje o como un atajo que nos está atrofiando el criterio?",
+          answer: "Haciéndonos una pregunta simple: si nos desconectan el LLM por diez minutos, ¿somos capaces de explicar con nuestras propias palabras la lógica de la solución y defender por qué elegimos esa alternativa? Si la respuesta es no, estábamos en piloto automático."
+        }
+      },
+      {
+        id: 3,
+        title: "Caso FinNova: El Dilema Arquitectónico",
+        block: "",
+        targetTimeMinutes: 5,
+        purpose: "Presentar el hilo conductor de la unidad mediante dos cargas de trabajo con requerimientos antagónicos de confidencialidad, volumen y latencia.",
+        screenHTML: `
+          <div class="space-y-4 max-w-4xl mx-auto">
+            <div class="border-l-4 border-utn-indigo pl-3">
+              <span class="text-xs uppercase font-bold text-utn-indigo">Caso de Estudio Transversal</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">FinNova: Entidad Financiera de Créditos y Atención Masiva</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="p-5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                <div>
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-bold px-2 py-0.5 rounded bg-red-100 dark:bg-red-950/70 text-red-600 dark:text-red-400">Carga A: Alta Confidencialidad</span>
+                    <span class="text-xs font-mono text-slate-400">30 req/día</span>
+                  </div>
+                  <h3 class="font-bold text-base sm:text-lg text-slate-900 dark:text-white mb-2">Minutas de Comités de Riesgo Crediticio</h3>
+                  <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-3">
+                    Procesamiento de balances fiscales, dictámenes patrimoniales y datos biométricos de directores. Bajo regulación estricta del Banco Central y leyes de Secreto Bancario.
+                  </p>
+                </div>
+                <div class="space-y-1.5 text-xs font-mono border-t border-slate-200 dark:border-slate-700 pt-3">
+                  <div class="flex justify-between"><span class="text-slate-400">Riesgo:</span> <span class="text-semantic-error font-bold">Multa regulatoria / Filtración</span></div>
+                  <div class="flex justify-between"><span class="text-slate-400">Tolerancia Latencia:</span> <span class="text-slate-300">Media-Alta (hasta 40s)</span></div>
+                  <div class="flex justify-between"><span class="text-slate-400">Volumen Tokens:</span> <span class="text-slate-300">~8.000 tokens/documento</span></div>
+                </div>
+              </div>
+              <div class="p-5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                <div>
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-bold px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950/70 text-emerald-600 dark:text-emerald-400">Carga B: Masiva y Pública</span>
+                    <span class="text-xs font-mono text-slate-400">150.000 req/día</span>
+                  </div>
+                  <h3 class="font-bold text-base sm:text-lg text-slate-900 dark:text-white mb-2">Bot Conversacional de Soporte y FAQ</h3>
+                  <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-3">
+                    Consultas abiertas de clientes: horarios de sucursales, estado de tarjetas y navegación de app móvil. Información completamente pública sin datos personales.
+                  </p>
+                </div>
+                <div class="space-y-1.5 text-xs font-mono border-t border-slate-200 dark:border-slate-700 pt-3">
+                  <div class="flex justify-between"><span class="text-slate-400">Riesgo:</span> <span class="text-amber-500 font-bold">Costos de API descontrolados</span></div>
+                  <div class="flex justify-between"><span class="text-slate-400">Tolerancia Latencia:</span> <span class="text-semantic-error font-bold">Crítica (&lt; 800ms TTFT)</span></div>
+                  <div class="flex justify-between"><span class="text-slate-400">Volumen Tokens:</span> <span class="text-slate-300">~350 tokens/interacción</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Para anclar todas las decisiones técnicas de esta sesión, les presento a nuestro cliente de referencia: <strong>FinNova</strong>, una fintech bancaria de escala regional.</p>
+          <p>El directorio de FinNova le encargó a la gerencia técnica incorporar Inteligencia Artificial en dos frentes muy específicos. Miren la pantalla: por un lado, tenemos la <strong>Carga A</strong>. Son minutas ejecutivas confidenciales. Si un solo párrafo de esos balances o datos fiscales se filtra a servidores en el extranjero o se utiliza para re-entrenar modelos públicos, la entidad afronta sanciones penales y pérdida de licencia financiera.</p>
+          <p>Por otro lado, está la <strong>Carga B</strong>: un bot de preguntas frecuentes que atiende a 150.000 personas por día sobre temas cotidianos: límites de extracción, tasas vigentes y sucursales. Aquí no hay secreto bancario, pero si usamos la API cloud más costosa del mercado a ciegas, la factura mensual consumirá todo el presupuesto anual de IT.</p>
+          <p>Durante toda la unidad, ustedes serán el equipo de arquitectura que debe decidir qué modelo usar, dónde alojarlo y cómo balancear gastos de operación, inversión en servidores, latencia y privacidad.</p>
+        `,
+        validationPause: {
+          question: "¿Sería viable firmar un acuerdo comercial de 'Zero Data Retention' con un proveedor Cloud extranjero y enviar las minutas de la Carga A?",
+          answer: "Aunque contractualmente el proveedor prometa no almacenar datos, para muchas normativas bancarias locales la transmisión transfronteriza de datos patrimoniales ya constituye una infracción regulatoria inaceptable sin custodia en centros de datos nacionales o privados bajo control directo de la entidad."
+        }
+      },
+      {
+        id: 4,
+        title: "Hoja de Ruta de la Unidad (120 Min)",
+        block: "",
+        targetTimeMinutes: 3,
+        purpose: "Pautar la estructura de la sesión sincrónica de 120 minutos y decodificar el glosario de siglas técnicas fundamentales.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-4">
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Estructura de la Sesión Sincrónica (120 Min)</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div class="p-3.5 rounded-xl bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800">
+                <div class="text-xs font-bold text-utn-blue dark:text-blue-400 mb-1">BLOQUE 1 · 35 MIN</div>
+                <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white mb-2">Fundamentos e Inferencia</h3>
+                <ul class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 space-y-1.5 list-disc list-inside">
+                  <li>Arquitectura interna de un LLM</li>
+                  <li>Tokens (BPE / WordPiece) y Embeddings</li>
+                  <li>Flujo Q, K, V y Matriz de Afinidad</li>
+                  <li>Capas Densas (FFN) y Memoria Fáctica</li>
+                  <li>Prefill vs. Decode (TTFT vs. TPOT)</li>
+                  <li>Muestreo: Temperatura y Top-P</li>
+                </ul>
+              </div>
+              <div class="p-3.5 rounded-xl bg-teal-50 dark:bg-teal-950/30 border border-teal-200 dark:border-teal-800">
+                <div class="text-xs font-bold text-utn-teal mb-1">BLOQUE 2 · 45 MIN</div>
+                <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white mb-2">Taxonomía, Costos y VRAM</h3>
+                <ul class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 space-y-1.5 list-disc list-inside">
+                  <li>APIs Cloud vs. Pesos Abiertos</li>
+                  <li>Gastos de Operación vs. Inversión Capital</li>
+                  <li>Cuantización INT4 y formato GGUF</li>
+                  <li>KV Cache y Out of Memory (OOM)</li>
+                </ul>
+              </div>
+              <div class="p-3.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-800">
+                <div class="text-xs font-bold text-utn-indigo mb-1">BLOQUE 3 · 40 MIN</div>
+                <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white mb-2">Híbridos y Cierre de Sesión</h3>
+                <ul class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 space-y-1.5 list-disc list-inside">
+                  <li>Routers Inteligentes (LiteLLM)</li>
+                  <li>Resolución Arquitectónica FinNova</li>
+                  <li>Transición a Consola en Google Colab</li>
+                  <li>Cierre y puente a Unidad 2</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-2">
+              <div class="text-xs uppercase tracking-wider font-bold text-slate-500 dark:text-slate-400">
+                📖 Glosario de Siglas Técnicas que abordaremos hoy:
+              </div>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-mono text-slate-700 dark:text-slate-300">
+                <div class="p-2 rounded bg-white dark:bg-slate-900 border"><strong class="text-utn-lightBlue">BPE:</strong> Byte-Pair Encoding</div>
+                <div class="p-2 rounded bg-white dark:bg-slate-900 border"><strong class="text-utn-lightBlue">TTFT:</strong> Time to First Token</div>
+                <div class="p-2 rounded bg-white dark:bg-slate-900 border"><strong class="text-amber-500">TPOT:</strong> Time Per Output Token</div>
+                <div class="p-2 rounded bg-white dark:bg-slate-900 border"><strong class="text-utn-teal">VRAM:</strong> Memoria de Video (GPU)</div>
+                <div class="p-2 rounded bg-white dark:bg-slate-900 border"><strong class="text-indigo-400">GGUF:</strong> Formato Cuantizado Unificado</div>
+                <div class="p-2 rounded bg-white dark:bg-slate-900 border"><strong class="text-semantic-error">OOM:</strong> Out Of Memory (Fallo)</div>
+                <div class="p-2 rounded bg-white dark:bg-slate-900 border"><strong class="text-purple-400">FFN:</strong> Feed-Forward Network</div>
+                <div class="p-2 rounded bg-white dark:bg-slate-900 border"><strong class="text-emerald-400">O(N²):</strong> Complejidad Cuadrática</div>
+              </div>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Miren nuestro mapa de navegación para las dos horas de hoy. La infraestructura de LLMs está repleta de siglas que a veces parecen barreras encriptadas. Vamos a desarmar cada una de ellas de forma muy concreta:</p>
+          <p>En el <strong>Bloque 1</strong> entenderemos la anatomía interna de un LLM, cómo fluye un dato desde el token hasta la salida, el algoritmo <strong>BPE</strong>, y por qué la autoatención tiene una complejidad <strong>O de N al cuadrado</strong>. Analizaremos las capas densas FFN, el <strong>TTFT frente al TPOT</strong>, y cómo operan la temperatura y el <strong>Top-P</strong>.</p>
+          <p>En el <strong>Bloque 2</strong> entraremos en finanzas y hardware: compararemos pagar por token como <strong>gastos de operación</strong> frente a la <strong>inversión de capital en infraestructura propia</strong>. Calcularemos la <strong>VRAM</strong>, la compresión con <strong>GGUF</strong>, y cómo blindar el sistema para evitar un error <strong>OOM</strong> cuando el <strong>KV Cache</strong> satura la tarjeta.</p>
+          <p>Y en el <strong>Bloque 3</strong> armaremos la arquitectura híbrida con enrutadores, dictaminaremos la solución para FinNova y pasaremos directamente a la experimentación en Google Colab con una GPU T4.</p>
+        `,
+        validationPause: {
+          question: "¿Por qué es crucial dominar tanto las métricas de latencia (TTFT/TPOT) como las de memoria (VRAM/KV Cache) antes de levantar cualquier servicio?",
+          answer: "Porque un modelo puede tener un TTFT veloz pero agotar la VRAM tras 500 tokens debido al KV Cache, o puede entrar en memoria holgadamente pero responder demasiado lento (bajo TPOT) para sostener una experiencia conversacional fluida."
+        }
+      },
+      {
+        id: 5,
+        title: "Anatomía de un LLM: ¿Cómo fluye la información?",
+        block: "B1: Fundamentos (35m)",
+        targetTimeMinutes: 6,
+        purpose: "Descomponer intuitivamente la arquitectura interna de un LLM en cajas funcionales: entender el objetivo específico de cada capa y ver que el Transformer convive con capas densas (Fully Connected).",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-4">
+            <div class="border-l-4 border-utn-lightBlue pl-3">
+              <span class="text-xs uppercase font-bold text-utn-lightBlue tracking-wider">Arquitectura Interna & Pipeline</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Anatomía de un LLM: Capas y Flujo de Información</h2>
+              <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Cómo avanza un texto desde la entrada cruda hasta la predicción de la siguiente palabra.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-2.5 text-xs">
+              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-blue-500 flex flex-col justify-between space-y-2">
+                <div>
+                  <div class="font-bold text-sm text-blue-600 dark:text-blue-400">1. Tokenizador</div>
+                  <div class="text-2xs font-mono uppercase text-slate-400 mt-0.5">Preprocesamiento</div>
+                  <p class="text-slate-600 dark:text-slate-300 text-xs mt-2 leading-relaxed">
+                    Fragmenta el texto en subwords y mapea cada fragmento a un <strong>ID entero</strong> según su vocabulario fijo.
+                  </p>
+                </div>
+                <div class="p-2 rounded bg-white dark:bg-slate-900 border text-2xs font-semibold text-slate-700 dark:text-slate-300">
+                  🎯 <strong>Objetivo:</strong> Reducir texto infinito a números discretos manejables.
+                </div>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-teal-500 flex flex-col justify-between space-y-2">
+                <div>
+                  <div class="font-bold text-sm text-teal-600 dark:text-teal-400">2. Capa de Embeddings</div>
+                  <div class="text-2xs font-mono uppercase text-slate-400 mt-0.5">Espacio Vectorial</div>
+                  <p class="text-slate-600 dark:text-slate-300 text-xs mt-2 leading-relaxed">
+                    Usa el Token ID como índice en una tabla para asignar a cada token un <strong>vector denso continuo</strong> de 2.048 a 4.096 dimensiones.
+                  </p>
+                </div>
+                <div class="p-2 rounded bg-white dark:bg-slate-900 border text-2xs font-semibold text-slate-700 dark:text-slate-300">
+                  🎯 <strong>Objetivo:</strong> Dar significado y posición geométrica inicial a cada símbolo.
+                </div>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-indigo-500 flex flex-col justify-between space-y-2">
+                <div>
+                  <div class="font-bold text-sm text-indigo-600 dark:text-indigo-400">3. Bloque Autoatención</div>
+                  <div class="text-2xs font-mono uppercase text-slate-400 mt-0.5">Mecanismo Transformer</div>
+                  <p class="text-slate-600 dark:text-slate-300 text-xs mt-2 leading-relaxed">
+                    Cruza los vectores entre sí (Q, K, V). Permite que cada palabra consulte el contexto de todas las demás palabras de la frase.
+                  </p>
+                </div>
+                <div class="p-2 rounded bg-white dark:bg-slate-900 border text-2xs font-semibold text-slate-700 dark:text-slate-300">
+                  🎯 <strong>Objetivo:</strong> Resolver ambigüedades según el contexto global.
+                </div>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-purple-500 flex flex-col justify-between space-y-2">
+                <div>
+                  <div class="font-bold text-sm text-purple-600 dark:text-purple-400">4. Capas Fully Connected</div>
+                  <div class="text-2xs font-mono uppercase text-slate-400 mt-0.5">Feed-Forward (FFN)</div>
+                  <p class="text-slate-600 dark:text-slate-300 text-xs mt-2 leading-relaxed">
+                    Red neuronal densa aplicada a cada posición. No mezcla palabras: transforma no-linealmente las representaciones enriquecidas.
+                  </p>
+                </div>
+                <div class="p-2 rounded bg-white dark:bg-slate-900 border text-2xs font-semibold text-slate-700 dark:text-slate-300">
+                  🎯 <strong>Objetivo:</strong> Almacenar el conocimiento fáctico aprendido.
+                </div>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-amber-500 flex flex-col justify-between space-y-2">
+                <div>
+                  <div class="font-bold text-sm text-amber-600 dark:text-amber-400">5. Cabeza de Salida</div>
+                  <div class="text-2xs font-mono uppercase text-slate-400 mt-0.5">LM Head & Softmax</div>
+                  <p class="text-slate-600 dark:text-slate-300 text-xs mt-2 leading-relaxed">
+                    Proyecta el vector final al tamaño de todo el vocabulario (ej. 150.000 palabras) y calcula las probabilidades de cuál sigue.
+                  </p>
+                </div>
+                <div class="p-2 rounded bg-white dark:bg-slate-900 border text-2xs font-semibold text-slate-700 dark:text-slate-300">
+                  🎯 <strong>Objetivo:</strong> Elegir la siguiente subword más verosímil.
+                </div>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-700 dark:text-slate-300 flex items-center gap-3">
+              <span class="text-2xl">🧩</span>
+              <div>
+                <strong class="text-slate-900 dark:text-white">El Transformer no trabaja solo:</strong>
+                <span> Un gran modelo de lenguaje es un apilamiento de docenas de bloques idénticos donde se alternan <strong>capas de autoatención</strong> (para mezclar el contexto entre palabras) y <strong>capas densas fully connected</strong> (donde reside gran parte de la memoria del modelo).</span>
+              </div>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Antes de meternos a fondo con la matemática de los tokens y los vectores, necesitamos ver el plano arquitectónico general. ¿Qué hay realmente dentro de la caja negra de un Large Language Model?</p>
+          <p>Miren el diagrama de cinco estaciones en pantalla. Un LLM no es un bloque mágico; es un <strong>pipeline de procesamiento secuencial</strong> donde cada componente cumple un rol específico:</p>
+          <p>Primero está el <strong>Tokenizador</strong>, que convierte el texto en números enteros. Segundo, la <strong>Capa de Embeddings</strong>, que traduce esos enteros a coordenadas numéricas en un mapa semántico multidimensional.</p>
+          <p>Tercero y cuarto, el corazón del modelo: el <strong>Bloque Transformer</strong>, que se repite 30, 40 o más de 80 veces a lo largo de la red. Dentro de cada bloque hay dos motores complementarios: la <strong>Autoatención</strong>, cuyo único trabajo es permitir que los tokens dialoguen entre sí para entender el contexto (por ejemplo, saber si la palabra 'banco' se refiere a dinero o a una plaza); e inmediatamente después, una <strong>Capa Fully Connected o Feed-Forward Network</strong>. En estas capas densas es donde los investigadores han descubierto que se almacena gran parte de la 'memoria' fáctica del modelo sobre el mundo.</p>
+          <p>Y finalmente, la <strong>Cabeza de Salida</strong>, que proyecta el resultado final hacia todo el vocabulario para responder a la pregunta: <em>¿cuál es la siguiente palabra más probable?</em></p>
+        `,
+        validationPause: {
+          question: "¿Por qué un modelo no puede tener solamente capas de autoatención y necesita obligatoriamente las capas fully connected (FFN)?",
+          answer: "Porque la autoatención solo redistribuye y mezcla información entre los tokens existentes en la secuencia; no tiene capacidad de memorización fáctica profunda. Las capas Fully Connected actúan como una memoria asociativa de conocimiento general que procesa esa información contextualizada."
+        }
+      },
+      {
+        id: 6,
+        title: "Tokenización Subword y Espacio Semántico de Embeddings",
+        block: "B1: Fundamentos (35m)",
+        targetTimeMinutes: 6,
+        purpose: "Entender el concepto y la utilidad de los embeddings: representaciones vectoriales densas que ubican a las palabras en un espacio geométrico según su significado semántico.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-4">
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Tokenización Subword y Espacio Semántico de Embeddings</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
+                <div class="text-xs sm:text-sm font-bold text-utn-lightBlue mb-2">1. Tokenización en Subwords</div>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-3">
+                  Partir por palabras completas crearía vocabularios gigantescos inmanejables; partir por caracteres perdería el significado. Las <strong>subwords</strong> balancean tamaño y semántica.
+                </p>
+                <div class="space-y-2 text-xs">
+                  <div class="p-2.5 rounded bg-white dark:bg-slate-900 border">
+                    <strong class="text-slate-800 dark:text-slate-200">BPE (Byte-Pair Encoding):</strong> Usado por GPT, Llama y Qwen. Fusiona iterativamente los pares de bytes más repetidos.
+                  </div>
+                  <div class="p-2.5 rounded bg-white dark:bg-slate-900 border">
+                    <strong class="text-slate-800 dark:text-slate-200">WordPiece:</strong> Usado por BERT. Selecciona prefijos y fragmentos según máxima verosimilitud estadística.
+                  </div>
+                  <div class="p-2.5 rounded bg-white dark:bg-slate-900 border">
+                    <strong class="text-slate-800 dark:text-slate-200">SentencePiece / Unigram:</strong> Trata el texto como flujo de bytes continuo sin depender de espacios (vital para multilingüe).
+                  </div>
+                </div>
+              </div>
+
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
+                <div class="text-xs sm:text-sm font-bold text-utn-teal mb-2">2. El Embedding: Significado en un Espacio Geométrico</div>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-3">
+                  Un embedding es un <strong>vector numérico continuo</strong> (2.048 a 4.096 números). Su utilidad es ubicar conceptos en un hiperespacio donde la <strong>cercanía matemática representa afinidad semántica</strong>.
+                </p>
+                
+                <div class="p-3 bg-white dark:bg-slate-900 rounded-lg border font-mono text-xs space-y-2">
+                  <div class="text-slate-400 text-2xs">// Palabra ➔ Token ID ➔ Vector de Embedding</div>
+                  <div class="flex items-center justify-between">
+                    <span>"Fin"</span> ➔ <span class="text-slate-400">ID 15204</span> ➔ <span class="text-utn-lightBlue font-bold">[0.14, -0.82, ..., 0.63]</span>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span>"Nova"</span> ➔ <span class="text-slate-400">ID 3819</span> ➔ <span class="text-utn-teal font-bold">[0.42, 0.05, ..., -0.31]</span>
+                  </div>
+                  <div class="flex items-center justify-between border-t border-slate-100 dark:border-slate-800 pt-1.5">
+                    <span class="text-emerald-500 font-bold">"crédito"</span> ➔ <span class="text-slate-400">ID 8102</span> ➔ <span class="text-emerald-400 font-bold">[0.78, 0.41, ..., 0.55]</span>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-emerald-500 font-bold">"préstamo"</span> ➔ <span class="text-slate-400">ID 9455</span> ➔ <span class="text-emerald-400 font-bold">[0.75, 0.39, ..., 0.52]</span>
+                  </div>
+                </div>
+
+                <div class="mt-2.5 p-2 rounded bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-xs text-emerald-800 dark:text-emerald-300">
+                  ✓ <strong>Geometría semántica:</strong> "crédito" y "préstamo" tienen vectores casi paralelos; la distancia angular entre ellos es mínima.
+                </div>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/40 text-xs sm:text-sm flex items-center gap-2.5">
+              <span class="text-lg">⚠️</span>
+              <span class="text-slate-700 dark:text-slate-300">
+                <strong>Impacto en FinNova:</strong> En español, los tokenizadores fragmentan más prefijos y tildes. El mismo texto financiero consume entre <strong>20% y 35% más de tokens</strong> que en inglés, encareciendo directamente la factura de API y la VRAM.
+              </span>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Ahora que conocemos el mapa general, hagamos doble clic en las dos primeras estaciones: la <strong>Tokenización</strong> y la <strong>Capa de Embeddings</strong>.</p>
+          <p>Primero, las computadoras no leen letras ni palabras. Usamos tokenización en subwords: <strong>BPE</strong> en OpenAI y Llama, <strong>WordPiece</strong> en modelos como BERT, y <strong>SentencePiece</strong> cuando necesitamos soporte multilingüe sin depender de espacios en blanco.</p>
+          <p>Pero un token no es más que un número identificador entero. El token de la palabra 'crédito' puede ser el número 8.102. La red neuronal no puede multiplicar ese entero directamente, porque 8.102 no es 'el doble' de 4.051. Aquí es donde entra el concepto clave: el <strong>Embedding</strong>.</p>
+          <p>¿Qué es un embedding y para qué sirve? Es una lista de miles de números reales continuos que ubica a ese concepto dentro de un mapa geométrico multidimensional. La magia reside en que durante el preentrenamiento sobre millones de textos, el modelo aprendió a colocar los conceptos parecidos en coordenadas espaciales cercanas.</p>
+          <p>Miren la pantalla: si comparan el vector de 'crédito' con el de 'préstamo', verán que sus valores son casi idénticos: 0.78 frente a 0.75, 0.41 frente a 0.39. En cambio, si buscáramos la palabra 'banana', sus coordenadas apuntarían a un cuadrante completamente lejano. Este espacio vectorial es el que le permite a la red matemática 'comprender' sinónimos y afinidades temáticas.</p>
+        `,
+        validationPause: {
+          question: "¿Por qué dos palabras con significado muy parecido (como 'banco' y 'financiera') terminan con vectores de embedding casi idénticos en el espacio geométrico?",
+          answer: "Porque durante el preentrenamiento sobre terabytes de texto, aparecieron rodeadas de contextos idénticos (tasas, créditos, clientes). Para minimizar el error de predicción, la red se vio obligada a asignarles coordenadas vectoriales vecinas en el hiperespacio."
+        }
+      },
+      {
+        id: 7,
+        title: "De la Frase a las Proyecciones: Flujo Q, K, V",
+        block: "B1: Fundamentos (35m)",
+        targetTimeMinutes: 7,
+        purpose: "Visualizar la fracturación exacta en subwords de la frase del caso bancario y cómo cada token ID se transforma en proyecciones lineales Query, Key y Value.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-4">
+            <div class="border-l-4 border-utn-indigo pl-3">
+              <span class="text-xs uppercase font-bold text-utn-indigo tracking-wider">Flujo Secuencial Detallado</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">De Palabras a Proyecciones Lineales (Q, K, V)</h2>
+              <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Cómo se descompone la frase bancaria y se prepara para el cruce de atención.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-2.5 text-xs font-mono">
+              <div class="p-3 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                <div>
+                  <div class="text-2xs font-bold text-slate-400 uppercase tracking-wider mb-2">1. Texto Crudo</div>
+                  <div class="space-y-1.5 text-slate-800 dark:text-slate-200 font-sans font-semibold">
+                    <div class="p-1.5 rounded bg-white dark:bg-slate-900 border">"FinNova"</div>
+                    <div class="p-1.5 rounded bg-white dark:bg-slate-900 border">"preaprueba"</div>
+                    <div class="p-1.5 rounded bg-white dark:bg-slate-900 border">"microcréditos"</div>
+                  </div>
+                </div>
+                <div class="mt-2 text-2xs text-slate-500 font-sans">3 palabras de negocio</div>
+              </div>
+
+              <div class="p-3 rounded-xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900/60 flex flex-col justify-between">
+                <div>
+                  <div class="text-2xs font-bold text-utn-lightBlue uppercase tracking-wider mb-2">2. Subwords (BPE)</div>
+                  <div class="space-y-1 text-2xs text-blue-800 dark:text-blue-300">
+                    <div class="p-1 rounded bg-white dark:bg-slate-900 border">"Fin"</div>
+                    <div class="p-1 rounded bg-white dark:bg-slate-900 border">"Nova"</div>
+                    <div class="p-1 rounded bg-white dark:bg-slate-900 border">"pre"</div>
+                    <div class="p-1 rounded bg-white dark:bg-slate-900 border">"aprueba"</div>
+                    <div class="p-1 rounded bg-white dark:bg-slate-900 border">"micro"</div>
+                    <div class="p-1 rounded bg-white dark:bg-slate-900 border">"crédito"</div>
+                    <div class="p-1 rounded bg-white dark:bg-slate-900 border">"s"</div>
+                  </div>
+                </div>
+                <div class="mt-2 text-2xs text-blue-600 dark:text-blue-400 font-sans">7 fragmentos (tokens)</div>
+              </div>
+
+              <div class="p-3 rounded-xl bg-teal-50 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-900/60 flex flex-col justify-between">
+                <div>
+                  <div class="text-2xs font-bold text-utn-teal uppercase tracking-wider mb-2">3. Token IDs (1:1)</div>
+                  <div class="space-y-1 text-2xs text-teal-800 dark:text-teal-300">
+                    <div class="p-1 rounded bg-white dark:bg-slate-900 border">15204</div>
+                    <div class="p-1 rounded bg-white dark:bg-slate-900 border">3819</div>
+                    <div class="p-1 rounded bg-white dark:bg-slate-900 border">1042</div>
+                    <div class="p-1 rounded bg-white dark:bg-slate-900 border">8931</div>
+                    <div class="p-1 rounded bg-white dark:bg-slate-900 border">5621</div>
+                    <div class="p-1 rounded bg-white dark:bg-slate-900 border">8102</div>
+                    <div class="p-1 rounded bg-white dark:bg-slate-900 border">83</div>
+                  </div>
+                </div>
+                <div class="mt-2 text-2xs text-teal-600 dark:text-teal-400 font-sans">Índices en vocabulario</div>
+              </div>
+
+              <div class="p-3 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-900/60 flex flex-col justify-between">
+                <div>
+                  <div class="text-2xs font-bold text-utn-indigo uppercase tracking-wider mb-2">4. Embedding Base</div>
+                  <div class="space-y-1 text-2xs text-indigo-700 dark:text-indigo-300">
+                    <div class="p-1 rounded bg-white dark:bg-slate-900 border">[0.14, -0.82...]</div>
+                    <div class="p-1 rounded bg-white dark:bg-slate-900 border">[0.42, 0.05...]</div>
+                    <div class="p-1 rounded bg-white dark:bg-slate-900 border">[-0.11, 0.63...]</div>
+                    <div class="p-1 rounded bg-white dark:bg-slate-900 border">[0.91, -0.34...]</div>
+                    <div class="p-1 rounded bg-white dark:bg-slate-900 border">[0.05, 0.77...]</div>
+                    <div class="p-1 rounded bg-white dark:bg-slate-900 border">[0.78, 0.41...]</div>
+                    <div class="p-1 rounded bg-white dark:bg-slate-900 border">[-0.02, 0.12...]</div>
+                  </div>
+                </div>
+                <div class="mt-2 text-2xs text-indigo-500 font-sans">Vectores ℝ⁴⁰⁹⁶</div>
+              </div>
+
+              <div class="p-3 rounded-xl bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-900/60 flex flex-col justify-between">
+                <div>
+                  <div class="text-2xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider mb-2">5. Proyecciones</div>
+                  <div class="space-y-1 text-2xs text-purple-700 dark:text-purple-300">
+                    <div class="p-1.5 rounded bg-white dark:bg-slate-900 border font-sans font-bold text-utn-lightBlue">
+                      Q = E · W<sub>Q</sub>
+                    </div>
+                    <div class="p-1.5 rounded bg-white dark:bg-slate-900 border font-sans font-bold text-utn-teal">
+                      K = E · W<sub>K</sub>
+                    </div>
+                    <div class="p-1.5 rounded bg-white dark:bg-slate-900 border font-sans font-bold text-indigo-400">
+                      V = E · W<sub>V</sub>
+                    </div>
+                  </div>
+                </div>
+                <div class="mt-2 text-2xs text-purple-600 dark:text-purple-400 font-sans">Multiplicación matricial</div>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm flex items-center gap-3">
+              <span class="text-xl">💡</span>
+              <p class="text-slate-700 dark:text-slate-300">
+                <strong>¿Qué son físicamente Q, K y V?</strong> Son también vectores de números continuos calculados directamente a partir de los embeddings multiplicados por matrices de pesos aprendidas (W<sub>Q</sub>, W<sub>K</sub>, W<sub>V</sub>). Permiten que cada token tenga una triple identidad funcional para el cruce de atención.
+              </p>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Miren en pantalla la trayectoria completa de un dato. Supongamos que ingresa la frase bancaria: <em>'FinNova preaprueba microcréditos'</em>.</p>
+          <p>Primero, la frase entra en texto crudo línea por línea. El tokenizador BPE la analiza y encuentra que ni 'FinNova' ni 'microcréditos' existen como palabras completas en su diccionario cerrado. Por eso las fractura en <strong>subwords morfológicas</strong>: 'Fin' y 'Nova', el prefijo 'pre' y el verbo 'aprueba', y 'micro', 'crédito' y la 's'. Las 3 palabras se convirtieron en <strong>7 tokens</strong>.</p>
+          <p>A cada token se le asigna un número identificador único en la tabla del vocabulario. Y con ese ID, la red va a la matriz de embeddings para extraer su vector base continuo de 4.096 dimensiones.</p>
+          <p>¿Y qué son las proyecciones <strong>Q, K y V</strong>? Son tres nuevos vectores calculados multiplicando ese vector base por matrices de pesos aprendidas. Query es la pregunta, Key es la credencial o etiqueta, y Value es el contenido semántico. Todo ocurre a nivel matricial sobre números continuos.</p>
+        `,
+        validationPause: {
+          question: "¿Por qué el tokenizador fragmentó 'microcréditos' en tres tokens ('micro', 'crédito', 's') en lugar de aprenderla como una sola palabra?",
+          answer: "Porque los algoritmos de subwords como BPE optimizan el tamaño del vocabulario: combinando prefijos y sufijos comunes pueden representar millones de términos técnicos y neologismos sin tener que memorizar un vocabulario de millones de entradas."
+        }
+      },
+      {
+        id: 8,
+        title: "Tokens Especiales y Matriz de Afinidad (9×9)",
+        block: "B1: Fundamentos (35m)",
+        targetTimeMinutes: 7,
+        purpose: "Comprender el rol de los tokens especiales (<BOS> y <EOS>) como delimitadores obligatorios y analizar la matriz de afinidad numérica 9x9 que produce el embedding enriquecido.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-4">
+            <div class="border-l-4 border-utn-indigo pl-3">
+              <span class="text-xs uppercase font-bold text-utn-indigo tracking-wider">Mecanismo de Autoatención</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Tokens Especiales y Matriz de Afinidad 9×9</h2>
+              <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Cruce de atención matricial y generación del embedding enriquecido.</p>
+            </div>
+
+            <div class="p-3 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
+              <div class="flex items-center gap-1.5">
+                <span class="px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-bold border border-emerald-300 dark:border-emerald-800">&lt;BOS&gt;</span>
+                <span class="text-slate-400">➔</span>
+                <span class="text-slate-700 dark:text-slate-300 font-sans font-medium">"Fin", "Nova", "pre", "aprueba", "micro", "crédito", "s"</span>
+                <span class="text-slate-400">➔</span>
+                <span class="px-2 py-0.5 rounded bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300 font-bold border border-red-300 dark:border-red-800">&lt;EOS&gt;</span>
+              </div>
+              <span class="text-2xs text-slate-500 font-sans">Delimitadores sintácticos obligatorios de inicio y parada</span>
+            </div>
+
+            <!-- Monochromatic clean 9x9 matrix without color scales -->
+            <div class="p-3.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2.5">
+              <div class="flex items-center justify-between">
+                <div class="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                  <span>📊</span> Matriz de Afinidad Numérica 9×9 [Softmax(Q · K<sup>T</sup> / √d)]
+                </div>
+                <div class="text-2xs font-mono text-slate-400">
+                  Valores calculados por el producto punto normalizado
+                </div>
+              </div>
+
+              <div class="overflow-x-auto">
+                <table class="w-full text-xs font-mono text-center border-collapse border border-slate-200 dark:border-slate-800">
+                  <thead>
+                    <tr class="bg-slate-100 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 border-b border-slate-200 dark:border-slate-800">
+                      <th class="p-1.5 text-left font-sans border border-slate-200 dark:border-slate-800">Q ↓ / K ➔</th>
+                      <th class="p-1.5 border border-slate-200 dark:border-slate-800">&lt;BOS&gt;</th>
+                      <th class="p-1.5 border border-slate-200 dark:border-slate-800">Fin</th>
+                      <th class="p-1.5 border border-slate-200 dark:border-slate-800">Nova</th>
+                      <th class="p-1.5 border border-slate-200 dark:border-slate-800">pre</th>
+                      <th class="p-1.5 border border-slate-200 dark:border-slate-800">aprueba</th>
+                      <th class="p-1.5 border border-slate-200 dark:border-slate-800">micro</th>
+                      <th class="p-1.5 border border-slate-200 dark:border-slate-800">crédito</th>
+                      <th class="p-1.5 border border-slate-200 dark:border-slate-800">s</th>
+                      <th class="p-1.5 border border-slate-200 dark:border-slate-800">&lt;EOS&gt;</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100 dark:divide-slate-800 text-slate-800 dark:text-slate-200">
+                    <tr>
+                      <td class="p-1.5 text-left font-sans text-slate-400 border border-slate-200 dark:border-slate-800">&lt;BOS&gt;</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.85</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.05</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.02</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.02</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.02</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.01</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.01</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.01</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.01</td>
+                    </tr>
+                    <tr>
+                      <td class="p-1.5 text-left font-sans font-semibold border border-slate-200 dark:border-slate-800">Fin</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.02</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.65</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.92</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.04</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.71</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.03</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.03</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.01</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.01</td>
+                    </tr>
+                    <tr>
+                      <td class="p-1.5 text-left font-sans font-semibold border border-slate-200 dark:border-slate-800">Nova</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.01</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.94</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.68</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.05</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.74</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.04</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.04</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.01</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.01</td>
+                    </tr>
+                    <tr>
+                      <td class="p-1.5 text-left font-sans border border-slate-200 dark:border-slate-800">pre</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.01</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.08</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.09</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.62</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.96</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.06</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.05</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.01</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.01</td>
+                    </tr>
+                    <tr class="font-bold">
+                      <td class="p-1.5 text-left font-sans border border-slate-200 dark:border-slate-800 text-utn-lightBlue">aprueba</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.01</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.89</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.91</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.93</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.78</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.86</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.94</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.05</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.01</td>
+                    </tr>
+                    <tr>
+                      <td class="p-1.5 text-left font-sans border border-slate-200 dark:border-slate-800">micro</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.01</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.05</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.05</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.06</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.72</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.61</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.97</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.04</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.01</td>
+                    </tr>
+                    <tr>
+                      <td class="p-1.5 text-left font-sans border border-slate-200 dark:border-slate-800">crédito</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.01</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.69</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.71</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.06</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.93</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.95</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.74</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.88</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.01</td>
+                    </tr>
+                    <tr>
+                      <td class="p-1.5 text-left font-sans border border-slate-200 dark:border-slate-800">s</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.01</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.02</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.02</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.02</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.04</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.06</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.91</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.58</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.03</td>
+                    </tr>
+                    <tr>
+                      <td class="p-1.5 text-left font-sans text-slate-400 border border-slate-200 dark:border-slate-800">&lt;EOS&gt;</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.02</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.03</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.03</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.04</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.09</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.05</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.12</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.08</td>
+                      <td class="p-1.5 border border-slate-200 dark:border-slate-800">0.81</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm flex items-center justify-between gap-3">
+              <div class="space-y-1">
+                <div class="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                  <span>✨</span> El Resultado: El "Embedding Enriquecido"
+                </div>
+                <p class="text-slate-600 dark:text-slate-300 text-xs">
+                  Al multiplicar estos coeficientes por los vectores <strong>Value (V)</strong>, el nuevo vector de "aprueba" queda impregnado contextualmente con quién ejecuta la acción (<em>FinNova: 0.91</em>) y sobre qué objeto recae (<em>crédito: 0.94</em>).
+                </p>
+              </div>
+              <div class="hidden sm:block p-2 rounded bg-white dark:bg-slate-900 border text-2xs font-mono text-indigo-600 dark:text-indigo-400 font-bold whitespace-nowrap">
+                Vector Base ➔ Vector Enriquecido
+              </div>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Miren ahora qué ocurre cuando esos vectores entran a la cancha de la autoatención.</p>
+          <p>Lo primero que deben notar en la barra superior es que el texto nunca entra 'desnudo'. El tokenizador añade <strong>Tokens Especiales</strong>: un delimitador de inicio como <code>&lt;BOS&gt;</code> para resetear el estado y fijar el contexto; y un delimitador de fin como <code>&lt;EOS&gt;</code>.</p>
+          <p>El <code>&lt;EOS&gt;</code> es el guardián de nuestros costos: es el token que le avisa al bucle de inferencia: <em>'detente aquí, la respuesta ha terminado'</em>. Si un modelo no emite este token por un error de temperatura o de prompt, continuará generando texto sin sentido hasta agotar la ventana máxima de tokens.</p>
+          <p>Ahora miren la <strong>Matriz 9 por 9</strong>. Como ven, tenemos exactamente 81 cruces numéricos. Quiero que sigan conmigo la fila de 'aprueba': al cruzar su Query contra las Keys, el cálculo arroja un <strong>0.91 con 'Nova'</strong> y un <strong>0.94 con 'crédito'</strong>. El modelo acaba de descubrir las dos relaciones semánticas críticas: <em>¿Quién aprueba? FinNova. ¿Qué se aprueba? Créditos.</em></p>
+          <p>Al multiplicar estos coeficientes numéricos por la matriz de Valores (V), se produce el gran resultado del Transformer: el <strong>Embedding Enriquecido</strong>. El vector resultante de 'aprueba' ya no es un verbo genérico de diccionario; es un vector contextualizado que lleva codificada la identidad de la entidad financiera y del producto crediticio.</p>
+        `,
+        validationPause: {
+          question: "¿Por qué decimos que a la salida del bloque Transformer el vector de 'aprueba' es un 'embedding enriquecido' en comparación con el embedding que salió de la tabla de búsqueda?",
+          answer: "Porque el embedding inicial de la tabla es estático y representa la palabra aislada en el vacío. El embedding enriquecido a la salida de la atención ha absorbido una combinación ponderada de FinNova y crédito; sus 4.096 dimensiones ahora codifican la relación sintáctica y semántica específica de esta operación bancaria."
+        }
+      },
+      {
+        id: 9,
+        title: "Capas Densas (FFN): Memoria Fáctica y Activación",
+        block: "B1: Fundamentos (35m)",
+        targetTimeMinutes: 6,
+        purpose: "Entender el rol indispensable de las capas densas (Feed-Forward Network / MLP): cómo procesan de manera no lineal cada embedding enriquecido para recuperar y asociar conocimiento fáctico del mundo.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-4">
+            <div class="border-l-4 border-purple-500 pl-3">
+              <span class="text-xs uppercase font-bold text-purple-600 dark:text-purple-400 tracking-wider">El Segundo Motor del Transformer</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Capas Densas (FFN): Memoria Fáctica y Activación</h2>
+              <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">¿Qué pasa después de la atención? Cómo el modelo extrae conocimiento aprendido sobre cada concepto.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                <div>
+                  <div class="text-xs font-bold text-indigo-500 uppercase tracking-wider mb-1">1. Entrada de la FFN</div>
+                  <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white mb-1.5">Embedding Enriquecido</h3>
+                  <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                    Recibe el vector que salió del bloque de atención (en ℝ⁴⁰⁹⁶). Ya sabe con quién se relaciona dentro de la frase, pero todavía necesita activar conocimiento del mundo.
+                  </p>
+                </div>
+                <div class="mt-3 p-2 rounded bg-white dark:bg-slate-900 border text-2xs font-mono text-slate-500">
+                  Relaciones contextuales ✓
+                </div>
+              </div>
+
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-purple-500 border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                <div>
+                  <div class="text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider mb-1">2. Expansión Neuronal</div>
+                  <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white mb-1.5">Proyección 4.096 ➔ 11.008</h3>
+                  <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                    Cada vector se expande a un espacio mayor, pasa por funciones no lineales (SwiGLU / GELU) y se re-proyecta. Cada neurona intermedia actúa como un detector de hechos y conceptos aprendidos.
+                  </p>
+                </div>
+                <div class="mt-3 p-2 rounded bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800 text-2xs font-mono text-purple-700 dark:text-purple-300 font-bold">
+                  Memoria asociativa Clave-Valor
+                </div>
+              </div>
+
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                <div>
+                  <div class="text-xs font-bold text-teal-600 dark:text-teal-400 uppercase tracking-wider mb-1">3. Salida Refinada</div>
+                  <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white mb-1.5">Concepto con Significado</h3>
+                  <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                    El vector de "aprueba" ahora no solo sabe qué sustantivos lo acompañan: se le inyecta el significado fáctico de validación crediticia, riesgo y scoring para la predicción.
+                  </p>
+                </div>
+                <div class="mt-3 p-2 rounded bg-white dark:bg-slate-900 border text-2xs font-mono text-teal-600 dark:text-teal-400 font-bold">
+                  Listo para Inferencia / Siguiente Capa
+                </div>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-700 dark:text-slate-300 flex items-center justify-between gap-3">
+              <div class="space-y-1">
+                <div class="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                  <span>⚖️</span> División del trabajo en el bloque Transformer:
+                </div>
+                <p class="text-slate-600 dark:text-slate-300 text-xs">
+                  <strong>Autoatención:</strong> Enruta y conecta el contexto entre tokens (<em>¿quién con quién?</em>). <br/>
+                  <strong>Capas Densas (FFN):</strong> Almacenan y procesan el conocimiento del mundo (<em>¿qué significa cada cosa?</em>).
+                </p>
+              </div>
+              <div class="hidden sm:block p-2 rounded bg-white dark:bg-slate-900 border text-2xs font-mono text-purple-600 dark:text-purple-400 font-bold whitespace-nowrap">
+                Representa ~65% de los parámetros
+              </div>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Miren lo que logramos hasta la diapositiva anterior: vimos cómo los tokens especiales delimitan el texto, y cómo la autoatención cruza los vectores Q, K y V para generar una matriz donde 'aprueba' se empapa de 'FinNova' y de 'crédito'.</p>
+          <p>Pero aquí suele quedar un bache conceptual en muchos cursos: <strong>la atención por sí sola no tiene memoria de hechos</strong>. La atención es simplemente un teléfono descompuesto muy sofisticado que permite que las palabras se presten información entre sí dentro de la misma oración.</p>
+          <p>¿Quién sabe qué significa realmente otorgar un crédito? ¿Dónde está guardado el conocimiento de que un crédito requiere scoring y tasas de interés? <strong>En las Capas Densas o Feed-Forward Networks (FFN)</strong> que vienen inmediatamente después.</p>
+          <p>Como ven en pantalla, la FFN toma cada embedding enriquecido de manera individual, posición por posición. Lo proyecta a un espacio neuronal mucho más amplio —por ejemplo, de 4.096 a más de 11.000 dimensiones—, le aplica una función no lineal y lo vuelve a comprimir. Los investigadores han demostrado que las neuronas de estas capas densas operan como un almacén asociativo de hechos: allí reside más del 65% de los parámetros del modelo.</p>
+          <p>Ahora que entendemos cómo un bloque Transformer procesa tanto el contexto como el conocimiento, podemos dar el salto a la máquina física: ¿cómo ejecuta la GPU todo este pipeline en producción? Entremos a las dos fases de la inferencia: <strong>Prefill y Decode</strong>.</p>
+        `,
+        validationPause: {
+          question: "Si la autoatención conecta las palabras entre sí, ¿por qué un modelo no podría funcionar únicamente con capas de atención eliminando las capas densas?",
+          answer: "Porque la autoatención es solo un mecanismo de ruteo relacional: reubica información existente en el prompt, pero carece de la capacidad de almacenamiento asociativo que brindan las capas densas (FFN). Sin capas densas, el modelo sabría qué palabras están relacionadas sintácticamente pero no podría asociar conocimientos fácticos ni recordar hechos aprendidos durante el preentrenamiento."
+        }
+      },
+      {
+        id: 10,
+        title: "Dinámica de Inferencia: Prefill vs. Decode",
+        block: "B1: Fundamentos (35m)",
+        targetTimeMinutes: 7,
+        purpose: "Diferenciar las dos fases físicas de la inferencia: Time to First Token (TTFT) computacional vs. Time Per Output Token (TPOT) limitado por ancho de banda de memoria.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-4">
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Las Dos Fases Físicas de la Inferencia</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-utn-lightBlue border-slate-200 dark:border-slate-700">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">1. Fase de Prefill (Prompt)</span>
+                  <span class="text-xs px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900/60 font-mono text-blue-700 dark:text-blue-300">Compute-Bound</span>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mb-3 leading-relaxed">
+                  Procesa todo el prompt de entrada de forma <strong>paralela</strong> en los núcleos tensoriales de la GPU. Calcula las matrices iniciales de todo el texto ingresado.
+                </p>
+                <div class="p-2.5 rounded bg-white dark:bg-slate-900 text-xs font-mono space-y-1">
+                  <div class="text-slate-400 text-2xs">Métrica de Impacto:</div>
+                  <div class="text-utn-lightBlue font-bold">TTFT (Time to First Token)</div>
+                  <div class="text-slate-500 text-2xs">Determina la sensación de agilidad percibida por el usuario.</div>
+                </div>
+              </div>
+
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-amber-500 border-slate-200 dark:border-slate-700">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">2. Fase de Decode (Generación)</span>
+                  <span class="text-xs px-2 py-0.5 rounded bg-amber-100 dark:bg-amber-900/60 font-mono text-amber-700 dark:text-amber-300">Memory-Bound</span>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mb-3 leading-relaxed">
+                  Generación <strong>secuencial token por token</strong>. Para generar un solo token, los gigabytes de pesos del modelo deben transferirse completos desde la VRAM a los núcleos.
+                </p>
+                <div class="p-2.5 rounded bg-white dark:bg-slate-900 text-xs font-mono space-y-1">
+                  <div class="text-slate-400 text-2xs">Métrica de Impacto:</div>
+                  <div class="text-amber-500 font-bold">TPOT (Time Per Output Token) / TPS</div>
+                  <div class="text-slate-500 text-2xs">Determina la velocidad de lectura del streaming de texto.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs sm:text-sm flex flex-wrap items-center justify-between gap-2">
+              <span class="font-bold text-slate-700 dark:text-slate-300">Cuello de botella real en Decode:</span>
+              <span class="text-slate-500">No es la velocidad de cálculo (TFLOPS), sino el <strong>Ancho de Banda de Memoria (GB/s)</strong> de la GPU.</span>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Esta diapositiva es fundamental para un arquitecto de infraestructura. Cuando invocamos un LLM, la máquina no hace una sola cosa; ejecuta <strong>dos fases radicalmente diferentes</strong> a nivel de hardware.</p>
+          <p>La primera es la <strong>Fase de Prefill</strong>. Ustedes le envían un prompt de 3.000 tokens con la minuta de FinNova. La GPU toma todos esos tokens juntos y los procesa de forma masivamente paralela. Aquí el hardware está limitado por capacidad de cómputo puro. La métrica que mide esta fase es el <strong>TTFT: Time To First Token</strong>, el tiempo exacto que tarda la pantalla en mostrar el primer carácter.</p>
+          <p>Pero una vez que aparece el primer token, entramos en la <strong>Fase de Decode</strong>. Y aquí cambia la física: los modelos autoregresivos generan texto token por token, uno a la vez. Para generar cada token, la tarjeta tiene que leer absolutamente todos los pesos del modelo de la memoria VRAM. Por lo tanto, el Decode no está limitado por FLOPS, sino por el <strong>ancho de banda de la memoria</strong>.</p>
+          <p>Por eso, en streaming, una GPU NVIDIA T4 puede darles 25 tokens por segundo aunque sus procesadores estén al 30% de uso: la memoria simplemente no puede bombear datos más rápido.</p>
+        `,
+        validationPause: {
+          question: "¿Por qué activar la transmisión en streaming (SSE) mejora radicalmente la experiencia del usuario aunque el tiempo total de respuesta sea exactamente el mismo?",
+          answer: "Porque reduce a milisegundos el TTFT percibido. El usuario comienza a leer de inmediato mientras el modelo continúa en su fase de decode secuencial, eliminando la sensación de congelamiento o latencia estática."
+        }
+      },
+      {
+        id: 11,
+        title: "Estocasticidad, Muestreo y Alucinaciones",
+        block: "B1: Fundamentos (35m)",
+        targetTimeMinutes: 8,
+        purpose: "Comprender la transformación de logits en probabilidades y dominar el control conjunto de hiperparámetros: Temperatura y Top-P (Nucleus Sampling), entendiendo el origen de las alucinaciones.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-4">
+            <div class="border-l-4 border-utn-lightBlue pl-3">
+              <span class="text-xs uppercase font-bold text-utn-lightBlue tracking-wider">Muestreo y Probabilidades</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">De Logits a Palabras: Temperatura, Top-P y Alucinaciones</h2>
+            </div>
+            
+            <!-- 4-Card layout with Top-P explicitly detailed -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              <!-- 1. Logits -->
+              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                <div>
+                  <div class="text-xs font-bold text-utn-lightBlue mb-1">1. Salida en Logits</div>
+                  <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-2">
+                    Puntajes numéricos continuos sin normalizar arrojados para cada token del vocabulario.
+                  </p>
+                </div>
+                <div class="text-xs font-mono bg-white dark:bg-slate-900 p-2 rounded border space-y-0.5">
+                  <div>"crédito": 14.2</div>
+                  <div>"préstamo": 13.8</div>
+                  <div class="text-slate-400">"banana": -2.1</div>
+                </div>
+              </div>
+
+              <!-- 2. Temperature -->
+              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                <div>
+                  <div class="text-xs font-bold text-utn-teal mb-1">2. Temperatura (T)</div>
+                  <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-2">
+                    Escala los logits antes de Softmax (z / T). Aplana o agudiza la curva de probabilidades.
+                  </p>
+                </div>
+                <div class="text-xs font-mono bg-white dark:bg-slate-900 p-2 rounded border space-y-0.5">
+                  <div class="text-emerald-600 dark:text-emerald-400">T = 0.0 ➔ Determinista</div>
+                  <div>T = 0.7 ➔ Variabilidad</div>
+                  <div class="text-amber-500">T = 1.2 ➔ Caos léxico</div>
+                </div>
+              </div>
+
+              <!-- 3. Top-P (Nucleus Sampling) -->
+              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-utn-indigo border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                <div>
+                  <div class="text-xs font-bold text-utn-indigo mb-1">3. Top-P (Nucleus)</div>
+                  <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-2">
+                    Poda dinámica. Acumula probabilidades ordenadas de mayor a menor y <strong>corta al llegar a P</strong>.
+                  </p>
+                </div>
+                <div class="text-xs font-mono bg-white dark:bg-slate-900 p-2 rounded border space-y-1">
+                  <div class="text-2xs text-slate-400">// Top-P = 0.90 (Masa acumulada)</div>
+                  <div class="text-emerald-600 dark:text-emerald-400">"crédito" (65%) ┐</div>
+                  <div class="text-emerald-600 dark:text-emerald-400">"préstamo" (26%) ┘ Σ=91%</div>
+                  <div class="text-semantic-error border-t border-slate-200 dark:border-slate-700 pt-0.5 text-2xs">✕ "banana" (4%) [Podado]</div>
+                </div>
+              </div>
+
+              <!-- 4. Hallucination -->
+              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-semantic-error border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                <div>
+                  <div class="text-xs font-bold text-semantic-error mb-1">4. La Alucinación</div>
+                  <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-2">
+                    Los LLMs completan patrones matemáticamente verosímiles, no bases de datos de verdad objetiva.
+                  </p>
+                </div>
+                <div class="text-xs text-semantic-error bg-red-50 dark:bg-red-950/40 p-2 rounded border border-red-200 dark:border-red-900/50">
+                  Verosimilitud sintáctica ≠ Verdad fáctica
+                </div>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/40 text-xs sm:text-sm">
+              <strong class="text-amber-800 dark:text-amber-300">Dilema de Producción FinNova:</strong>
+              <span class="text-slate-700 dark:text-slate-300">
+                Fijar temperatura 0.0 o un Top-P muy estricto (0.1) <strong>no elimina las alucinaciones</strong> si el modelo carece del dato en sus pesos o en el prompt: solo garantiza que cometerá con certeza matemática el mismo error reproducible.
+              </span>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Un error conceptual peligroso en perfiles no técnicos es creer que el LLM 'piensa' o 'recuerda'. Físicamente, lo que la red neuronal hace en cada paso es arrojar un vector de números reales llamados <strong>logits</strong>, uno por cada token de su vocabulario.</p>
+          <p>Para controlar qué token se emite, la industria utiliza dos hiperparámetros clave combinados: <strong>Temperatura</strong> y <strong>Top-P (Nucleus Sampling)</strong>.</p>
+          <p>La temperatura actúa como un termostato general: si la bajamos a 0.0, la distribución se vuelve un pico afilado y el modelo siempre elige la primera opción, lo que llamamos muestreo codicioso o <em>Greedy Search</em>.</p>
+          <p>Pero miren con atención la tercera caja: <strong>Top-P o muestreo por núcleo</strong>. A diferencia de Top-K que fija una cantidad rígida de palabras, Top-P es dinámico. El modelo ordena todos los tokens de mayor a menor probabilidad y empieza a sumar sus porcentajes. En cuanto la suma acumulada supera el valor P —por ejemplo, 0.90 o 90%—, el modelo <strong>corta la cola y descarta absolutamente todos los demás tokens</strong>.</p>
+          <p>¿Por qué es tan potente Top-P? Porque si el modelo está ante una frase obvia como <em>'el cielo está...'</em>, la palabra 'azul' puede acumular el 95% ella sola, y el núcleo se reduce a un único candidato. Pero si la pregunta es creativa, las probabilidades se reparten y el núcleo se expande de forma natural a 20 o 30 palabras sin dejar entrar palabras disparatadas como 'banana'.</p>
+          <p>Recuerden la advertencia inferior: <strong>Temperatura cero o Top-P bajo NO evitan que el modelo alucine</strong>. Solo garantizan que la mentira será siempre la misma y matemáticamente consistente.</p>
+        `,
+        validationPause: {
+          question: "¿Por qué en sistemas financieros como FinNova se suele configurar Temperatura baja (0.1) combinada con un Top-P de 0.90 en lugar de modificar solo la temperatura?",
+          answer: "Porque actúan en niveles complementarios: Top-P elimina preventivamente la cola larga de palabras raras o incoherentes antes del muestreo, mientras que la temperatura baja se encarga de que, dentro de ese conjunto calificado, el modelo elija casi siempre la alternativa más precisa y determinista."
+        }
+      },
+      {
+        id: 12,
+        title: "Taxonomía: Cloud APIs vs. Pesos Abiertos y Licencias",
+        block: "B2: Arquitectura y Costos (45m)",
+        targetTimeMinutes: 8,
+        purpose: "Comparar con rigor los servicios de API comerciales cerradas frente a modelos de pesos abiertos, analizando cláusulas de licencias y revenue gates.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-4">
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Taxonomía del Ecosistema: Más allá del 'Open Source'</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">APIs Cloud Comerciales</span>
+                  <span class="text-xs px-2 py-0.5 rounded bg-purple-100 dark:bg-purple-900/60 text-purple-700 dark:text-purple-300 font-mono">Caja Negra</span>
+                </div>
+                <ul class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 space-y-2 mb-3">
+                  <li><strong>Modelos:</strong> OpenAI (GPT-4o), Anthropic (Claude 3.5), Google (Gemini 1.5).</li>
+                  <li><strong>Ventajas:</strong> Despliegue en 5 minutos, cero gestión de servidores, máximo razonamiento de vanguardia.</li>
+                  <li><strong>Riesgos:</strong> Dependencia de proveedor (lock-in), telemetría remota, latencia de red y cambios silenciosos de versión.</li>
+                </ul>
+              </div>
+
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Modelos de Pesos Abiertos</span>
+                  <span class="text-xs px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 font-mono">Control Total</span>
+                </div>
+                <ul class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 space-y-2 mb-3">
+                  <li><strong>Modelos:</strong> Meta Llama 3, Qwen 2.5, Mistral, DeepSeek.</li>
+                  <li><strong>Ventajas:</strong> Soberanía total de datos, despliegue On-Premise/VPC sin salida a internet, costos fijos predecibles.</li>
+                  <li><strong>Riesgos:</strong> Responsabilidad operativa, necesidad de GPUs dedicadas y mantenimiento de servidores.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/40 text-xs sm:text-sm">
+              <strong class="text-amber-800 dark:text-amber-300">Trampa Legal: Cláusulas de Licencia y 'Revenue Gates'</strong>
+              <p class="text-slate-700 dark:text-slate-300 mt-1">
+                Llama 3 no es 'Open Source' bajo la OSI; incluye una restricción comercial si el producto supera 700 millones de usuarios activos mensuales y prohíbe usar sus salidas para entrenar otros modelos competidores. Licencias permisivas como Apache 2.0 (ej. Qwen 2.5) ofrecen plena libertad corporativa.
+              </p>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Bienvenidos al <strong>Bloque 2</strong>. Empecemos por derrumbar un mito jurídico muy extendido: <strong>los modelos como Llama 3 o Qwen no son 'código abierto' en el sentido estricto de la OSI</strong>. Son modelos de <em>pesos abiertos</em> (open-weights).</p>
+          <p>¿Cuál es la diferencia? En el software tradicional de código abierto tenemos el código, los datos y la libertad de compilarlo. Aquí Meta o Alibaba publican los pesos ya entrenados, pero los datasets de entrenamiento son privados.</p>
+          <p>Además, deben leer con lupa las licencias. La licencia de Llama 3 tiene un <em>revenue gate</em>: si superan los 700 millones de usuarios activos, deben solicitar una licencia comercial explícita a Meta. Para FinNova, si optamos por modelos abiertos, debemos asegurarnos de elegir licencias permisivas tipo Apache 2.0, como las que ofrece la familia <strong>Qwen 2.5</strong> que utilizaremos en la práctica.</p>
+        `,
+        validationPause: {
+          question: "Si FinNova decidiera usar Llama 3 para la Carga A (minutas internas de 30 directores), ¿violaría alguna cláusula de Meta?",
+          answer: "No, porque el volumen de usuarios internos está muy lejos de los 700M de MAU y el uso es para análisis operativo privado, no para re-entrenar un modelo de lenguaje comercial competidor."
+        }
+      },
+      {
+        id: 13,
+        title: "Ecuación Económica: Gastos de Operación vs. Inversiones de Capital",
+        block: "B2: Arquitectura y Costos (45m)",
+        targetTimeMinutes: 8,
+        purpose: "Desarrollar la ecuación de costos reales: comparar el gasto recurrente de pagar por tokens en la nube frente a la inversión fija en servidores propios, ingeniería y energía.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-4">
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Ecuación Económica: Gastos de Operación vs. Inversiones de Capital</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
+                <div class="text-xs sm:text-sm font-bold text-utn-lightBlue mb-1">Gasto de Operación Puro (APIs Cloud)</div>
+                <div class="p-2.5 bg-white dark:bg-slate-900 rounded font-mono text-xs mb-2 text-slate-800 dark:text-slate-200">
+                  Costo<sub>operativo</sub> = ∑ (Tokens<sub>in</sub> × Tarifa<sub>in</sub> + Tokens<sub>out</sub> × Tarifa<sub>out</sub>)
+                </div>
+                <ul class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 space-y-1">
+                  <li>• Escala lineal estricta con el volumen de usuarios.</li>
+                  <li>• Cero costo si no hay tráfico.</li>
+                  <li>• Riesgo ante bucles infinitos de agentes o ataques de tráfico.</li>
+                </ul>
+              </div>
+
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
+                <div class="text-xs sm:text-sm font-bold text-utn-teal mb-1">Inversión de Capital + Mantenimiento (Servidores Propios)</div>
+                <div class="p-2.5 bg-white dark:bg-slate-900 rounded font-mono text-xs mb-2 text-slate-800 dark:text-slate-200">
+                  Costo<sub>infraestructura</sub> = Alquiler GPU + Mantenimiento MLOps + Energía
+                </div>
+                <ul class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 space-y-1">
+                  <li>• Costo mensual fijo y predecible.</li>
+                  <li>• El costo marginal por token adicional tiende a cero hasta saturar la placa.</li>
+                  <li>• Ineficiente si el tráfico es esporádico o muy bajo.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs sm:text-sm">
+              <div class="font-bold text-slate-900 dark:text-white mb-2">El Punto de Inflexión Económico (Breakeven):</div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="p-3 rounded bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900/40">
+                  <div class="font-bold text-utn-blue dark:text-blue-300 text-xs sm:text-sm">Bajo Volumen (&lt; 2M tokens/mes)</div>
+                  <div class="text-slate-600 dark:text-slate-300 text-xs mt-1">El gasto operativo de la API Cloud siempre gana: evita comprar servidores que quedarían ociosos la mayor parte del día.</div>
+                </div>
+                <div class="p-3 rounded bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/40">
+                  <div class="font-bold text-emerald-700 dark:text-emerald-300 text-xs sm:text-sm">Alto Volumen Constante (&gt; 50M tokens/mes)</div>
+                  <div class="text-slate-600 dark:text-slate-300 text-xs mt-1">La inversión en hardware dedicado o servidores propios amortiza la infraestructura y reduce el costo total hasta un 80%.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Hablemos de finanzas reales de ingeniería. Muchos desarrolladores cometen el error de comparar únicamente el precio por millón de tokens de OpenAI contra el alquiler por hora de un servidor con GPU en la nube.</p>
+          <p>Ese análisis está incompleto: pagar una API es un <strong>gasto de operación puro</strong>. Escala directamente con cada mensaje que mandan los clientes. Si el tráfico baja a cero, el costo es cero. Pero si el bot de soporte atiende a cientos de miles de personas, la factura mensual se dispara.</p>
+          <p>Por otro lado, montar infraestructura propia implica una <strong>inversión de capital fija</strong>: hay que pagar el servidor todos los meses aunque nadie lo use, además del costo de ingeniería de los profesionales que lo configuran y mantienen.</p>
+          <p>Miren los números de FinNova: para la <strong>Carga A</strong> son apenas 30 minutas al día. Eso da menos de un millón de tokens al mes. Comprar un servidor dedicado de 1.500 dólares solo para eso sería quemar presupuesto. Pero para la <strong>Carga B</strong> con 150.000 usuarios diarios, la ecuación se invierte y una infraestructura dedicada se amortiza rápidamente.</p>
+        `,
+        validationPause: {
+          question: "¿Qué riesgo operativo asume una empresa al depender al 100% de un gasto de operación en API Cloud para su canal de soporte masivo?",
+          answer: "Los 'Rate Limits' imprevistos (límite de peticiones por minuto) y las caídas no programadas del proveedor sin penalizaciones comerciales suficientes en su contrato estándar."
+        }
+      },
+      {
+        id: 14,
+        title: "VRAM y Cuantización INT4/GGUF",
+        block: "B2: Arquitectura y Costos (45m)",
+        targetTimeMinutes: 9,
+        purpose: "Enseñar la regla de cálculo de memoria de video (VRAM) para pesos y el funcionamiento de la cuantización de precisión reducida con el formato GGUF.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-4">
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">¿Cómo entra un modelo en una GPU? La Regla de los Bytes</h2>
+            
+            <div class="p-4 rounded-xl bg-slate-900 text-slate-100 border border-slate-800">
+              <div class="text-xs text-utn-lightBlue font-mono uppercase mb-1">Regla de Oro de Memoria para Pesos:</div>
+              <div class="text-sm sm:text-base font-mono font-bold text-white mb-2">
+                <span>VRAM<sub>pesos</sub> (GB) ≈ Parámetros (B) × (Bits / 8) × 1.2</span>
+              </div>
+              <div class="text-xs text-slate-400 font-mono">El multiplicador 1.2 compensa el overhead de buffers de CUDA y activación de capas.</div>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-xs sm:text-sm text-left border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
+                <thead class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-mono">
+                  <tr>
+                    <th class="p-3">Modelo</th>
+                    <th class="p-3">Precisión</th>
+                    <th class="p-3">VRAM Requerida</th>
+                    <th class="p-3">¿Entra en GPU T4 (16 GB)?</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-800 bg-white dark:bg-slate-900/60">
+                  <tr>
+                    <td class="p-3 font-semibold">Qwen 2.5 3B</td>
+                    <td class="p-3 font-mono">FP16 (16-bit)</td>
+                    <td class="p-3 font-mono">~7.2 GB</td>
+                    <td class="p-3 text-semantic-success font-bold">✅ Sí (Holgado)</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-semibold">Qwen 2.5 3B</td>
+                    <td class="p-3 font-mono text-utn-teal">GGUF Q4_K_M (4-bit)</td>
+                    <td class="p-3 font-mono text-utn-teal font-bold">~2.3 GB</td>
+                    <td class="p-3 text-semantic-success font-bold">🚀 Sí (Excelente para Concurrencia)</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-semibold">Llama 3.1 8B</td>
+                    <td class="p-3 font-mono">FP16 (16-bit)</td>
+                    <td class="p-3 font-mono">~18.5 GB</td>
+                    <td class="p-3 text-semantic-error font-bold">❌ No (CUDA OOM Inevitable)</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-semibold">Llama 3.1 8B</td>
+                    <td class="p-3 font-mono text-amber-500">GGUF Q4_K_M (4-bit)</td>
+                    <td class="p-3 font-mono text-amber-500 font-bold">~5.8 GB</td>
+                    <td class="p-3 text-semantic-success font-bold">✅ Sí (En 16GB)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-teal-50 dark:bg-teal-950/30 border border-teal-200 dark:border-teal-900/40 text-xs sm:text-sm flex items-center gap-2.5">
+              <span class="text-xl">📦</span>
+              <span class="text-slate-700 dark:text-slate-300">
+                <strong>¿Qué es GGUF?</strong> El formato binario estandarizado por <em>llama.cpp</em> que empaqueta metadatos, vocabulario y tensores cuantizados en un único archivo, permitiendo descarga de capas (offloading) entre GPU y memoria RAM de CPU.
+              </span>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Llegamos al núcleo del dimensionamiento técnico. ¿Cómo sabemos qué hardware comprar o qué servidor levantar? Tomen nota de la fórmula en pantalla: <strong>Parámetros en miles de millones multiplicado por los bits dividido por 8</strong>.</p>
+          <p>Un modelo como <strong>Qwen 2.5 3B</strong> tiene 3.000 millones de parámetros. Si lo ejecutamos en precisión nativa FP16 (coma flotante de 16 bits), cada parámetro ocupa 2 bytes. 3 por 2 son 6 Gigabytes, más un 20% de buffers de activación: necesitamos 7.2 GB de VRAM solo para cargar el modelo.</p>
+          <p>¿Qué pasa si aplicamos <strong>cuantización INT4 con el algoritmo GGUF Q4_K_M</strong>? Comprimimos los pesos de 16 bits a 4 bits. El peso del modelo cae de más de 7 GB a apenas <strong>2.3 GB</strong> con una pérdida de precisión prácticamente imperceptible. Esto significa que en la GPU NVIDIA T4 de 16 GB de Google Colab no solo entra holgado, sino que nos deja más de 13 GB libres para atender múltiples usuarios y contextos extensos.</p>
+        `,
+        validationPause: {
+          question: "¿Por qué no cuantizamos todo a 2 bits o 1 bit si quisiéramos ahorrar todavía más memoria?",
+          answer: "Porque por debajo de 4 bits (ej. Q2_K) la perplejidad del modelo se degrada exponencialmente: pierde coherencia gramatical, olvida instrucciones del prompt y comienza a alucinar caracteres rotos."
+        }
+      },
+      {
+        id: 15,
+        title: "KV Cache y Prevención de Out of Memory (OOM)",
+        block: "B2: Arquitectura y Costos (45m)",
+        targetTimeMinutes: 8,
+        purpose: "Analizar el consumo dinámico de memoria durante la generación: cómo el KV Cache crece con el contexto y provoca caídas de servidor por Out of Memory.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-4">
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">La Trampa Invisible de la VRAM: Memoria de KV Cache</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
+                <div class="text-xs sm:text-sm font-bold text-utn-lightBlue mb-1">¿Qué es el KV Cache?</div>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-2">
+                  Para no recalcular los vectores Key y Value de todos los tokens anteriores en cada paso de decode, la GPU almacena sus estados en un búfer de memoria dinámica.
+                </p>
+                <div class="p-2.5 bg-white dark:bg-slate-900 rounded font-mono text-xs text-amber-500">
+                  <span>KV<sub>memoria</sub> ≈ 2 × Capas × Cabezas × Dimensión × Tokens × Lote</span>
+                </div>
+              </div>
+
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
+                <div class="text-xs sm:text-sm font-bold text-semantic-error mb-1">El Escenario del Fallo Silencioso</div>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-2">
+                  El modelo inicia perfectamente en 2.3 GB. Pero cuando 10 usuarios envían documentos de 8.000 tokens a la vez, el KV Cache reclama 14 GB extras.
+                </p>
+                <div class="p-2.5 bg-red-100 dark:bg-red-950/60 rounded font-mono text-xs text-semantic-error font-bold">
+                  CUDA Runtime Error: Out of Memory (OOM) ➔ Proceso Abortado
+                </div>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-xl bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-900/40 text-xs sm:text-sm">
+              <div class="font-bold text-utn-indigo dark:text-indigo-400 mb-1">Blindajes de Producción: PagedAttention y Context Capping</div>
+              <ul class="text-slate-600 dark:text-slate-300 space-y-1 list-disc list-inside">
+                <li><strong>PagedAttention (vLLM):</strong> Fragmenta la memoria de KV en páginas virtuales no contiguas, eliminando la fragmentación y ahorrando hasta un 60% de VRAM.</li>
+                <li><strong>Context Window Capping:</strong> Truncar explícitamente el parámetro <code>n_ctx</code> en llama.cpp para evitar que una petición gigante sature la placa física.</li>
+              </ul>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Mucho cuidado aquí: muchos ingenieros creen que si los pesos del modelo entran en la tarjeta, el sistema ya está listo para producción. <strong>Grave error</strong>. Los pesos son estáticos; no cambian. Lo que satura a los servidores en producción es la memoria dinámica: el <strong>KV Cache</strong>.</p>
+          <p>Miren cómo opera: para generar el token número 500, el modelo necesita conocer las Keys y Values de los 499 tokens anteriores. Si recalculáramos eso en cada token, la velocidad caería a cero. Para solucionarlo, la GPU los guarda en caché. Pero esa caché crece linealmente con cada nuevo token que se genera y se multiplica por la cantidad de usuarios concurrentes.</p>
+          <p>En el caso FinNova: si en la Carga A enviamos balances de 8.000 tokens, el KV Cache puede llegar a pesar más que el propio modelo cuantizado. Si no limitamos estrictamente la ventana de contexto o si no utilizamos motores como <strong>vLLM con PagedAttention</strong>, el sistema colapsará con un error de <em>CUDA Out Of Memory</em> y el servicio quedará fuera de línea.</p>
+        `,
+        validationPause: {
+          question: "¿Por qué en Google Colab con GPU T4 podemos correr Qwen 2.5 3B a 4.096 tokens sin problemas, pero fallaría si configuramos 32.000 tokens de contexto?",
+          answer: "Porque el KV Cache necesario para almacenar las claves y valores de 32.000 tokens en múltiples capas supera los 13 GB de memoria libre que restan en la tarjeta T4, disparando la excepción de Out of Memory."
+        }
+      },
+      {
+        id: 16,
+        title: "Arquitecturas Híbridas y Routers de Inferencia",
+        block: "B3: Híbridos y Cierre (40m)",
+        targetTimeMinutes: 8,
+        purpose: "Presentar el patrón de diseño de enrutamiento inteligente (Router / Gateway con LiteLLM) para orquestar modelos locales y comerciales.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-4">
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">El Patrón Router: Lo Mejor de Ambos Mundos</h2>
+            
+            <div class="p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+              <pre class="mermaid text-xs">
+                graph LR
+                  Req[Cliente / App] --> Router[Router Inteligente: LiteLLM]
+                  Router -->|Sensibilidad: ALTA| Local[Qwen 2.5 3B Local / VPC Segura]
+                  Router -->|Sensibilidad: BAJA / Masivo| Cloud[Cloud API: GPT-4o / Claude]
+                  Router -->|Fallback por Caída Cloud| Local
+              </pre>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
+                <div class="text-xs sm:text-sm font-bold text-utn-lightBlue mb-1">1. Interfaz Unificada</div>
+                <p class="text-xs text-slate-600 dark:text-slate-300">
+                  Formato compatible con OpenAI para cualquier modelo (local o externo), evitando reescribir código de integración.
+                </p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
+                <div class="text-xs sm:text-sm font-bold text-utn-teal mb-1">2. Enrutamiento Semántico</div>
+                <p class="text-xs text-slate-600 dark:text-slate-300">
+                  Inspección de metadatos o expresiones regulares previas para derivar tráfico confidencial al modelo local sin tocar internet.
+                </p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
+                <div class="text-xs sm:text-sm font-bold text-utn-indigo mb-1">3. Fallback Automático</div>
+                <p class="text-xs text-slate-600 dark:text-slate-300">
+                  Si la API Cloud arroja error 429 o 503, el gateway conmuta automáticamente a la réplica local garantizando alta disponibilidad.
+                </p>
+              </div>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Bienvenidos al <strong>Bloque 3</strong>. Hasta ahora vimos los dos extremos: o todo en la nube pagando por token, o todo auto-alojado gestionando servidores. En la industria real, las arquitecturas más robustas <strong>no eligen un solo camino: construyen sistemas híbridos</strong>.</p>
+          <p>Miren el diagrama en pantalla. El patrón fundamental se llama <strong>Router de Inferencia o LLM Gateway</strong>, y una de las tecnologías estándar del mercado para esto es <strong>LiteLLM</strong>.</p>
+          <p>¿Qué hace este componente? Funciona como un proxy reverso. Las aplicaciones de FinNova le hablan a una única URL estándar. El router inspecciona la solicitud: si contiene metadatos de riesgo crediticio o datos bancarios, la envía directamente a nuestro servidor local con <strong>Qwen 2.5 On-Premise</strong>. Si es una consulta masiva de un usuario sobre el horario de una sucursal, la deriva a una API cloud económica.</p>
+          <p>Y además ganan resiliencia: si el proveedor Cloud sufre una caída global, el router conmuta el tráfico al modelo local como mecanismo de respaldo.</p>
+        `,
+        validationPause: {
+          question: "¿Qué sobrecarga de latencia añade un router inteligente como LiteLLM a cada petición?",
+          answer: "Añade una latencia mínima de entre 2 y 10 milisegundos por inspección en memoria, lo cual resulta completamente imperceptible frente a los cientos de milisegundos que toma la generación del modelo."
+        }
+      },
+      {
+        id: 17,
+        title: "Resolución Arquitectónica del Caso FinNova",
+        block: "B3: Híbridos y Cierre (40m)",
+        targetTimeMinutes: 6,
+        purpose: "Formalizar la matriz de decisión ejecutiva y técnica para las dos cargas de trabajo de FinNova comparando gastos de operación e inversiones de capital.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-4">
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Dictamen Final de Arquitectura: FinNova</h2>
+            
+            <div class="overflow-x-auto">
+              <table class="w-full text-xs sm:text-sm text-left border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
+                <thead class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-mono">
+                  <tr>
+                    <th class="p-3">Variable Crítica</th>
+                    <th class="p-3">Carga A: Minutas de Crédito</th>
+                    <th class="p-3">Carga B: Bot de Soporte Masivo</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-800 bg-white dark:bg-slate-900/60">
+                  <tr>
+                    <td class="p-3 font-semibold text-slate-400">Modelo Asignado</td>
+                    <td class="p-3 font-bold text-utn-teal">Qwen 2.5 3B / 7B (On-Premise / VPC)</td>
+                    <td class="p-3 font-bold text-utn-lightBlue">Cloud API Económica (ej. GPT-4o-mini)</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-semibold text-slate-400">Privacidad y Compliance</td>
+                    <td class="p-3 text-semantic-success font-bold">Aislamiento Físico (Secreto Bancario)</td>
+                    <td class="p-3">Datos públicos sin PII</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-semibold text-slate-400">Modelo Financiero</td>
+                    <td class="p-3 font-mono">Inversión de Capital Fija (1 servidor propio)</td>
+                    <td class="p-3 font-mono">Gasto de Operación Puro por demanda</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-semibold text-slate-400">Latencia Objetivo</td>
+                    <td class="p-3 font-mono">Tolerante (~15 a 30 seg batch)</td>
+                    <td class="p-3 font-mono text-semantic-error font-bold">Estricta (&lt; 800 ms con Streaming)</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-semibold text-slate-400">Formato / Precisión</td>
+                    <td class="p-3 font-mono">GGUF Q4_K_M (o Q8_0 para alta precisión)</td>
+                    <td class="p-3 font-mono">Cloud Nativo</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/40 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+              <strong class="text-emerald-800 dark:text-emerald-300">Conclusión de Negocio:</strong>
+              FinNova resolvió el 100% del requerimiento legal bancario con un costo predecible en la Carga A, mientras que blindó su presupuesto de atención al cliente utilizando un modelo Cloud ultrarrápido con streaming en la Carga B.
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Llegamos a la resolución formal del caso FinNova. Miren la matriz comparativa en pantalla: esta es la tabla que un Tech Lead defiende ante el Comité de Seguridad y el Directorio.</p>
+          <p>Para la <strong>Carga A</strong>, no hubo discusión: el secreto bancario manda. Cualquier solución que implique enviar balances confidenciales a servidores multi-tenant fuera del país violaba la regulación. Implementamos <strong>Qwen 2.5 en formato cuantizado GGUF</strong> dentro de una VPC privada On-Premise sin salida a internet. Como el volumen es de solo 30 minutas al día, un único nodo con una placa de 16 GB atiende toda la demanda.</p>
+          <p>Para la <strong>Carga B</strong>, mantener servidores dedicados para 150.000 usuarios concurrentes hubiera exigido un clúster costoso de GPUs de alta gama. En su lugar, contratamos una API cloud de alta velocidad con streaming habilitado, tratándola como un gasto operativo directamente vinculado a la demanda de clientes.</p>
+        `,
+        validationPause: {
+          question: "¿Qué pasaría si la Carga A pasara de 30 minutas diarias a 50.000 minutas diarias?",
+          answer: "Se mantendría la arquitectura local por mandato de secreto bancario, pero se necesitaría escalar horizontalmente el clúster on-premise con múltiples instancias GPU y balanceo de carga vLLM."
+        }
+      },
+      {
+        id: 18,
+        title: "Cierre: Lo que nos llevamos de la Unidad 1",
+        block: "B3: Híbridos y Cierre (40m)",
+        targetTimeMinutes: 5,
+        purpose: "Sintetizar los aprendizajes clave de la jornada, resolver preguntas y tender el puente conceptual a la Unidad 2 de Prompt Engineering.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-4">
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Cierre: Lo que nos llevamos de la Unidad 1</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
+                <div class="text-xs sm:text-sm font-bold text-utn-lightBlue mb-1">1. Dominio Arquitectónico</div>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                  Tokens en subwords convertidos en embeddings en el espacio semántico. Prefill es paralelo (compute-bound); Decode es secuencial (memory-bound).
+                </p>
+              </div>
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
+                <div class="text-xs sm:text-sm font-bold text-utn-teal mb-1">2. Rigor de VRAM & Costos</div>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                  Cuantizar a INT4 con GGUF hace viable el despliegue local. El KV Cache es el peligro real de OOM bajo alta concurrencia.
+                </p>
+              </div>
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
+                <div class="text-xs sm:text-sm font-bold text-utn-indigo mb-1">3. Criterio Híbrido</div>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                  No existe una solución única: orquestar con routers para aislar datos sensibles y balancear gastos de operación en APIs masivas.
+                </p>
+              </div>
+            </div>
+
+            <!-- Bridge to Class 2 -->
+            <div class="p-4 rounded-xl bg-gradient-to-r from-utn-blue/20 via-utn-indigo/20 to-utn-teal/20 border border-utn-indigo/30 text-xs sm:text-sm space-y-1.5">
+              <div class="font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <span>🚀</span> Próxima Sesión | Unidad 2: Prompt Engineering Avanzado y Control Estructurado
+              </div>
+              <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+                Ahora que sabemos dónde y cómo corre el modelo, aprenderemos a gobernarlo: prompts de sistema robustos, técnicas Few-Shot, Chain-of-Thought y cumplimiento estricto de esquemas JSON con validación pydantic para aplicaciones empresariales.
+              </p>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Hemos completado con éxito esta primera unidad de la materia electiva. Repasemos los tres pilares que construimos juntos hoy:</p>
+          <p>Primero, desmitificamos la anatomía del modelo: sabemos qué rol cumple cada capa, cómo los embeddings ubican el significado en un mapa geométrico, cómo la autoatención genera el contexto y cómo interactúan la temperatura y el Top-P para gobernar el muestreo.</p>
+          <p>Segundo, aprendimos a calcular la memoria antes de firmar cualquier orden de servidores. Sabemos que Qwen 2.5 3B en formato GGUF de 4 bits consume solo 2.3 GB, dejando espacio para el KV Cache sin sufrir un Out Of Memory.</p>
+          <p>Y tercero, resolvimos el caso FinNova con criterio profesional: usamos modelos abiertos locales cuando la privacidad lo exige, y consumimos APIs de nube como gastos de operación cuando la escala lo justifica.</p>
+          <p>La próxima semana, en la <strong>Unidad 2</strong>, asumiremos que el motor ya está encendido y aprenderemos a conducirlo: entraremos de lleno en <strong>Prompt Engineering Avanzado, técnicas de razonamiento y extracción estructurada con JSON</strong>. ¡Muchas gracias a todas y todos por su participación hoy!</p>
+        `,
+        validationPause: {
+          question: "¿Quedó alguna duda abierta sobre cómo balancear gastos de operación entre APIs comerciales e inversión en servidores propios?",
+          answer: "Espacio abierto para responder las últimas dos preguntas del chat antes de cerrar la sesión sincrónica."
+        }
+      }
+    ];
+
+    let currentSlideIndex = 0;
+    let globalSeconds = 0;
+    let slideSeconds = 0;
+    let isGlobalTimerRunning = false;
+    let globalTimerInterval = null;
+    let slideTimerInterval = null;
+    let userScaleMultiplier = 1.0;
+    let isNotesDrawerOpen = false;
+
+    let syncChannel = null;
+    try {
+      if (typeof BroadcastChannel !== 'undefined') {
+        syncChannel = new BroadcastChannel('utn_presentation_sync_channel_c1');
+        syncChannel.onmessage = (event) => {
+          if (!event.data) return;
+          handleRemoteSync(event.data.action, event.data.payload);
+        };
+      }
+    } catch (e) {
+      console.warn("BroadcastChannel not supported in this frame, running in single-window mode:", e);
+    }
+
+    function broadcastState(action, payload) {
+      if (syncChannel) {
+        try {
+          syncChannel.postMessage({ action, payload, timestamp: Date.now() });
+        } catch (e) {
+          console.warn("Failed to broadcast state:", e);
+        }
+      }
+    }
+
+    function handleRemoteSync(action, payload) {
+      switch (action) {
+        case 'NAVIGATE':
+          if (payload.slideIndex !== undefined && payload.slideIndex !== currentSlideIndex) {
+            currentSlideIndex = payload.slideIndex;
+            renderCurrentSlide(false);
+          }
+          break;
+        case 'GLOBAL_TIMER_TOGGLE':
+          if (isGlobalTimerRunning !== payload.running) {
+            toggleGlobalTimer(false);
+          }
+          break;
+        case 'GLOBAL_TIMER_SYNC':
+          if (Math.abs(globalSeconds - payload.seconds) > 2) {
+            globalSeconds = payload.seconds;
+            document.getElementById('global-timer').innerText = formatTime(globalSeconds);
+          }
+          break;
+        case 'THEME_SYNC':
+          const isDark = document.documentElement.classList.contains('dark');
+          if (isDark !== payload.dark) {
+            toggleDarkMode(false);
+          }
+          break;
+        case 'SCALE_SYNC':
+          if (payload.scale && Math.abs(userScaleMultiplier - payload.scale) > 0.01) {
+            userScaleMultiplier = payload.scale;
+            document.documentElement.style.setProperty('--scale-multiplier', userScaleMultiplier);
+            const ind = document.getElementById('scale-indicator');
+            if (ind) ind.innerText = `${Math.round(userScaleMultiplier * 100)}%`;
+          }
+          break;
+      }
+    }
+
+    function adjustScale(delta, shouldBroadcast = true) {
+      userScaleMultiplier = Math.max(0.75, Math.min(1.4, Math.round((userScaleMultiplier + delta) * 100) / 100));
+      document.documentElement.style.setProperty('--scale-multiplier', userScaleMultiplier);
+      const indicator = document.getElementById('scale-indicator');
+      if (indicator) indicator.innerText = `${Math.round(userScaleMultiplier * 100)}%`;
+      if (shouldBroadcast) {
+        broadcastState('SCALE_SYNC', { scale: userScaleMultiplier });
+      }
+    }
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          console.warn("Fullscreen request warning:", err);
+        });
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    document.addEventListener('fullscreenchange', () => {
+      const isFs = !!document.fullscreenElement;
+      const expandIcon = document.getElementById('fullscreen-icon-expand');
+      const compressIcon = document.getElementById('fullscreen-icon-compress');
+      if (expandIcon && compressIcon) {
+        if (isFs) {
+          expandIcon.classList.add('hidden');
+          compressIcon.classList.remove('hidden');
+        } else {
+          expandIcon.classList.remove('hidden');
+          compressIcon.classList.add('hidden');
+        }
+      }
+      setTimeout(() => {
+        try { mermaid.run({ querySelector: '.mermaid' }); } catch(e){}
+      }, 100);
+    });
+
+    function handleNotesClick() {
+      const cleanUrl = window.location.href.split('?')[0];
+      const targetUrl = `${cleanUrl}?role=teleprompter&slide=${currentSlideIndex + 1}`;
+      
+      let presenterWin = null;
+      try {
+        presenterWin = window.open(
+          targetUrl,
+          'UTN_Presenter_Teleprompter_C1',
+          'width=1280,height=880,menubar=no,toolbar=no,location=no,status=no'
+        );
+      } catch (err) {
+        console.warn("Window open prevented by sandbox:", err);
+      }
+
+      if (!presenterWin || presenterWin.closed || typeof presenterWin.closed === 'undefined') {
+        toggleNotesDrawer();
+      }
+    }
+
+    function toggleNotesDrawer(forceState) {
+      const prompterPanel = document.getElementById('teleprompter-panel');
+      const stagePanel = document.getElementById('stage-panel');
+      if (!prompterPanel) return;
+
+      isNotesDrawerOpen = (forceState !== undefined) ? forceState : !isNotesDrawerOpen;
+
+      if (isNotesDrawerOpen) {
+        prompterPanel.className = "w-full md:w-[480px] lg:w-[540px] flex flex-col bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden transition-all z-30 shrink-0";
+        if (stagePanel) stagePanel.classList.remove('w-full');
+      } else {
+        prompterPanel.classList.add('hidden');
+        if (stagePanel) stagePanel.classList.add('w-full');
+      }
+    }
+
+    try {
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: 'dark',
+        securityLevel: 'loose',
+        flowchart: { useMaxWidth: true, htmlLabels: true }
+      });
+    } catch(e) {
+      console.warn("Mermaid init note:", e);
+    }
+
+    function safeSetText(id, text) {
+      const el = document.getElementById(id);
+      if (el) el.innerText = text;
+    }
+
+    function safeSetHTML(id, html) {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = html;
+    }
+
+    function renderCurrentSlide(shouldBroadcast = true) {
+      const slide = SLIDES_DATA[currentSlideIndex];
+      if (!slide) return;
+
+      const blockBadge = document.getElementById('slide-badge-block');
+      if (blockBadge) {
+        if (slide.block && slide.block.trim() !== "") {
+          blockBadge.innerText = slide.block;
+          blockBadge.classList.remove('hidden');
+        } else {
+          blockBadge.innerText = "";
+          blockBadge.classList.add('hidden');
+        }
+      }
+
+      safeSetText('slide-badge-index', `Slide ${String(slide.id).padStart(2, '0')} de ${SLIDES_DATA.length}`);
+      safeSetText('slide-badge-duration', `${slide.targetTimeMinutes} min`);
+      safeSetText('slide-target', `${String(slide.targetTimeMinutes).padStart(2, '0')}:00`);
+      safeSetText('nav-indicator', `${String(slide.id).padStart(2, '0')} / ${String(SLIDES_DATA.length).padStart(2, '0')}`);
+
+      safeSetHTML('slide-stage-content', slide.screenHTML || '');
+
+      safeSetText('prompter-slide-badge', `Slide ${String(slide.id).padStart(2, '0')} de ${SLIDES_DATA.length}`);
+      safeSetText('prompter-slide-duration', `${slide.targetTimeMinutes} min`);
+      safeSetText('prompter-slide-title', slide.title || '');
+      safeSetText('prompter-cognitive-goal', slide.purpose || '');
+      safeSetHTML('prompter-verbatim-text', slide.verbatimScript || '');
+      
+      if (slide.verbatimScript) {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = slide.verbatimScript;
+        const wordCount = tempDiv.innerText.trim().split(/\s+/).filter(Boolean).length;
+        safeSetText('prompter-words-count', `~${wordCount} palabras (${slide.targetTimeMinutes}m)`);
+      }
+
+      if (slide.validationPause) {
+        safeSetText('prompter-validation-question', slide.validationPause.question || '');
+        safeSetText('prompter-validation-answer', slide.validationPause.answer || '');
+      }
+
+      const selectEl = document.getElementById('slide-select');
+      if (selectEl) selectEl.value = slide.id;
+
+      const btnPrev = document.getElementById('btn-prev');
+      if (btnPrev) btnPrev.disabled = (currentSlideIndex === 0);
+
+      const btnNext = document.getElementById('btn-next');
+      if (btnNext) btnNext.disabled = (currentSlideIndex === SLIDES_DATA.length - 1);
+
+      resetSlideTimer();
+
+      if (shouldBroadcast) {
+        broadcastState('NAVIGATE', { slideIndex: currentSlideIndex });
+      }
+
+      setTimeout(() => {
+        try {
+          if (typeof mermaid !== 'undefined') {
+            mermaid.run({ querySelector: '.mermaid' });
+          }
+        } catch (e) {
+          console.warn("Mermaid layout note:", e);
+        }
+      }, 60);
+    }
+
+    function formatTime(totalSeconds) {
+      const mins = Math.floor(totalSeconds / 60);
+      const secs = totalSeconds % 60;
+      return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
+    function startGlobalTimer() {
+      if (globalTimerInterval) clearInterval(globalTimerInterval);
+      globalTimerInterval = setInterval(() => {
+        if (!isGlobalTimerRunning) return;
+        globalSeconds++;
+        document.getElementById('global-timer').innerText = formatTime(globalSeconds);
+
+        const progressPct = Math.min(100, (globalSeconds / 7200) * 100);
+        document.getElementById('global-progress-bar').style.width = `${progressPct}%`;
+
+        if (globalSeconds % 5 === 0) {
+          broadcastState('GLOBAL_TIMER_SYNC', { seconds: globalSeconds });
+        }
+      }, 1000);
+    }
+
+    function toggleGlobalTimer(shouldBroadcast = true) {
+      isGlobalTimerRunning = !isGlobalTimerRunning;
+      const btn = document.getElementById('btn-timer-toggle');
+      if (btn) btn.innerText = isGlobalTimerRunning ? '⏸️' : '▶️';
+      if (shouldBroadcast) {
+        broadcastState('GLOBAL_TIMER_TOGGLE', { running: isGlobalTimerRunning });
+      }
+    }
+
+    function resetSlideTimer() {
+      if (slideTimerInterval) clearInterval(slideTimerInterval);
+      slideSeconds = 0;
+      const slidePill = document.getElementById('slide-timer-pill');
+      if (slidePill) {
+        slidePill.classList.remove('badge-overtime', 'border-red-500', 'bg-red-50', 'dark:bg-red-950/50', 'text-red-600');
+      }
+
+      safeSetText('slide-elapsed', '00:00');
+
+      const targetSecs = (SLIDES_DATA[currentSlideIndex]?.targetTimeMinutes || 5) * 60;
+
+      slideTimerInterval = setInterval(() => {
+        slideSeconds++;
+        safeSetText('slide-elapsed', formatTime(slideSeconds));
+
+        if (slideSeconds > targetSecs && slidePill) {
+          slidePill.classList.add('badge-overtime', 'border-red-500', 'bg-red-50', 'dark:bg-red-950/50', 'text-red-600');
+        }
+      }, 1000);
+    }
+
+    function goToSlide(slideId) {
+      const idx = SLIDES_DATA.findIndex(s => s.id === slideId);
+      if (idx !== -1) {
+        currentSlideIndex = idx;
+        renderCurrentSlide();
+      }
+    }
+
+    function nextSlide() {
+      if (currentSlideIndex < SLIDES_DATA.length - 1) {
+        currentSlideIndex++;
+        renderCurrentSlide();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlideIndex > 0) {
+        currentSlideIndex--;
+        renderCurrentSlide();
+      }
+    }
+
+    function toggleDarkMode(shouldBroadcast = true) {
+      const htmlEl = document.documentElement;
+      let isDark = false;
+      if (htmlEl.classList.contains('dark')) {
+        htmlEl.classList.remove('dark');
+        try { mermaid.initialize({ theme: 'default' }); } catch(e){}
+      } else {
+        htmlEl.classList.add('dark');
+        try { mermaid.initialize({ theme: 'dark' }); } catch(e){}
+        isDark = true;
+      }
+
+      if (shouldBroadcast) {
+        broadcastState('THEME_SYNC', { dark: isDark });
+      }
+
+      setTimeout(() => {
+        try { mermaid.run({ querySelector: '.mermaid' }); } catch(e){}
+      }, 50);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const isTeleprompterRole = urlParams.get('role') === 'teleprompter';
+      const initialSlideParam = parseInt(urlParams.get('slide'), 10);
+
+      if (!isNaN(initialSlideParam) && initialSlideParam >= 1 && initialSlideParam <= SLIDES_DATA.length) {
+        currentSlideIndex = initialSlideParam - 1;
+      }
+
+      if (isTeleprompterRole) {
+        document.title = "🎙️ Notas Docente · Unidad 1 (UTN FRSR)";
+
+        const notesBtn = document.getElementById('btn-notes');
+        if (notesBtn) notesBtn.classList.add('hidden');
+
+        const roleBadge = document.getElementById('screen-role-indicator');
+        if (roleBadge) {
+          roleBadge.innerHTML = `
+            <span class="px-2.5 py-1 text-xs rounded-lg font-bold bg-indigo-50 dark:bg-indigo-950/70 text-indigo-600 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 flex items-center gap-1.5 shadow-sm">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              Notas Docente
+            </span>
+          `;
+        }
+
+        const stagePanel = document.getElementById('stage-panel');
+        if (stagePanel) stagePanel.classList.add('hidden');
+
+        const prompterPanel = document.getElementById('teleprompter-panel');
+        if (prompterPanel) {
+          prompterPanel.className = "w-full flex-1 flex flex-col bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden transition-all";
+        }
+
+        const closeBtn = document.getElementById('btn-close-drawer');
+        if (closeBtn) closeBtn.classList.add('hidden');
+      } else {
+        document.title = "Materia Electiva: Desarrollo de Aplicaciones con LLMs y Modelos Generativos - Unidad 1 (UTN FRSR)";
+
+        const prompterPanel = document.getElementById('teleprompter-panel');
+        if (prompterPanel) prompterPanel.classList.add('hidden');
+
+        const stagePanel = document.getElementById('stage-panel');
+        if (stagePanel) {
+          stagePanel.className = "w-full flex-1 flex flex-col bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden min-h-[560px] relative transition-all";
+        }
+      }
+
+      const selectEl = document.getElementById('slide-select');
+      SLIDES_DATA.forEach(slide => {
+        const option = document.createElement('option');
+        option.value = slide.id;
+        option.text = `S${String(slide.id).padStart(2, '0')}: ${slide.title} (${slide.targetTimeMinutes}m)`;
+        selectEl.appendChild(option);
+      });
+
+      const timerBtn = document.getElementById('btn-timer-toggle');
+      if (timerBtn) timerBtn.innerText = '▶️';
+
+      window.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') {
+          return;
+        }
+
+        if (e.key === 'ArrowRight' || e.key === ' ') {
+          e.preventDefault();
+          nextSlide();
+        } else if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          prevSlide();
+        } else if (e.key.toLowerCase() === 'p') {
+          e.preventDefault();
+          toggleGlobalTimer();
+        } else if (e.key.toLowerCase() === 'f') {
+          e.preventDefault();
+          toggleFullScreen();
+        } else if (e.key.toLowerCase() === 'n') {
+          e.preventDefault();
+          handleNotesClick();
+        } else if (e.key === '+' || e.key === '=') {
+          e.preventDefault();
+          adjustScale(0.05);
+        } else if (e.key === '-' || e.key === '_') {
+          e.preventDefault();
+          adjustScale(-0.05);
+        }
+      });
+
+      startGlobalTimer();
+      renderCurrentSlide(false);
+    });
+  </script>
+</body>
+</html>
