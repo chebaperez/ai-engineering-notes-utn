@@ -224,7 +224,7 @@
       <div class="px-5 py-3 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/70 dark:bg-slate-800/40">
         <div class="flex items-center gap-2">
           <span id="slide-badge-index" class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300">
-            Slide 01 de 19
+            Slide 01 de 20
           </span>
           <span id="slide-badge-duration" class="text-xs font-mono font-medium px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300">
             03 min
@@ -241,7 +241,7 @@
       <div class="px-5 py-3.5 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 flex flex-wrap items-center justify-between gap-2">
         <div class="flex items-center gap-2">
           <span id="prompter-slide-badge" class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300">
-            Slide 01 de 19
+            Slide 01 de 20
           </span>
           <span id="prompter-slide-duration" class="text-xs font-mono font-medium px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300">
             03 min
@@ -302,7 +302,7 @@
         <select id="slide-select" onchange="goToSlide(parseInt(this.value))" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs sm:text-sm text-slate-800 dark:text-slate-200 font-medium focus:ring-1 focus:ring-utn-lightBlue focus:outline-none">
           <!-- Populated dynamically -->
         </select>
-        <span id="nav-indicator" class="text-xs sm:text-sm font-mono text-slate-400 whitespace-nowrap">01 / 19</span>
+        <span id="nav-indicator" class="text-xs sm:text-sm font-mono text-slate-400 whitespace-nowrap">01 / 20</span>
       </div>
 
       <button id="btn-next" onclick="nextSlide()" class="px-3.5 py-1.5 rounded-lg bg-utn-blue dark:bg-utn-lightBlue hover:bg-blue-800 dark:hover:bg-blue-600 text-white font-medium text-xs sm:text-sm flex items-center gap-1 transition-all shadow-sm disabled:opacity-40 disabled:cursor-not-allowed">
@@ -353,206 +353,289 @@
       },
       {
         id: 2,
-        title: "Programa de la Materia: 4 Unidades, 2 TPs y Challenge Integrador",
+        title: "Estructura Temática: 4 Unidades y Laboratorios en GPU",
         block: "PLAN DE ESTUDIOS",
-        targetTimeMinutes: 5,
-        purpose: "Presentar la hoja de ruta integral de la materia electiva UTN: los 4 bloques temáticos con sus laboratorios en Google Colab con GPU, la articulación en 2 Trabajos Prácticos, el régimen de aprobación y el Proyecto Integrador (Challenge Competitivo) que corona la cursada.",
+        targetTimeMinutes: 4,
+        purpose: "Presentar los 4 bloques temáticos de la electiva y su correlación directa con los laboratorios prácticos en Google Colab con GPU T4 gratuita, articulados formalmente en 2 Trabajos Prácticos (TP1 y TP2).",
         screenHTML: `
-          <div class="max-w-4xl mx-auto space-y-2">
+          <div class="max-w-4xl mx-auto space-y-3">
             <!-- Header -->
-            <div class="border-l-4 border-utn-blue pl-2.5 py-0.5 flex flex-wrap items-center justify-between gap-2">
+            <div class="border-l-4 border-utn-blue pl-3 py-0.5 flex flex-wrap items-center justify-between gap-2">
               <div>
                 <div class="flex items-center gap-2">
                   <span class="text-3xs uppercase font-bold text-utn-blue dark:text-blue-400 tracking-wider">Plan de Estudios · Electiva UTN FRSR</span>
-                  <span class="px-1.5 py-0.5 rounded text-3xs font-mono font-bold bg-blue-100 dark:bg-blue-900/60 text-blue-800 dark:text-blue-300">4 Unidades · 2 TPs · 1 Challenge</span>
+                  <span class="px-2 py-0.5 rounded text-3xs font-mono font-bold bg-blue-100 dark:bg-blue-900/60 text-blue-800 dark:text-blue-300">4 Unidades · 4 Labs · 2 TPs</span>
                 </div>
-                <h2 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white leading-tight">Programa de la Materia: De la Inferencia al Challenge Integrador</h2>
+                <h2 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white leading-tight">Estructura Temática: De la Inferencia a los Agentes</h2>
               </div>
-              <p class="text-2xs text-slate-500 dark:text-slate-400 hidden lg:block text-right max-w-md">
-                Trayecto formativo integral: fundamentos técnicos, laboratorios en GPU y competencia de arquitectura.
+              <p class="text-2xs text-slate-500 dark:text-slate-400 hidden lg:block text-right max-w-sm">
+                Progresión modular con experimentación continua en Jupyter Notebooks sobre Google Colab con GPU T4.
               </p>
             </div>
 
             <!-- 4 Thematic Units Cards (Grid 4 cols) -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
               
               <!-- Unit 1 -->
-              <div class="p-2.5 rounded-xl bg-blue-50/70 dark:bg-slate-800/80 border-t-4 border-utn-blue border-slate-200 dark:border-slate-700/80 flex flex-col justify-between shadow-sm">
-                <div class="space-y-1">
+              <div class="p-3 rounded-xl bg-blue-50/70 dark:bg-slate-800/80 border-t-4 border-utn-blue border-slate-200 dark:border-slate-700/80 flex flex-col justify-between shadow-sm">
+                <div class="space-y-1.5">
                   <div class="flex items-center justify-between">
-                    <span class="text-3xs font-bold uppercase tracking-wider text-utn-blue dark:text-blue-400">Unidad 1 · TP1</span>
+                    <span class="text-3xs font-bold uppercase tracking-wider text-utn-blue dark:text-blue-400">Unidad 1</span>
                     <span class="text-xs">⚡</span>
                   </div>
-                  <h3 class="font-bold text-xs text-slate-900 dark:text-white leading-tight">Conexión con LLMs & Prompting</h3>
-                  <ul class="text-3xs text-slate-600 dark:text-slate-300 space-y-0.5">
+                  <h3 class="font-bold text-xs sm:text-sm text-slate-900 dark:text-white leading-snug">Conexión con LLMs & Prompting</h3>
+                  <ul class="text-3xs text-slate-600 dark:text-slate-300 space-y-1">
                     <li>• APIs Cloud vs. Pesos Abiertos</li>
                     <li>• VRAM, cuantización GGUF & costos</li>
                     <li>• Prompting determinista (Few-Shot, CoT)</li>
                   </ul>
                 </div>
-                <div class="mt-2 pt-1.5 border-t border-blue-200/60 dark:border-slate-700 flex items-center justify-between">
-                  <span class="text-3xs font-bold text-slate-400 dark:text-slate-500 uppercase">Lab 1 (Colab)</span>
+                <div class="mt-2.5 pt-2 border-t border-blue-200/60 dark:border-slate-700 flex items-center justify-between">
+                  <span class="text-3xs font-bold text-slate-400 dark:text-slate-500 uppercase">Lab 1 (Colab GPU)</span>
                   <span class="text-3xs font-semibold text-blue-700 dark:text-blue-300 truncate">Inferencia local & APIs</span>
                 </div>
               </div>
 
               <!-- Unit 2 -->
-              <div class="p-2.5 rounded-xl bg-teal-50/70 dark:bg-slate-800/80 border-t-4 border-utn-teal border-slate-200 dark:border-slate-700/80 flex flex-col justify-between shadow-sm">
-                <div class="space-y-1">
+              <div class="p-3 rounded-xl bg-teal-50/70 dark:bg-slate-800/80 border-t-4 border-utn-teal border-slate-200 dark:border-slate-700/80 flex flex-col justify-between shadow-sm">
+                <div class="space-y-1.5">
                   <div class="flex items-center justify-between">
-                    <span class="text-3xs font-bold uppercase tracking-wider text-utn-teal dark:text-teal-400">Unidad 2 · TP1</span>
+                    <span class="text-3xs font-bold uppercase tracking-wider text-utn-teal dark:text-teal-400">Unidad 2</span>
                     <span class="text-xs">📊</span>
                   </div>
-                  <h3 class="font-bold text-xs text-slate-900 dark:text-white leading-tight">Datos & Estructuración IA</h3>
-                  <ul class="text-3xs text-slate-600 dark:text-slate-300 space-y-0.5">
+                  <h3 class="font-bold text-xs sm:text-sm text-slate-900 dark:text-white leading-snug">Datos & Estructuración IA</h3>
+                  <ul class="text-3xs text-slate-600 dark:text-slate-300 space-y-1">
                     <li>• Búsqueda semántica & embeddings</li>
                     <li>• In-context learning & extracción</li>
                     <li>• JSON Mode, Pydantic & GBNF</li>
                   </ul>
                 </div>
-                <div class="mt-2 pt-1.5 border-t border-teal-200/60 dark:border-slate-700 flex items-center justify-between">
-                  <span class="text-3xs font-bold text-slate-400 dark:text-slate-500 uppercase">Lab 2 (Colab)</span>
+                <div class="mt-2.5 pt-2 border-t border-teal-200/60 dark:border-slate-700 flex items-center justify-between">
+                  <span class="text-3xs font-bold text-slate-400 dark:text-slate-500 uppercase">Lab 2 (Colab GPU)</span>
                   <span class="text-3xs font-semibold text-teal-700 dark:text-teal-300 truncate">Extracción tipada & tablas</span>
                 </div>
               </div>
 
               <!-- Unit 3 -->
-              <div class="p-2.5 rounded-xl bg-indigo-50/70 dark:bg-slate-800/80 border-t-4 border-utn-indigo border-slate-200 dark:border-slate-700/80 flex flex-col justify-between shadow-sm">
-                <div class="space-y-1">
+              <div class="p-3 rounded-xl bg-indigo-50/70 dark:bg-slate-800/80 border-t-4 border-utn-indigo border-slate-200 dark:border-slate-700/80 flex flex-col justify-between shadow-sm">
+                <div class="space-y-1.5">
                   <div class="flex items-center justify-between">
-                    <span class="text-3xs font-bold uppercase tracking-wider text-utn-indigo dark:text-indigo-400">Unidad 3 · TP2</span>
+                    <span class="text-3xs font-bold uppercase tracking-wider text-utn-indigo dark:text-indigo-400">Unidad 3</span>
                     <span class="text-xs">📚</span>
                   </div>
-                  <h3 class="font-bold text-xs text-slate-900 dark:text-white leading-tight">Sistemas RAG Documentales</h3>
-                  <ul class="text-3xs text-slate-600 dark:text-slate-300 space-y-0.5">
+                  <h3 class="font-bold text-xs sm:text-sm text-slate-900 dark:text-white leading-snug">Sistemas RAG Documentales</h3>
+                  <ul class="text-3xs text-slate-600 dark:text-slate-300 space-y-1">
                     <li>• Chunking, overlap & ChromaDB</li>
                     <li>• Recuperación semántica Top-K</li>
                     <li>• Prompts con citas & anti-alucinación</li>
                   </ul>
                 </div>
-                <div class="mt-2 pt-1.5 border-t border-indigo-200/60 dark:border-slate-700 flex items-center justify-between">
-                  <span class="text-3xs font-bold text-slate-400 dark:text-slate-500 uppercase">Lab 3 (Colab)</span>
+                <div class="mt-2.5 pt-2 border-t border-indigo-200/60 dark:border-slate-700 flex items-center justify-between">
+                  <span class="text-3xs font-bold text-slate-400 dark:text-slate-500 uppercase">Lab 3 (Colab GPU)</span>
                   <span class="text-3xs font-semibold text-indigo-700 dark:text-indigo-300 truncate">Pipeline RAG con citas</span>
                 </div>
               </div>
 
               <!-- Unit 4 -->
-              <div class="p-2.5 rounded-xl bg-emerald-50/70 dark:bg-slate-800/80 border-t-4 border-emerald-500 border-slate-200 dark:border-slate-700/80 flex flex-col justify-between shadow-sm">
-                <div class="space-y-1">
+              <div class="p-3 rounded-xl bg-emerald-50/70 dark:bg-slate-800/80 border-t-4 border-emerald-500 border-slate-200 dark:border-slate-700/80 flex flex-col justify-between shadow-sm">
+                <div class="space-y-1.5">
                   <div class="flex items-center justify-between">
-                    <span class="text-3xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Unidad 4 · TP2</span>
+                    <span class="text-3xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Unidad 4</span>
                     <span class="text-xs">🤖</span>
                   </div>
-                  <h3 class="font-bold text-xs text-slate-900 dark:text-white leading-tight">Agentes de IA & Validación</h3>
-                  <ul class="text-3xs text-slate-600 dark:text-slate-300 space-y-0.5">
+                  <h3 class="font-bold text-xs sm:text-sm text-slate-900 dark:text-white leading-snug">Agentes de IA & Validación</h3>
+                  <ul class="text-3xs text-slate-600 dark:text-slate-300 space-y-1">
                     <li>• Tool Calling & bucle ReAct</li>
                     <li>• Conexión a bases de datos y cálculo</li>
                     <li>• LLM-as-a-judge, trazas & guardrails</li>
                   </ul>
                 </div>
-                <div class="mt-2 pt-1.5 border-t border-emerald-200/60 dark:border-slate-700 flex items-center justify-between">
-                  <span class="text-3xs font-bold text-slate-400 dark:text-slate-500 uppercase">Lab 4 (Colab)</span>
+                <div class="mt-2.5 pt-2 border-t border-emerald-200/60 dark:border-slate-700 flex items-center justify-between">
+                  <span class="text-3xs font-bold text-slate-400 dark:text-slate-500 uppercase">Lab 4 (Colab GPU)</span>
                   <span class="text-3xs font-semibold text-emerald-700 dark:text-emerald-300 truncate">Agente con tools & validación</span>
                 </div>
               </div>
 
             </div>
 
-            <!-- Bottom Row: TPs + Régimen de Evaluación + Challenge Integrador (Grid 3 cols) -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
-              
-              <!-- Trabajos Prácticos (TPs) -->
-              <div class="p-2.5 rounded-xl bg-slate-100/90 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1 flex flex-col justify-between">
-                <div class="space-y-1">
-                  <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-1.5">
-                      <span class="text-xs">🧪</span>
-                      <h4 class="font-bold text-xs text-slate-900 dark:text-white">2 Trabajos Prácticos (TPs)</h4>
-                    </div>
-                    <span class="text-3xs font-semibold text-slate-400 dark:text-slate-500">Google Colab · GPU T4</span>
-                  </div>
-                  <div class="space-y-1 text-3xs text-slate-700 dark:text-slate-200">
-                    <div class="p-1 rounded bg-white dark:bg-slate-900/60 border border-slate-200/70 dark:border-slate-700/60">
-                      <strong>TP1 (U1-U2):</strong> Labs 1 y 2 · Inferencia, prompting y extracción tipada JSON/Pydantic.
-                    </div>
-                    <div class="p-1 rounded bg-white dark:bg-slate-900/60 border border-slate-200/70 dark:border-slate-700/60">
-                      <strong>TP2 (U3-U4):</strong> Labs 3 y 4 · Pipeline RAG con citas y agentes autónomos con tools.
-                    </div>
-                  </div>
+            <!-- Bottom Row: Articulación de los 2 Trabajos Prácticos (TPs) -->
+            <div class="p-3 rounded-xl bg-slate-100/90 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 space-y-2">
+              <div class="flex items-center justify-between flex-wrap gap-2">
+                <div class="flex items-center gap-2">
+                  <span class="text-base">🧪</span>
+                  <h4 class="font-bold text-xs sm:text-sm text-slate-900 dark:text-white">Articulación de los 2 Trabajos Prácticos (TPs)</h4>
                 </div>
-                <div class="text-3xs text-slate-500 dark:text-slate-400 italic pt-0.5 border-t border-slate-200/60 dark:border-slate-700/60">
-                  ✓ Evaluación cualitativa (Aprobado / Desaprobado) con devolución docente.
-                </div>
+                <span class="px-2 py-0.5 rounded text-3xs font-semibold bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300">
+                  Google Colab · Entornos interactivos con GPU T4 gratuita
+                </span>
               </div>
-
-              <!-- Régimen de Aprobación -->
-              <div class="p-2.5 rounded-xl bg-slate-100/90 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1 flex flex-col justify-between">
-                <div class="space-y-1">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-2xs">
+                <div class="p-2 rounded-lg bg-white dark:bg-slate-900/70 border border-slate-200/80 dark:border-slate-700/80 space-y-1">
                   <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-1.5">
-                      <span class="text-xs">📋</span>
-                      <h4 class="font-bold text-xs text-slate-900 dark:text-white">Régimen de Aprobación</h4>
-                    </div>
-                    <span class="text-3xs font-semibold text-slate-400 dark:text-slate-500">Asistencia ≥ 75%</span>
+                    <span class="font-bold text-utn-blue dark:text-sky-300">TP1: Inferencia, Prompting & Extracción</span>
+                    <span class="text-3xs font-mono text-slate-400">Unidades 1 & 2</span>
                   </div>
-                  <ul class="text-3xs text-slate-600 dark:text-slate-300 space-y-0.5">
-                    <li>• <strong>Laboratorios:</strong> 100% entregados y aprobados (4 labs en Colab).</li>
-                    <li>• <strong>2 Evaluaciones Orales:</strong> Individuales (E1: U1-U2 · E2: U3-U4) con nota 1..10 y recuperatorio.</li>
-                  </ul>
-                </div>
-                <div class="pt-1 border-t border-slate-200/60 dark:border-slate-700/60 flex items-center justify-between text-3xs font-semibold">
-                  <span class="text-blue-700 dark:text-blue-300">Regularidad: Orales ≥ 6</span>
-                  <span class="text-emerald-700 dark:text-emerald-300">Promoción Directa: Orales ≥ 8</span>
-                </div>
-              </div>
-
-              <!-- Proyecto Integrador · Challenge Competitivo -->
-              <div class="p-2.5 rounded-xl bg-gradient-to-br from-amber-500/10 via-orange-500/10 to-utn-indigo/10 dark:from-amber-950/40 dark:via-orange-950/30 dark:to-indigo-950/40 border-2 border-amber-500/60 dark:border-amber-400/50 space-y-1 relative overflow-hidden flex flex-col justify-between">
-                <div class="space-y-1">
-                  <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-1.5">
-                      <span class="text-xs">🏆</span>
-                      <h4 class="font-bold text-xs text-slate-900 dark:text-white">Challenge Integrador</h4>
-                    </div>
-                    <span class="px-1.5 py-0.5 rounded text-3xs font-bold bg-amber-200 dark:bg-amber-900/80 text-amber-800 dark:text-amber-200 uppercase tracking-wider animate-pulse">
-                      En Construcción
-                    </span>
-                  </div>
-                  <p class="text-3xs text-slate-700 dark:text-slate-200 leading-tight">
-                    <strong>Competencia práctica:</strong> Desarrollo por equipos o individual integrando las 4 unidades punta a punta.
+                  <p class="text-3xs text-slate-600 dark:text-slate-300 leading-snug">
+                    Integra los <strong>Labs 1 y 2</strong>: benchmarking de latencia/costos, inferencia local con GGUF y extracción estricta con JSON Mode y Pydantic.
                   </p>
-                  <div class="p-1 rounded bg-amber-100/60 dark:bg-amber-900/40 border border-amber-300/60 dark:border-amber-700/60 text-3xs text-amber-900 dark:text-amber-200 space-y-0.5">
-                    <div>• <strong>Desafío Competitivo:</strong> Benchmark objetivo y <em>Orden de Mérito / Leaderboard</em>.</div>
-                    <div>• <strong>Plazo estimado:</strong> <strong>3 semanas</strong> de desarrollo intensivo.</div>
-                  </div>
                 </div>
-                <div class="text-3xs text-amber-700 dark:text-amber-300 font-medium italic pt-0.5 border-t border-amber-300/40 dark:border-amber-700/40">
-                  * Bases, métricas y dataset se publicarán durante la cursada.
+                <div class="p-2 rounded-lg bg-white dark:bg-slate-900/70 border border-slate-200/80 dark:border-slate-700/80 space-y-1">
+                  <div class="flex items-center justify-between">
+                    <span class="font-bold text-utn-indigo dark:text-indigo-300">TP2: Sistemas RAG & Agentes Autónomos</span>
+                    <span class="text-3xs font-mono text-slate-400">Unidades 3 & 4</span>
+                  </div>
+                  <p class="text-3xs text-slate-600 dark:text-slate-300 leading-snug">
+                    Integra los <strong>Labs 3 y 4</strong>: indexación vectorial en ChromaDB con citas de origen y agentes con Tool Calling bajo el patrón ReAct.
+                  </p>
                 </div>
               </div>
-
+              <div class="pt-1.5 border-t border-slate-200/70 dark:border-slate-700/70 flex items-center justify-between text-3xs text-slate-500 dark:text-slate-400">
+                <span>✓ Evaluación formativa y cualitativa (Aprobado / Desaprobado) con devolución detallada del equipo docente sobre el notebook entregado.</span>
+                <span class="font-semibold text-slate-700 dark:text-slate-300">Requisito: 100% de laboratorios entregados y aprobados</span>
+              </div>
             </div>
           </div>
         `,
         verbatimScript: `
-          <p>Antes de sumergirnos de lleno en la Unidad 1, quiero presentarles la <strong>hoja de ruta completa de nuestra materia electiva</strong> en la Universidad Tecnológica Nacional. Hemos diseñado este trayecto con un objetivo nítido: que al finalizar el semestre no sean meros usuarios de interfaces web, sino ingenieros capaces de concebir, medir, desplegar y auditar arquitecturas generativas de nivel productivo.</p>
-          <p>El programa se vertebra en <strong>cuatro bloques temáticos correlativos</strong>:
-          Iniciamos hoy con la <strong>Unidad 1</strong>, analizando el dilema fundacional de infraestructura: cuándo consumir APIs comerciales en la nube y cuándo levantar modelos de pesos abiertos cuantizados en formato GGUF sobre hardware acotado, dominando el cálculo de VRAM, KV Cache, costos por token y técnicas de prompting determinista.
-          En la <strong>Unidad 2</strong> daremos el salto hacia el procesamiento de datos con IA: exploraremos búsqueda semántica con embeddings, in-context learning mediante Few-Shot y Chain-of-Thought, y el empleo estricto de esquemas tipados con JSON Mode, Pydantic y gramáticas GBNF para transformar texto libre en estructuras listas para persistir.
-          En la <strong>Unidad 3</strong> abordaremos la arquitectura que transformó las empresas: los sistemas RAG (Generación Aumentada por Recuperación), construyendo pipelines de chunking con solapamiento, bases vectoriales locales como ChromaDB, recuperación semántica Top-K y prompts con citas verificables para erradicar las alucinaciones.
-          Y en la <strong>Unidad 4</strong> coronaremos la cursada dotando al modelo de autonomía y rigor: implementaremos agentes con Tool Calling bajo el patrón ReAct para interactuar con APIs y bases de datos, combinados con evaluación objetiva LLM-as-a-judge, observabilidad y guardrails de seguridad.</p>
-          <p>Desde el punto de vista práctico, cada unidad cuenta con su propio <strong>laboratorio interactivo en Jupyter Notebook sobre Google Colab con GPU T4 gratuita</strong>. Estos cuatro laboratorios se articulan en dos Trabajos Prácticos formales: el <strong>TP1</strong> engloba los Laboratorios 1 y 2 (inferencia, prompting y extracción estructurada), mientras que el <strong>TP2</strong> reúne los Laboratorios 3 y 4 (pipeline RAG y agentes autónomos con validación). Los prácticos tienen evaluación cualitativa con devolución personalizada del equipo docente.</p>
-          <p>Para la aprobación de la materia, exigimos el 75% de asistencia y el 100% de los cuatro laboratorios aprobados, además de dos evaluaciones orales individuales: la primera sobre las Unidades 1 y 2, y la segunda sobre las Unidades 3 y 4. Con nota igual o superior a 6 regularizan la materia, y alcanzando 8 o más acceden a la <strong>Promoción Directa</strong>.</p>
-          <p>Y como broche de oro, el elemento distintivo de la electiva: el <strong>Proyecto Integrador en formato Challenge Competitivo</strong>. No será un trabajo monótono ni un trámite: será un desafío en el que van a competir entre todos —ya sea de forma individual o en equipos— proponiendo e implementando una solución de punta a punta que integre las cuatro unidades. Los sistemas desarrollados se someterán a un banco de pruebas común, con puntuación objetiva de rendimiento, latencia y precisión para elaborar un <strong>Orden de Mérito / Leaderboard</strong>. Este Challenge está actualmente en construcción y definición técnica; van a disponer de <strong>3 semanas</strong> dedicadas para su implementación y las bases definitivas las daremos a conocer durante el avance del curso.</p>
+          <p>Antes de sumergirnos de lleno en los contenidos técnicos de la Unidad 1, quiero presentarles el <strong>mapa temático integral de nuestra materia electiva</strong> en la Universidad Tecnológica Nacional. Hemos diseñado este trayecto pedagógico con una visión netamente pragmática: cada concepto que veamos en las clases sincrónicas se traslada inmediatamente a código ejecutable en laboratorios prácticos sobre Google Colab con aceleración por GPU T4 gratuita.</p>
+          <p>El programa se divide en <strong>cuatro bloques temáticos progresivos</strong>:
+          Iniciamos hoy con la <strong>Unidad 1</strong>, analizando el dilema de infraestructura: cuándo consumir APIs comerciales en la nube y cuándo levantar modelos de pesos abiertos cuantizados en formato GGUF sobre hardware acotado, dominando el cálculo de VRAM, KV Cache, costos por token y prompting determinista. Esto lo experimentarán de primera mano en el <strong>Laboratorio 1</strong>.
+          En la <strong>Unidad 2</strong> daremos el salto hacia la estructuración de datos: exploraremos búsqueda semántica con embeddings, in-context learning mediante Few-Shot y Chain-of-Thought, y el empleo estricto de esquemas tipados con JSON Mode, Pydantic y gramáticas GBNF en el <strong>Laboratorio 2</strong>.
+          En la <strong>Unidad 3</strong> abordaremos los sistemas RAG (Generación Aumentada por Recuperación), construyendo pipelines de chunking con solapamiento, bases vectoriales locales como ChromaDB, recuperación semántica Top-K y prompts con citas verificables para erradicar las alucinaciones en el <strong>Laboratorio 3</strong>.
+          Y en la <strong>Unidad 4</strong> dotaremos al modelo de autonomía y rigor: implementaremos agentes con Tool Calling bajo el patrón ReAct, combinados con evaluación objetiva LLM-as-a-judge, observabilidad y guardrails de seguridad en el <strong>Laboratorio 4</strong>.</p>
+          <p>Desde el punto de vista académico, estos cuatro laboratorios se entregan y evalúan articulados en <strong>dos Trabajos Prácticos formales</strong>: el <strong>TP1</strong> engloba los Laboratorios 1 y 2 (inferencia, prompting y extracción tipada), mientras que el <strong>TP2</strong> reúne los Laboratorios 3 y 4 (pipeline RAG y agentes autónomos). Ambos prácticos cuentan con evaluación cualitativa y devolución personalizada del equipo docente, siendo condición obligatoria contar con el 100% de los laboratorios aprobados.</p>
         `,
         validationPause: {
-          question: "¿Cuál es el valor estratégico de estructurar la materia en 4 laboratorios prácticos en GPU que culminan en un Challenge Integrador competitivo en lugar de un examen tradicional de respuestas múltiples?",
-          answer: "La ingeniería con modelos de lenguaje es una disciplina empírica y aplicada: requiere lidiar con límites de contexto, tiempos de inferencia, consumo de VRAM y validación determinista de salidas. Los cuatro laboratorios modulares garantizan el dominio técnico de cada capa arquitectónica (conexión, extracción estructurada, RAG y agentes), mientras que el Challenge Integrador somete el sistema completo a una competencia bajo métricas de rendimiento objetivas, emulando con fidelidad los desafíos de despliegue en entornos productivos de la industria."
+          question: "¿Por qué la electiva articula cuatro laboratorios modulares en Google Colab en lugar de pasar directamente a programar una solución completa?",
+          answer: "Porque en la ingeniería de aplicaciones con LLMs cada capa resuelve un desafío arquitectónico específico: inferencia y costos de hardware (U1), tipado y extracción determinista (U2), contexto documental dinámico (U3) y autonomía con toma de decisiones (U4). Dominar y medir cada componente de forma aislada en Colab es indispensable para que la integración final no falle por causas desconocidas."
+        }
+      },
+      {
+        id: 3,
+        title: "Proyecto Integrador: Challenge Competitivo & Leaderboard",
+        block: "EVALUACIÓN INTEGRADORA",
+        targetTimeMinutes: 4,
+        purpose: "Presentar la propuesta del Challenge Integrador competitivo: evaluación automatizada mediante Benchmark objetivo, Leaderboard público de mérito, espíritu de iteración ingenieril y criterio de aprobación pedagógico no eliminatorio.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-3">
+            <!-- Header -->
+            <div class="border-l-4 border-amber-500 pl-3 py-0.5 flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="text-3xs uppercase font-bold text-amber-600 dark:text-amber-400 tracking-wider">Proyecto Integrador · Cierre de Cursada</span>
+                  <span class="px-2 py-0.5 rounded text-3xs font-mono font-bold bg-amber-100 dark:bg-amber-900/60 text-amber-800 dark:text-amber-300 animate-pulse">En Construcción</span>
+                </div>
+                <h2 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white leading-tight">Proyecto Integrador: Challenge Competitivo & Leaderboard</h2>
+              </div>
+              <p class="text-2xs text-slate-500 dark:text-slate-400 hidden lg:block text-right max-w-sm italic">
+                De la teoría al banco de pruebas: midiendo sistemas de IA bajo condiciones objetivas.
+              </p>
+            </div>
+
+            <!-- 3 Pillars Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5">
+              
+              <!-- Pillar 1: El Benchmark -->
+              <div class="p-3 rounded-xl bg-slate-100/90 dark:bg-slate-800/70 border-t-4 border-utn-blue border-slate-200 dark:border-slate-700 flex flex-col justify-between shadow-sm space-y-2">
+                <div class="space-y-1.5">
+                  <div class="flex items-center gap-2">
+                    <span class="text-base">🎯</span>
+                    <h3 class="font-bold text-xs sm:text-sm text-slate-900 dark:text-white">El Benchmark (Banco de Pruebas)</h3>
+                  </div>
+                  <p class="text-3xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                    Batería de evaluación automatizada, estandarizada e idéntica para todos los sistemas. Somete a tu solución a pruebas para medir variables críticas de producción:
+                  </p>
+                  <ul class="text-3xs text-slate-600 dark:text-slate-300 space-y-1">
+                    <li>• <strong>Precisión:</strong> Calidad de respuestas y grounding.</li>
+                    <li>• <strong>Consistencia:</strong> Cumplimiento de esquemas tipados.</li>
+                    <li>• <strong>Eficiencia:</strong> Latencia (TTFT/TPOT) y consumo de tokens.</li>
+                  </ul>
+                </div>
+                <div class="pt-2 border-t border-slate-200/70 dark:border-slate-700 text-3xs font-semibold text-utn-blue dark:text-sky-300">
+                  Árbitro imparcial 100% automatizado
+                </div>
+              </div>
+
+              <!-- Pillar 2: El Leaderboard -->
+              <div class="p-3 rounded-xl bg-slate-100/90 dark:bg-slate-800/70 border-t-4 border-amber-500 border-slate-200 dark:border-slate-700 flex flex-col justify-between shadow-sm space-y-2">
+                <div class="space-y-1.5">
+                  <div class="flex items-center gap-2">
+                    <span class="text-base">📊</span>
+                    <h3 class="font-bold text-xs sm:text-sm text-slate-900 dark:text-white">El Leaderboard (Tablero de Mérito)</h3>
+                  </div>
+                  <p class="text-3xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                    Ranking transparente que clasifica las implementaciones según su desempeño global en el benchmark.
+                  </p>
+                  <ul class="text-3xs text-slate-600 dark:text-slate-300 space-y-1">
+                    <li>• <strong>Comparativa empírica:</strong> Impacto real de decisiones arquitectónicas frente a un mismo problema.</li>
+                    <li>• <strong>Pesos Abiertos vs. Cloud:</strong> Modelos en Colab vs. APIs comerciales en módulos externos.</li>
+                    <li>• <strong>Visibilidad pública:</strong> Tabla de resultados en vivo.</li>
+                  </ul>
+                </div>
+                <div class="pt-2 border-t border-slate-200/70 dark:border-slate-700 text-3xs font-semibold text-amber-700 dark:text-amber-300">
+                  Incentivo para aprender e iterar
+                </div>
+              </div>
+
+              <!-- Pillar 3: Espíritu de Ingeniería -->
+              <div class="p-3 rounded-xl bg-slate-100/90 dark:bg-slate-800/70 border-t-4 border-emerald-500 border-slate-200 dark:border-slate-700 flex flex-col justify-between shadow-sm space-y-2">
+                <div class="space-y-1.5">
+                  <div class="flex items-center gap-2">
+                    <span class="text-base">⚙️</span>
+                    <h3 class="font-bold text-xs sm:text-sm text-slate-900 dark:text-white">Espíritu de Ingeniería & Iteración</h3>
+                  </div>
+                  <p class="text-3xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                    Un espacio para experimentar libremente con técnicas aprendidas en las 4 unidades de la materia:
+                  </p>
+                  <ul class="text-3xs text-slate-600 dark:text-slate-300 space-y-1">
+                    <li>• Hiperparámetros, cuantización y prompting.</li>
+                    <li>• Chunking semántico e indexación RAG.</li>
+                    <li>• Tools y bucles de control de agentes.</li>
+                  </ul>
+                </div>
+                <div class="pt-2 border-t border-slate-200/70 dark:border-slate-700 flex items-center justify-between text-3xs font-semibold text-emerald-700 dark:text-emerald-300">
+                  <span>Trade-offs: costo, velocidad y calidad</span>
+                  <span class="font-mono">~3 semanas</span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Approval Criteria Callout -->
+            <div class="p-3 rounded-xl bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-emerald-500/10 dark:from-blue-950/40 dark:via-indigo-950/40 dark:to-emerald-950/40 border-2 border-blue-500/50 dark:border-blue-400/40 space-y-2">
+              <div class="flex items-center justify-between flex-wrap gap-2">
+                <div class="flex items-center gap-2">
+                  <span class="text-base">📋</span>
+                  <h4 class="font-bold text-xs sm:text-sm text-slate-900 dark:text-white">Criterio de Aprobación: La competencia es pedagógica, no eliminatoria</h4>
+                </div>
+                <span class="px-2 py-0.5 rounded text-3xs font-bold uppercase tracking-wider bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200">
+                  Disciplina de Ingeniería
+                </span>
+              </div>
+              <p class="text-2xs text-slate-700 dark:text-slate-200 leading-relaxed">
+                Para aprobar la materia, <strong>la posición en el ranking ni el puntaje final definen tu nota</strong>. El único requisito obligatorio es que tu arquitectura <strong>compile, ejecute de punta a punta, respete el contrato de interfaz y complete el benchmark obteniendo un resultado medible</strong>. Competir por la cima es opcional; integrar el flujo completo y medirlo es la clave del aprendizaje.
+              </p>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-2 border-t border-slate-200/80 dark:border-slate-700/80 text-3xs font-medium text-slate-600 dark:text-slate-300">
+                <div>• <strong>Asistencia:</strong> Mínimo 75% a sincrónicas.</div>
+                <div>• <strong>Laboratorios:</strong> 100% entregados y aprobados (4 labs).</div>
+                <div>• <strong>Evaluaciones:</strong> Dos orales según calendario académico.</div>
+              </div>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>El proyecto integrador final no va a ser un trabajo práctico estático donde entregamos código y queda archivado; diseñamos un <strong>Challenge Competitivo</strong>.</p>
+          <p>¿Qué significa esto? Vamos a evaluar sus implementaciones de forma 100% automatizada a través de un <strong>Benchmark</strong>. Un benchmark es un árbitro imparcial: un conjunto de pruebas diseñado para medir cómo responde su sistema, si respeta los formatos requeridos y cuántos recursos de tiempo y tokens consume. Los resultados de cada entrega impactan en un <strong>Leaderboard</strong> público que ordena las soluciones.</p>
+          <p>Quiero llevarles total tranquilidad sobre las reglas de juego: <strong>el leaderboard es un incentivo para aprender e iterar, no una guillotina</strong>. Para aprobar la materia no necesitan salir en el podio ni alcanzar un puntaje perfecto. Lo que se evalúa para aprobar es la disciplina de ingeniería: que su sistema respete el contrato de datos, corra de punta a punta sin romperse y logre ser medido por el benchmark. A partir de ahí, optimizar para escalar puestos en la tabla es un desafío voluntario para quienes quieran exprimir al máximo sus modelos.</p>
+        `,
+        validationPause: {
+          question: "¿Por qué un benchmark automatizado con contrato de interfaz estricto aporta mayor valor formativo que una corrección subjetiva del código?",
+          answer: "Porque en la industria real los sistemas de IA se integran mediante APIs con contratos estrictos y se evalúan contra métricas duras de latencia, costo por consulta y tasa de error. El benchmark emula con fidelidad ese entorno productivo, obligando a los equipos a diseñar arquitecturas tolerantes a fallos y predecibles ante datos no vistos."
         }
       },
 
       {
-        id: 3,
+        id: 4,
         title: "La IA en el Aprendizaje: Copiloto, no Piloto Automático",
         block: "",
         targetTimeMinutes: 4,
@@ -643,7 +726,7 @@
         }
       },
       {
-        id: 4,
+        id: 5,
         title: "Caso FinNova: El Dilema Arquitectónico",
         block: "",
         targetTimeMinutes: 5,
@@ -704,7 +787,7 @@
         }
       },
       {
-        id: 5,
+        id: 6,
         title: "Hoja de Ruta de la Unidad (120 Min)",
         block: "",
         targetTimeMinutes: 3,
@@ -776,7 +859,7 @@
         }
       },
       {
-        id: 6,
+        id: 7,
         title: "Anatomía de un LLM: ¿Cómo fluye la información?",
         block: "B1: Fundamentos (35m)",
         targetTimeMinutes: 6,
@@ -878,7 +961,7 @@
         }
       },
       {
-        id: 7,
+        id: 8,
         title: "Tokenización Subword y Espacio Semántico de Embeddings",
         block: "B1: Fundamentos (35m)",
         targetTimeMinutes: 6,
@@ -955,7 +1038,7 @@
         }
       },
       {
-        id: 8,
+        id: 9,
         title: "De la Frase a las Proyecciones: Flujo Q, K, V",
         block: "B1: Fundamentos (35m)",
         targetTimeMinutes: 7,
@@ -1068,7 +1151,7 @@
         }
       },
       {
-        id: 9,
+        id: 10,
         title: "Tokens Especiales y Matriz de Afinidad (9×9)",
         block: "B1: Fundamentos (35m)",
         targetTimeMinutes: 7,
@@ -1261,7 +1344,7 @@
         }
       },
       {
-        id: 10,
+        id: 11,
         title: "Capas Densas (FFN): Memoria Fáctica y Activación",
         block: "B1: Fundamentos (35m)",
         targetTimeMinutes: 6,
@@ -1344,7 +1427,7 @@
         }
       },
       {
-        id: 11,
+        id: 12,
         title: "Dinámica de Inferencia: Prefill vs. Decode",
         block: "B1: Fundamentos (35m)",
         targetTimeMinutes: 7,
@@ -1403,7 +1486,7 @@
         }
       },
       {
-        id: 12,
+        id: 13,
         title: "Estocasticidad, Muestreo y Alucinaciones",
         block: "B1: Fundamentos (35m)",
         targetTimeMinutes: 8,
@@ -1499,7 +1582,7 @@
         }
       },
       {
-        id: 13,
+        id: 14,
         title: "Taxonomía: Cloud APIs vs. Pesos Abiertos y Licencias",
         block: "B2: Arquitectura y Costos (45m)",
         targetTimeMinutes: 8,
@@ -1553,7 +1636,7 @@
         }
       },
       {
-        id: 14,
+        id: 15,
         title: "Ecuación Económica: Gastos de Operación vs. Inversiones de Capital",
         block: "B2: Arquitectura y Costos (45m)",
         targetTimeMinutes: 8,
@@ -1615,7 +1698,7 @@
         }
       },
       {
-        id: 15,
+        id: 16,
         title: "VRAM y Cuantización INT4/GGUF",
         block: "B2: Arquitectura y Costos (45m)",
         targetTimeMinutes: 9,
@@ -1690,7 +1773,7 @@
         }
       },
       {
-        id: 16,
+        id: 17,
         title: "KV Cache y Prevención de Out of Memory (OOM)",
         block: "B2: Arquitectura y Costos (45m)",
         targetTimeMinutes: 8,
@@ -1741,7 +1824,7 @@
         }
       },
       {
-        id: 17,
+        id: 18,
         title: "Arquitecturas Híbridas y Routers de Inferencia",
         block: "B3: Híbridos y Cierre (40m)",
         targetTimeMinutes: 8,
@@ -1794,7 +1877,7 @@
         }
       },
       {
-        id: 18,
+        id: 19,
         title: "Resolución Arquitectónica del Caso FinNova",
         block: "B3: Híbridos y Cierre (40m)",
         targetTimeMinutes: 6,
@@ -1859,7 +1942,7 @@
         }
       },
       {
-        id: 19,
+        id: 20,
         title: "Cierre: Lo que nos llevamos de la Unidad 1",
         block: "B3: Híbridos y Cierre (40m)",
         targetTimeMinutes: 5,
