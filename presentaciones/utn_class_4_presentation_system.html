@@ -145,6 +145,39 @@
     pre.mermaid.mermaid-lg svg {
       max-width: 100% !important;
     }
+
+    /* Laser Pointer Feature */
+    body.laser-pointer-active,
+    body.laser-pointer-active * {
+      cursor: none !important;
+    }
+    #laser-pointer-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 999999;
+      display: none;
+    }
+    #laser-pointer-canvas.active {
+      display: block;
+    }
+    #laser-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      pointer-events: none;
+      z-index: 1000000;
+      opacity: 0;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    #laser-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
   </style>
 </head>
 <body class="bg-slate-50 dark:bg-utn-navy text-slate-800 dark:text-slate-100 min-h-screen flex flex-col antialiased transition-colors duration-200 selection:bg-utn-lightBlue selection:text-white">
@@ -316,6 +349,13 @@
 
     </div>
   </footer>
+
+  <!-- Laser Pointer Canvas & Toast Overlay -->
+  <canvas id="laser-pointer-canvas"></canvas>
+  <div id="laser-toast" class="px-4 py-2 rounded-full bg-slate-900/90 text-white text-xs font-semibold backdrop-blur-md shadow-2xl border border-slate-700/60 flex items-center gap-2">
+    <span class="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]"></span>
+    <span id="laser-toast-text">Puntero láser activado (L)</span>
+  </div>
 
   <script>
     const SLIDES_DATA = [
@@ -2116,6 +2156,189 @@
       }, 50);
     }
 
+    // --- Laser Pointer Engine ---
+    let isLaserActive = false;
+    let laserCanvas = null;
+    let laserCtx = null;
+    let laserAnimId = null;
+    let laserMousePos = { x: -100, y: -100 };
+    let isMouseInside = false;
+    let laserTrail = [];
+    const LASER_TRAIL_LIFETIME = 320; // ~300ms fadeout
+    let laserToastTimeout = null;
+
+    function showLaserToast(text, isActive) {
+      const toast = document.getElementById('laser-toast');
+      const toastText = document.getElementById('laser-toast-text');
+      if (!toast || !toastText) return;
+      toastText.innerText = text;
+      const dot = toast.querySelector('span:first-child');
+      if (dot) {
+        dot.className = isActive 
+          ? 'w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444] animate-pulse'
+          : 'w-2.5 h-2.5 rounded-full bg-slate-400';
+      }
+      toast.classList.add('show');
+      if (laserToastTimeout) clearTimeout(laserToastTimeout);
+      laserToastTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 1500);
+    }
+
+    function resizeLaserCanvas() {
+      if (!laserCanvas || !laserCtx) return;
+      const dpr = window.devicePixelRatio || 1;
+      laserCanvas.width = window.innerWidth * dpr;
+      laserCanvas.height = window.innerHeight * dpr;
+      laserCanvas.style.width = window.innerWidth + 'px';
+      laserCanvas.style.height = window.innerHeight + 'px';
+      if (laserCtx.resetTransform) {
+        laserCtx.resetTransform();
+      } else {
+        laserCtx.setTransform(1, 0, 0, 1, 0, 0);
+      }
+      laserCtx.scale(dpr, dpr);
+    }
+
+    function initLaserPointer() {
+      laserCanvas = document.getElementById('laser-pointer-canvas');
+      if (!laserCanvas) return;
+      laserCtx = laserCanvas.getContext('2d');
+      resizeLaserCanvas();
+      window.addEventListener('resize', resizeLaserCanvas);
+
+      window.addEventListener('mousemove', (e) => {
+        if (!isLaserActive) return;
+        isMouseInside = true;
+        laserMousePos.x = e.clientX;
+        laserMousePos.y = e.clientY;
+        laserTrail.push({
+          x: e.clientX,
+          y: e.clientY,
+          t: performance.now()
+        });
+      });
+
+      window.addEventListener('mouseleave', () => {
+        isMouseInside = false;
+      });
+
+      window.addEventListener('mouseenter', (e) => {
+        if (isLaserActive) {
+          isMouseInside = true;
+          laserMousePos.x = e.clientX;
+          laserMousePos.y = e.clientY;
+        }
+      });
+    }
+
+    function renderLaserFrame(now) {
+      if (!laserCtx || !laserCanvas) return;
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      laserCtx.clearRect(0, 0, width, height);
+
+      // Clean points older than ~300ms
+      laserTrail = laserTrail.filter(p => now - p.t <= LASER_TRAIL_LIFETIME);
+
+      // Draw the glowing trail if points exist
+      if (laserTrail.length > 1) {
+        for (let i = 1; i < laserTrail.length; i++) {
+          const pPrev = laserTrail[i - 1];
+          const pCurr = laserTrail[i];
+          const midAge = now - (pPrev.t + pCurr.t) / 2;
+          const progress = Math.max(0, Math.min(1, 1 - (midAge / LASER_TRAIL_LIFETIME)));
+          if (progress <= 0) continue;
+
+          // 1. Outer Glow segment
+          laserCtx.save();
+          laserCtx.beginPath();
+          laserCtx.moveTo(pPrev.x, pPrev.y);
+          laserCtx.lineTo(pCurr.x, pCurr.y);
+          laserCtx.lineCap = 'round';
+          laserCtx.lineJoin = 'round';
+          laserCtx.shadowColor = 'rgba(255, 20, 50, 0.9)';
+          laserCtx.shadowBlur = 10 * progress;
+          laserCtx.strokeStyle = 'rgba(255, 30, 60, ' + (progress * 0.45) + ')';
+          laserCtx.lineWidth = progress * 4.5 + 2.0;
+          laserCtx.stroke();
+          laserCtx.restore();
+
+          // 2. Inner Core segment (pure red)
+          laserCtx.save();
+          laserCtx.beginPath();
+          laserCtx.moveTo(pPrev.x, pPrev.y);
+          laserCtx.lineTo(pCurr.x, pCurr.y);
+          laserCtx.lineCap = 'round';
+          laserCtx.lineJoin = 'round';
+          laserCtx.strokeStyle = 'rgba(255, 0, 35, ' + (progress * 0.95) + ')';
+          laserCtx.lineWidth = progress * 2.6 + 1.0;
+          laserCtx.stroke();
+          laserCtx.restore();
+        }
+      }
+
+      // Draw laser impact point (solid constant red, no pulse, no white center)
+      if (isMouseInside && laserMousePos.x >= 0 && laserMousePos.y >= 0) {
+        const mx = laserMousePos.x;
+        const my = laserMousePos.y;
+        const dotRadius = 4.5;
+
+        // 1. Outer red glow halo
+        laserCtx.save();
+        const haloGrad = laserCtx.createRadialGradient(mx, my, 0, mx, my, 18);
+        haloGrad.addColorStop(0, 'rgba(255, 0, 30, 0.45)');
+        haloGrad.addColorStop(0.4, 'rgba(255, 0, 30, 0.18)');
+        haloGrad.addColorStop(1, 'rgba(255, 0, 0, 0)');
+        laserCtx.fillStyle = haloGrad;
+        laserCtx.beginPath();
+        laserCtx.arc(mx, my, 18, 0, Math.PI * 2);
+        laserCtx.fill();
+        laserCtx.restore();
+
+        // 2. Solid constant pure red laser dot
+        laserCtx.save();
+        laserCtx.shadowColor = '#FF0033';
+        laserCtx.shadowBlur = 10;
+        laserCtx.fillStyle = '#FF0022';
+        laserCtx.beginPath();
+        laserCtx.arc(mx, my, dotRadius, 0, Math.PI * 2);
+        laserCtx.fill();
+        laserCtx.restore();
+      }
+
+      if (isLaserActive) {
+        laserAnimId = requestAnimationFrame(renderLaserFrame);
+      }
+    }
+
+    function toggleLaserPointer() {
+      isLaserActive = !isLaserActive;
+      if (laserCanvas) {
+        if (isLaserActive) {
+          laserCanvas.classList.add('active');
+          document.body.classList.add('laser-pointer-active');
+          laserTrail = [];
+          resizeLaserCanvas();
+          if (!laserAnimId) {
+            laserAnimId = requestAnimationFrame(renderLaserFrame);
+          }
+          showLaserToast('Puntero láser activado (L)', true);
+        } else {
+          laserCanvas.classList.remove('active');
+          document.body.classList.remove('laser-pointer-active');
+          if (laserAnimId) {
+            cancelAnimationFrame(laserAnimId);
+            laserAnimId = null;
+          }
+          if (laserCtx) {
+            laserCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+          }
+          laserTrail = [];
+          showLaserToast('Puntero láser desactivado', false);
+        }
+      }
+    }
     document.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
       const isTeleprompterRole = urlParams.get('role') === 'teleprompter';
@@ -2200,9 +2423,16 @@
         } else if (e.key === '-' || e.key === '_') {
           e.preventDefault();
           adjustScale(-0.05);
+        } else if (e.key.toLowerCase() === 'l') {
+          e.preventDefault();
+          toggleLaserPointer();
+        } else if (e.key === 'Escape' && isLaserActive) {
+          e.preventDefault();
+          toggleLaserPointer();
         }
       });
 
+      initLaserPointer();
       startGlobalTimer();
       renderCurrentSlide(false);
     });
