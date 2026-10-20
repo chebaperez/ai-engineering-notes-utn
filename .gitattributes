@@ -1,0 +1,17 @@
+# Normalización de saltos de línea (LF) para archivos de texto
+* text=auto eol=lf
+
+# Archivos binarios
+*.docx binary
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.gif binary
+*.ico binary
+
+# Diff y merge de notebooks por celda, en vez de una sola línea JSON ilegible.
+# Requiere nbdime instalado:  pipx install nbdime && nbdime config-git --enable
+*.ipynb diff=jupyternotebook
+*.ipynb merge=jupyternotebook

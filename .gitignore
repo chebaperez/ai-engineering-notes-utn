@@ -1,0 +1,31 @@
+# Modelos descargados (GGUF, checkpoints) — se bajan al ejecutar el notebook
+modelos/
+*.gguf
+*.safetensors
+*.bin
+
+# Reportes generados por el Anexo B al ejecutar en Colab
+diagnostico_lab*.json
+
+# Jupyter / Python
+.ipynb_checkpoints/
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# IDEs y Editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
