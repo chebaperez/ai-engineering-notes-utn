@@ -7,6 +7,18 @@ y este proyecto se adhiere al versionado semántico [Semantic Versioning](https:
 
 ---
 
+## [1.4.0] - 2026-10-27
+
+### Añadido
+- **Scripts de Demostración en Vivo (`src/`):** Suite de scripts en Python gestionada con `uv` y `LiteLLM` para demostraciones en vivo durante las clases teóricas:
+  - `src/class_2/01_chain_of_thought.py`: Inferencia directa vs. Zero-Shot CoT vs. Few-Shot CoT (Filminas 12 y 13).
+  - `src/class_2/02_chaining_and_metaprompting.py`: Pipeline encadenado de 3 pasos y Meta-Prompting (Filmina 14).
+  - `src/class_2/03_structured_outputs.py`: Los 3 niveles de estructuración con validación tipada vía Pydantic (Filmina 15).
+- **Gestión Moderna de Dependencias:** Soporte nativo para `uv` (`pyproject.toml`, `requirements.txt`) y reintentos automáticos con `tenacity`.
+- **Documentación y Guías:** `src/README.md` con instrucciones paso a paso para obtener y gestionar claves gratuitas de Gemini en Google AI Studio.
+
+---
+
 ## [1.3.0] - 2026-10-20
 
 ### Añadido

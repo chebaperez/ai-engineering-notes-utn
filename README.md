@@ -29,6 +29,16 @@ Repositorio de contenidos académicos, sistemas de presentación interactiva, la
 ├── programa/                         # Programa analítico de la materia electiva
 │   └── UTN-Programa_Desarrollo_Aplicaciones_LLMs.docx
 │
+├── src/                              # Scripts de demostración en vivo (Python / LiteLLM / uv)
+│   ├── class_2/                      # Unidad 2: Prompt Engineering
+│   │   ├── 01_chain_of_thought.py    # Filminas 12 y 13: Direct vs. Zero-Shot CoT vs. Few-Shot CoT
+│   │   ├── 02_chaining_and_metaprompting.py # Filmina 14: Pipelines de 3 pasos y Meta-Prompting
+│   │   └── 03_structured_outputs.py  # Filmina 15: Nivel 1 (Prompt) vs Nivel 2 (JSON) vs Nivel 3 (Pydantic)
+│   ├── pyproject.toml                # Gestión moderna y rápida de dependencias con uv
+│   ├── requirements.txt              # Dependencias en formato estándar pip
+│   ├── .env.example                  # Plantilla de credenciales de Google Gemini
+│   └── README.md                     # Guía de ejecución rápida en vivo con uv y pip
+│
 ├── CHANGELOG.md                      # Historial de cambios y versiones del repositorio
 ├── README.md                         # Documentación general y guía de uso
 ├── .gitattributes                    # Configuración de git (merge/diff celdas Jupyter vía nbdime)
