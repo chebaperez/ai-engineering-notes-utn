@@ -1,0 +1,12 @@
+[project]
+name = "utn-ai-engineering-src"
+version = "0.1.0"
+description = "Scripts de demostración en vivo - Materia Electiva LLMs y Modelos Generativos (UTN FRSR)"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "litellm>=1.40.0",
+    "pydantic>=2.0.0",
+    "python-dotenv>=1.0.0",
+    "tenacity>=8.0.0",
+]

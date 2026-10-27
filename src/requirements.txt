@@ -1,0 +1,10 @@
+# Dependencias para los scripts de demostración en vivo (Clase 2 - UTN FRSR)
+# Capa de abstracción universal multi-proveedor
+litellm>=1.40.0
+
+# Validación y contratos de esquemas tipados
+pydantic>=2.0.0
+
+# Gestión de credenciales y variables de entorno (.env)
+python-dotenv>=1.0.0
+tenacity>=8.0.0
