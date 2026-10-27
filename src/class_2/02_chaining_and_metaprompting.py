@@ -22,19 +22,29 @@ load_dotenv()
 load_dotenv("../.env")
 load_dotenv("../../.env")
 
-API_KEY = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
-if not API_KEY or "tu_api_key" in API_KEY:
+# Verificación pedagógica de credenciales (soporta Google Gemini y OpenAI)
+GEMINI_KEY = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+OPENAI_KEY = os.getenv("OPENAI_API_KEY")
+
+tiene_gemini = bool(GEMINI_KEY and "tu_api_key" not in GEMINI_KEY)
+tiene_openai = bool(OPENAI_KEY and "tu_api_key" not in OPENAI_KEY)
+
+if not (tiene_gemini or tiene_openai):
     print("\n" + "=" * 70)
-    print("⚠️  AVISO: No se detectó GEMINI_API_KEY configurada en el entorno.")
-    print("Para ejecutar llamadas reales contra Google Gemini:")
-    print("  1. Creá una clave gratuita en: https://aistudio.google.com/")
+    print("⚠️  AVISO: No se detectó GEMINI_API_KEY ni OPENAI_API_KEY configurada.")
+    print("Para ejecutar llamadas reales contra un proveedor de LLM:")
+    print("  1. Obtené una clave en https://aistudio.google.com/ (Gemini)")
+    print("     o en https://platform.openai.com/api-keys (OpenAI).")
     print("  2. Copiá src/.env.example a .env y pegá tu clave:")
     print("     cp src/.env.example .env")
     print("  3. Volvé a ejecutar este script.")
     print("=" * 70 + "\n")
     sys.exit(1)
 
-os.environ["GEMINI_API_KEY"] = API_KEY
+if tiene_gemini:
+    os.environ["GEMINI_API_KEY"] = GEMINI_KEY
+if tiene_openai:
+    os.environ["OPENAI_API_KEY"] = OPENAI_KEY
 
 import logging
 import warnings
@@ -47,11 +57,13 @@ litellm.suppress_debug_info = True
 litellm.verbose_logger.setLevel(logging.ERROR)
 logging.getLogger("LiteLLM").setLevel(logging.ERROR)
 
-litellm.suppress_debug_info = True
-import logging
-logging.getLogger("LiteLLM").setLevel(logging.ERROR)
-
-MODEL = os.getenv("DEFAULT_MODEL", "gemini/gemini-3.8-flash")
+# Configuración del modelo (selecciona automáticamente según la API Key disponible)
+default_provider_model = "openai/gpt-4o-mini" if (tiene_openai and not tiene_gemini) else "gemini/gemini-3.8-flash"
+MODEL = os.getenv("DEFAULT_MODEL", default_provider_model)
+if MODEL.startswith("gemini/") and not tiene_gemini and tiene_openai:
+    MODEL = "openai/gpt-4o-mini"
+elif (MODEL.startswith("openai/") or MODEL.startswith("gpt-")) and not tiene_openai and tiene_gemini:
+    MODEL = "gemini/gemini-3.8-flash"
 
 # ==============================================================================
 # PARTE 1: CADENA DE TAREAS (TASK CHAINING) - PIPELINE DE 3 PASOS
