@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html lang="es" class="dark">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Materia Electiva: Desarrollo de Aplicaciones con LLMs y Modelos Generativos - Unidad 3 (UTN FRSR)</title>
-  
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  
+
   <!-- Mermaid.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 
   <!-- Google Fonts: Inter & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
 
   <script>
     tailwind.config = {
@@ -73,16 +76,18 @@
       /* Escala tipográfica base: el 80% del tamaño original es el nuevo 100%. */
       --base-font-scale: 0.8;
     }
-    
+
     html {
       font-size: calc(clamp(15px, 0.8vw + 0.4vh + 5px, 21.5px) * var(--scale-multiplier) * var(--base-font-scale));
       transition: font-size 0.2s ease-out;
     }
+
     @media (min-width: 1600px) {
       html {
         font-size: calc(clamp(17px, 0.85vw + 0.42vh + 5px, 23px) * var(--scale-multiplier) * var(--base-font-scale));
       }
     }
+
     :fullscreen html,
     :-webkit-full-screen html {
       font-size: calc(clamp(17.5px, 0.9vw + 0.45vh + 5px, 24px) * var(--scale-multiplier) * var(--base-font-scale));
@@ -91,25 +96,35 @@
     body {
       font-family: 'Roboto', 'Inter', system-ui, sans-serif;
     }
-    h1, h2, h3, .font-heading {
+
+    h1,
+    h2,
+    h3,
+    .font-heading {
       font-family: 'Montserrat', system-ui, sans-serif;
       letter-spacing: -0.015em;
     }
-    code, pre, .font-mono {
+
+    code,
+    pre,
+    .font-mono {
       font-family: 'JetBrains Mono', monospace;
     }
 
     #slide-stage-content {
       width: 100%;
     }
+
     #slide-stage-content .max-w-4xl {
       max-width: min(86rem, 100%) !important;
       width: 100%;
     }
+
     #slide-stage-content .max-w-3xl {
       max-width: min(74rem, 100%) !important;
       width: 100%;
     }
+
     #slide-stage-content .max-w-2xl {
       max-width: min(62rem, 100%) !important;
       width: 100%;
@@ -119,29 +134,43 @@
       width: 6px;
       height: 6px;
     }
+
     ::-webkit-scrollbar-track {
       background: transparent;
     }
+
     ::-webkit-scrollbar-thumb {
       background: rgba(100, 116, 139, 0.4);
       border-radius: 4px;
     }
+
     ::-webkit-scrollbar-thumb:hover {
       background: rgba(100, 116, 139, 0.7);
     }
+
     @keyframes subtlePulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.6; }
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.6;
+      }
     }
+
     .badge-overtime {
       animation: subtlePulse 1s infinite ease-in-out;
     }
+
     .mermaid svg {
       max-width: 70% !important;
       height: auto !important;
       margin: 0 auto;
       display: block;
     }
+
     pre.mermaid.mermaid-lg svg {
       max-width: 100% !important;
     }
@@ -151,6 +180,7 @@
     body.laser-pointer-active * {
       cursor: none !important;
     }
+
     #laser-pointer-canvas {
       position: fixed;
       top: 0;
@@ -161,9 +191,11 @@
       z-index: 999999;
       display: none;
     }
+
     #laser-pointer-canvas.active {
       display: block;
     }
+
     #laser-toast {
       position: fixed;
       bottom: 24px;
@@ -174,30 +206,39 @@
       opacity: 0;
       transition: opacity 0.25s ease, transform 0.25s ease;
     }
+
     #laser-toast.show {
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
   </style>
 </head>
-<body class="bg-slate-50 dark:bg-utn-navy text-slate-800 dark:text-slate-100 min-h-screen flex flex-col antialiased transition-colors duration-200 selection:bg-utn-lightBlue selection:text-white">
 
-  <header class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50 px-4 py-2.5 transition-colors">
+<body
+  class="bg-slate-50 dark:bg-utn-navy text-slate-800 dark:text-slate-100 min-h-screen flex flex-col antialiased transition-colors duration-200 selection:bg-utn-lightBlue selection:text-white">
+
+  <header
+    class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50 px-4 py-2.5 transition-colors">
     <div class="max-w-[96rem] w-full mx-auto flex flex-wrap items-center justify-between gap-3">
-      
+
       <!-- Academic Brand & Block Badge -->
       <div class="flex items-center gap-3">
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-utn-blue to-sky-600 flex items-center justify-center text-white font-extrabold text-xs sm:text-sm shadow-md tracking-wider font-heading">
+        <div
+          class="w-8 h-8 rounded-lg bg-gradient-to-br from-utn-blue to-sky-600 flex items-center justify-center text-white font-extrabold text-xs sm:text-sm shadow-md tracking-wider font-heading">
           UTN
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <span class="text-xs font-semibold uppercase tracking-wider text-utn-lightBlue dark:text-sky-400 font-heading">FR San Rafael</span>
-            <span id="slide-badge-block" class="hidden px-2 py-0.5 text-2xs font-bold rounded bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+            <span
+              class="text-xs font-semibold uppercase tracking-wider text-utn-lightBlue dark:text-sky-400 font-heading">FR
+              San Rafael</span>
+            <span id="slide-badge-block"
+              class="hidden px-2 py-0.5 text-2xs font-bold rounded bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
               B1: Fundamentos de RAG
             </span>
           </div>
-          <h1 class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white truncate max-w-[220px] sm:max-w-xs md:max-w-md">
+          <h1
+            class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white truncate max-w-[220px] sm:max-w-xs md:max-w-md">
             Unidad 3: Sistemas RAG · Consulta Documental Fundamentada
           </h1>
         </div>
@@ -205,16 +246,20 @@
 
       <!-- Timers Center -->
       <div class="flex items-center gap-2 sm:gap-4">
-        <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-xs">
+        <div
+          class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-xs">
           <span class="text-slate-400 font-medium">Unidad:</span>
           <span id="global-timer" class="font-mono font-bold text-utn-lightBlue dark:text-sky-400">00:00</span>
           <span class="text-slate-400 font-mono text-xs">/ 120:00</span>
-          <button id="btn-timer-toggle" onclick="toggleGlobalTimer()" class="ml-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 focus:outline-none" title="Iniciar/Pausar cronómetro global (P)">
+          <button id="btn-timer-toggle" onclick="toggleGlobalTimer()"
+            class="ml-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 focus:outline-none"
+            title="Iniciar/Pausar cronómetro global (P)">
             ▶️
           </button>
         </div>
 
-        <div id="slide-timer-pill" class="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800/80 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-xs font-mono">
+        <div id="slide-timer-pill"
+          class="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800/80 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-xs font-mono">
           <span class="text-slate-400">Slide:</span>
           <span id="slide-elapsed" class="font-bold text-emerald-600 dark:text-emerald-400">00:00</span>
           <span class="text-slate-400">/</span>
@@ -225,45 +270,79 @@
       <div class="flex items-center gap-2">
         <div id="screen-role-indicator" class="flex items-center"></div>
 
-        <button id="btn-notes" onclick="handleNotesClick()" title="Abrir Notas Docente (2ª Pantalla o panel)" class="px-3 py-1.5 text-xs rounded-lg font-semibold transition-all bg-indigo-600 hover:bg-indigo-700 text-white flex items-center gap-1.5 shadow-md">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+        <button id="btn-notes" onclick="handleNotesClick()" title="Abrir Notas Docente (2ª Pantalla o panel)"
+          class="px-3 py-1.5 text-xs rounded-lg font-semibold transition-all bg-indigo-600 hover:bg-indigo-700 text-white flex items-center gap-1.5 shadow-md">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+            </path>
+          </svg>
           <span>Notas</span>
         </button>
 
-        <div class="hidden sm:flex items-center rounded-lg bg-slate-100 dark:bg-slate-800 p-0.5 border border-slate-200 dark:border-slate-700 text-xs" title="Ajuste fino manual de escala (+ / -)">
-          <button onclick="adjustScale(-0.05)" class="px-2 py-1 rounded text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 font-bold font-mono">A-</button>
+        <div
+          class="hidden sm:flex items-center rounded-lg bg-slate-100 dark:bg-slate-800 p-0.5 border border-slate-200 dark:border-slate-700 text-xs"
+          title="Ajuste fino manual de escala (+ / -)">
+          <button onclick="adjustScale(-0.05)"
+            class="px-2 py-1 rounded text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 font-bold font-mono">A-</button>
           <span id="scale-indicator" class="px-1.5 text-2xs font-mono text-slate-500 dark:text-slate-400">100%</span>
-          <button onclick="adjustScale(0.05)" class="px-2 py-1 rounded text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 font-bold font-mono">A+</button>
+          <button onclick="adjustScale(0.05)"
+            class="px-2 py-1 rounded text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 font-bold font-mono">A+</button>
         </div>
 
-        <button id="btn-fullscreen" onclick="toggleFullScreen()" title="Pantalla Completa (F)" class="p-2 rounded-lg text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
-          <svg id="fullscreen-icon-expand" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5"/></svg>
-          <svg id="fullscreen-icon-compress" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v4a2 2 0 01-2 2H3m18 0h-4a2 2 0 01-2-2V3m0 18v-4a2 2 0 012-2h4M3 15h4a2 2 0 012 2v4"/></svg>
+        <button id="btn-fullscreen" onclick="toggleFullScreen()" title="Pantalla Completa (F)"
+          class="p-2 rounded-lg text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+          <svg id="fullscreen-icon-expand" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5" />
+          </svg>
+          <svg id="fullscreen-icon-compress" class="w-4 h-4 hidden" fill="none" stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 3v4a2 2 0 01-2 2H3m18 0h-4a2 2 0 01-2-2V3m0 18v-4a2 2 0 012-2h4M3 15h4a2 2 0 012 2v4" />
+          </svg>
         </button>
 
-        <button onclick="toggleDarkMode()" title="Alternar Modo Oscuro / Claro" class="p-2 rounded-lg text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
-          <svg id="theme-sun-icon" class="w-4 h-4 hidden dark:block text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-          <svg id="theme-moon-icon" class="w-4 h-4 block dark:hidden text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+        <button onclick="toggleDarkMode()" title="Alternar Modo Oscuro / Claro"
+          class="p-2 rounded-lg text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+          <svg id="theme-sun-icon" class="w-4 h-4 hidden dark:block text-amber-400" fill="none" stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+            </path>
+          </svg>
+          <svg id="theme-moon-icon" class="w-4 h-4 block dark:hidden text-slate-600" fill="none" stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+          </svg>
         </button>
       </div>
     </div>
 
     <!-- Progress Indicator -->
     <div class="w-full bg-slate-200 dark:bg-slate-800 h-1 mt-2 rounded-full overflow-hidden">
-      <div id="global-progress-bar" class="bg-gradient-to-r from-utn-lightBlue via-utn-teal to-utn-indigo h-full w-0 transition-all duration-300"></div>
+      <div id="global-progress-bar"
+        class="bg-gradient-to-r from-utn-lightBlue via-utn-teal to-utn-indigo h-full w-0 transition-all duration-300">
+      </div>
     </div>
   </header>
 
-  <main id="main-container" class="flex-1 max-w-[96rem] w-full mx-auto p-3 sm:p-5 flex flex-col md:flex-row gap-5 overflow-hidden relative">
+  <main id="main-container"
+    class="flex-1 max-w-[96rem] w-full mx-auto p-3 sm:p-5 flex flex-col md:flex-row gap-5 overflow-hidden relative">
 
     <!-- STAGE / PROJECTION PANEL -->
-    <section id="stage-panel" class="w-full flex-1 flex flex-col bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden min-h-[560px] relative transition-all">
-      <div class="px-5 py-3 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/70 dark:bg-slate-800/40">
+    <section id="stage-panel"
+      class="w-full flex-1 flex flex-col bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden min-h-[560px] relative transition-all">
+      <div
+        class="px-5 py-3 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/70 dark:bg-slate-800/40">
         <div class="flex items-center gap-2">
-          <span id="slide-badge-index" class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300">
+          <span id="slide-badge-index"
+            class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300">
             Slide 01 de 21
           </span>
-          <span id="slide-badge-duration" class="text-xs font-mono font-medium px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300">
+          <span id="slide-badge-duration"
+            class="text-xs font-mono font-medium px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300">
             03 min
           </span>
         </div>
@@ -274,29 +353,37 @@
     </section>
 
     <!-- TELEPROMPTER PANEL -->
-    <aside id="teleprompter-panel" class="hidden flex-col bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden transition-all">
-      <div class="px-5 py-3.5 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 flex flex-wrap items-center justify-between gap-2">
+    <aside id="teleprompter-panel"
+      class="hidden flex-col bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden transition-all">
+      <div
+        class="px-5 py-3.5 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 flex flex-wrap items-center justify-between gap-2">
         <div class="flex items-center gap-2">
-          <span id="prompter-slide-badge" class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300">
+          <span id="prompter-slide-badge"
+            class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300">
             Slide 01 de 21
           </span>
-          <span id="prompter-slide-duration" class="text-xs font-mono font-medium px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300">
+          <span id="prompter-slide-duration"
+            class="text-xs font-mono font-medium px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300">
             03 min
           </span>
-          <h2 id="prompter-slide-title" class="text-xs sm:text-sm font-bold text-slate-800 dark:text-white truncate max-w-md ml-1">
+          <h2 id="prompter-slide-title"
+            class="text-xs sm:text-sm font-bold text-slate-800 dark:text-white truncate max-w-md ml-1">
             Título
           </h2>
         </div>
         <div class="flex items-center gap-2">
           <span id="prompter-words-count" class="text-xs font-mono text-slate-400">~240 palabras</span>
-          <button id="btn-close-drawer" onclick="toggleNotesDrawer(false)" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" title="Cerrar notas">
+          <button id="btn-close-drawer" onclick="toggleNotesDrawer(false)"
+            class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
+            title="Cerrar notas">
             ✕
           </button>
         </div>
       </div>
       <div class="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4">
-        
-        <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 space-y-1">
+
+        <div
+          class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 space-y-1">
           <div class="text-2xs uppercase font-bold text-slate-400 tracking-wider">Objetivo:</div>
           <p id="prompter-cognitive-goal" class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-medium"></p>
         </div>
@@ -306,19 +393,24 @@
             <span>Discurso Textual Recomendado (Tono Tech Lead):</span>
             <span class="text-xs">🎙️</span>
           </div>
-          <div id="prompter-verbatim-text" class="p-4 sm:p-5 rounded-xl bg-slate-100 dark:bg-utn-card/70 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 text-sm sm:text-base leading-relaxed space-y-3 font-normal">
+          <div id="prompter-verbatim-text"
+            class="p-4 sm:p-5 rounded-xl bg-slate-100 dark:bg-utn-card/70 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 text-sm sm:text-base leading-relaxed space-y-3 font-normal">
             <!-- Injected dynamically -->
           </div>
         </div>
 
-        <div class="p-4 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-900/50 space-y-2.5">
+        <div
+          class="p-4 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-900/50 space-y-2.5">
           <div class="text-xs uppercase font-bold text-utn-indigo dark:text-indigo-400 flex items-center gap-1.5">
             <span>💡</span> Pausa de Validación & Pregunta Disparadora
           </div>
-          <p id="prompter-validation-question" class="text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200"></p>
+          <p id="prompter-validation-question"
+            class="text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200"></p>
           <div class="mt-2 pt-2.5 border-t border-indigo-100 dark:border-indigo-900/60">
-            <span class="text-2xs uppercase tracking-wider font-bold text-indigo-600 dark:text-indigo-300">Respuesta Modelo Sugerida:</span>
-            <p id="prompter-validation-answer" class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1 italic leading-relaxed"></p>
+            <span class="text-2xs uppercase tracking-wider font-bold text-indigo-600 dark:text-indigo-300">Respuesta
+              Modelo Sugerida:</span>
+            <p id="prompter-validation-answer"
+              class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1 italic leading-relaxed"></p>
           </div>
         </div>
 
@@ -327,24 +419,32 @@
 
   </main>
 
-  <footer class="bg-white/95 dark:bg-slate-900/95 border-t border-slate-200 dark:border-slate-800 py-2.5 px-4 sticky bottom-0 z-40">
+  <footer
+    class="bg-white/95 dark:bg-slate-900/95 border-t border-slate-200 dark:border-slate-800 py-2.5 px-4 sticky bottom-0 z-40">
     <div class="max-w-[96rem] w-full mx-auto flex items-center justify-between gap-4">
-      
-      <button id="btn-prev" onclick="prevSlide()" class="px-3.5 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium text-xs sm:text-sm flex items-center gap-1 transition-all disabled:opacity-40 disabled:cursor-not-allowed">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+
+      <button id="btn-prev" onclick="prevSlide()"
+        class="px-3.5 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium text-xs sm:text-sm flex items-center gap-1 transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
         <span>Anterior</span>
       </button>
 
       <div class="flex items-center gap-2 flex-1 justify-center max-w-md">
-        <select id="slide-select" onchange="goToSlide(parseInt(this.value))" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs sm:text-sm text-slate-800 dark:text-slate-200 font-medium focus:ring-1 focus:ring-utn-lightBlue focus:outline-none">
+        <select id="slide-select" onchange="goToSlide(parseInt(this.value))"
+          class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs sm:text-sm text-slate-800 dark:text-slate-200 font-medium focus:ring-1 focus:ring-utn-lightBlue focus:outline-none">
           <!-- Populated dynamically -->
         </select>
         <span id="nav-indicator" class="text-xs sm:text-sm font-mono text-slate-400 whitespace-nowrap">01 / 21</span>
       </div>
 
-      <button id="btn-next" onclick="nextSlide()" class="px-3.5 py-1.5 rounded-lg bg-utn-blue dark:bg-utn-lightBlue hover:bg-blue-800 dark:hover:bg-blue-600 text-white font-medium text-xs sm:text-sm flex items-center gap-1 transition-all shadow-sm disabled:opacity-40 disabled:cursor-not-allowed">
+      <button id="btn-next" onclick="nextSlide()"
+        class="px-3.5 py-1.5 rounded-lg bg-utn-blue dark:bg-utn-lightBlue hover:bg-blue-800 dark:hover:bg-blue-600 text-white font-medium text-xs sm:text-sm flex items-center gap-1 transition-all shadow-sm disabled:opacity-40 disabled:cursor-not-allowed">
         <span>Siguiente</span>
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
       </button>
 
     </div>
@@ -352,7 +452,8 @@
 
   <!-- Laser Pointer Canvas & Toast Overlay -->
   <canvas id="laser-pointer-canvas"></canvas>
-  <div id="laser-toast" class="px-4 py-2 rounded-full bg-slate-900/90 text-white text-xs font-semibold backdrop-blur-md shadow-2xl border border-slate-700/60 flex items-center gap-2">
+  <div id="laser-toast"
+    class="px-4 py-2 rounded-full bg-slate-900/90 text-white text-xs font-semibold backdrop-blur-md shadow-2xl border border-slate-700/60 flex items-center gap-2">
     <span class="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]"></span>
     <span id="laser-toast-text">Puntero láser activado (L)</span>
   </div>
@@ -1580,7 +1681,7 @@
       },
       {
         id: 16,
-        title: "Corrective RAG: el Cadete y el Revisor Técnico",
+        title: "Corrective RAG: Validación de Evidencia antes de Generar",
         block: "B5: Patrones y Evaluación (18m)",
         targetTimeMinutes: 7,
         purpose: "Presentar CRAG como el evaluador que se interpone entre recuperación y generación, y exponer con precisión el límite que el umbral no puede detectar.",
@@ -1607,48 +1708,81 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-l-4 border-semantic-error border-slate-200 dark:border-slate-700">
-                <div class="text-xs sm:text-sm font-bold text-semantic-error mb-1">📋 RAG ingenuo</div>
+                <div class="text-xs sm:text-sm font-bold text-semantic-error mb-1">📋 RAG ingenuo (pipeline ciego)</div>
                 <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-                  El cadete baja al archivo, agarra los dos primeros folletos que encuentra y se los tira al perito: <em>"escribí con esto"</em>. Si la consulta era sobre hipotecas y los folletos eran de autos, <strong>el perito igual va a redactar algo</strong>.
+                  <strong>Caso hipotético:</strong> un usuario consulta sobre un trámite o política inexistente en la base. El recuperador extrae de todas formas los fragmentos más cercanos —aunque traten de otro tema— e inyecta ese contexto al generador, <strong>forzando al modelo a responder sobre evidencia irrelevante</strong>.
                 </p>
               </div>
               <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-l-4 border-emerald-500 border-slate-200 dark:border-slate-700">
-                <div class="text-xs sm:text-sm font-bold text-emerald-600 dark:text-emerald-400 mb-1">🔍 Corrective RAG</div>
+                <div class="text-xs sm:text-sm font-bold text-emerald-600 dark:text-emerald-400 mb-1">🔍 Corrective RAG (CRAG)</div>
                 <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-                  Un revisor evalúa la calidad de lo recuperado <strong>antes</strong> de escribir. Si nada supera el umbral de confianza, <strong>descarta todo y activa una ruta segura</strong> en lugar de redactar sobre evidencia irrelevante.
+                  <strong>Validación intermedia:</strong> un evaluador califica la relevancia de lo recuperado <strong>antes</strong> de redactar. Si nada supera el umbral de confianza, <strong>descarta el ruido y activa una contingencia o abstención</strong> en lugar de forzar una respuesta espuria.
                 </p>
               </div>
             </div>
 
-            <div class="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/60 space-y-2">
-              <div class="text-xs sm:text-sm font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1.5">
-                <span>🎯</span> El límite real del patrón (Exp. 4 del laboratorio)
+            <!-- Contenedor del límite real del patrón -->
+            <div class="p-3.5 rounded-xl bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/60 space-y-2.5">
+              <div class="border-b border-amber-200/60 dark:border-amber-900/40 pb-1.5">
+                <div class="text-xs sm:text-sm font-bold text-amber-700 dark:text-amber-400 flex items-center gap-1.5">
+                  <span>🎯</span> El límite real de CRAG: Ruido vs. Huecos (Exp. 4 del laboratorio)
+                </div>
+                <p class="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
+                  Corpus indexado en la base vectorial: Manual de Seguros de Automotores (Vertex Horizon).
+                </p>
               </div>
+
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
-                  <div class="text-2xs uppercase font-bold text-emerald-600 dark:text-emerald-400 mb-1">✓ Lo ataja: otro dominio</div>
-                  <p class="text-xs text-slate-600 dark:text-slate-300"><em>"¿Cómo solicito un crédito hipotecario?"</em> Nada que ver con el manual: <strong>similitud baja</strong>, el filtro la frena.</p>
+                <!-- Caso 1: Otro dominio -->
+                <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 space-y-1">
+                  <div class="text-2xs uppercase font-bold text-emerald-600 dark:text-emerald-400 flex items-center justify-between">
+                    <span>✓ Lo ataja con éxito · Otro Dominio</span>
+                    <span class="font-mono text-3xs">Similitud baja</span>
+                  </div>
+                  <p class="text-xs text-slate-800 dark:text-slate-200 font-medium">
+                    <em>"¿Cómo solicito un crédito hipotecario?"</em>
+                  </p>
+                  <p class="text-2xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                    Al comparar una consulta bancaria contra pólizas de automotores, los vectores caen en galaxias lejanas. El evaluador de CRAG detecta irrelevancia y <strong>frena la respuesta a tiempo</strong>.
+                  </p>
                 </div>
-                <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
-                  <div class="text-2xs uppercase font-bold text-semantic-error mb-1">✗ Se le escapa: dato inexistente</div>
-                  <p class="text-xs text-slate-600 dark:text-slate-300"><em>"¿Cuál es la franquicia por robo de auto?"</em> Habla de autos, de robo y de franquicias: <strong>similitud alta</strong>. Pero el dato no existe.</p>
+
+                <!-- Caso 2: Hueco documental dentro del dominio -->
+                <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 space-y-1">
+                  <div class="text-2xs uppercase font-bold text-semantic-error flex items-center justify-between">
+                    <span>✗ Se le escapa · Hueco en el Manual</span>
+                    <span class="font-mono text-3xs">Similitud alta</span>
+                  </div>
+                  <p class="text-xs text-slate-800 dark:text-slate-200 font-medium">
+                    <em>"¿Cuál es la franquicia por robo de auto?"</em>
+                  </p>
+                  <p class="text-2xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                    Términos afines (auto, robo, franquicia) dan un score alto y el filtro lo aprueba. Pero el manual fija franquicias de $90, $150 y $300 para granizo y cristales, <strong>ninguna para robo</strong>: el LLM toma esas cifras erróneas e inventa.
+                  </p>
                 </div>
               </div>
-              <p class="text-2xs text-slate-600 dark:text-slate-300 italic pt-0.5">
-                <strong>El umbral mide parecido temático, no presencia del dato.</strong> Es la distinción que define hasta dónde llega este patrón.
-              </p>
+
+              <!-- Conclusión destacada y agrandada -->
+              <div class="p-2.5 sm:p-3 rounded-lg bg-amber-100/90 dark:bg-amber-900/40 border border-amber-300 dark:border-amber-700/70 text-center shadow-xs">
+                <p class="text-xs sm:text-sm font-bold text-amber-950 dark:text-amber-100 leading-snug">
+                  💡 El umbral de similitud mide parecido temático, no presencia del dato.
+                </p>
+                <p class="text-2xs sm:text-xs text-amber-900/90 dark:text-amber-300 mt-0.5">
+                  CRAG protege al sistema contra el <strong>ruido de otros temas</strong>, pero es ciego ante los <strong>huecos documentales</strong> dentro del propio dominio.
+                </p>
+              </div>
             </div>
           </div>
         `,
         verbatimScript: `
           <p>Bloque cinco. Hasta acá construimos un RAG que funciona. Ahora veamos cómo se rompe, y qué patrones existen para blindarlo.</p>
           <p>Empecemos por una propiedad del RAG ingenuo que quiero que tengan siempre presente: <strong>no existe el resultado "no encontré nada"</strong>. El recuperador devuelve los Top-K más cercanos <strong>aunque todos sean irrelevantes</strong>, porque siempre hay un vecino más cercano, por lejano que esté. No hay un umbral natural: hay un ranking, y el ranking siempre tiene un primero.</p>
-          <p>El modelo mental es <strong>el cadete y el revisor técnico</strong>. En un RAG ingenuo, el cadete baja al archivo, agarra los dos primeros folletos que encuentra y se los tira al perito sobre el escritorio: <em>"escribí con esto"</em>. Y si la consulta era sobre hipotecas y los folletos eran de autos, <strong>el perito igual va a intentar redactar algo</strong>. Esa es la falla.</p>
+          <p>Imaginemos un caso hipotético muy habitual en cualquier sistema: un usuario consulta sobre un procedimiento, norma o política que no existe en el corpus documental. En un <strong>RAG ingenuo</strong>, el pipeline es ciego: el buscador recupera obligatoriamente los <em>K</em> fragmentos con mayor similitud matemática —aunque traten de un tema completamente desconectado— y se los inyecta al modelo generador diciendo <em>"respondé con esto"</em>. Como el LLM no tiene un criterio previo de validación, intenta armar una respuesta forzando relaciones sobre evidencia irrelevante. Esa es la falla del diseño lineal.</p>
           <p><strong>CRAG agrega un revisor intermedio</strong> que evalúa la calidad de lo recuperado <em>antes</em> de escribir. Miren el diagrama: recuperación, y después un evaluador con tres salidas. Si los fragmentos son relevantes, vía directa. Si son ambiguos, busca en una fuente externa de contingencia. Y si son irrelevantes, <strong>los descarta para que no contaminen el prompt con ruido</strong>.</p>
-          <p>Ahora viene la parte que más me interesa de esta slide, y es el <strong>límite del patrón</strong>. Lo van a comprobar en el Experimento 4 con dos preguntas que no tienen respuesta en el manual, pero que son de naturaleza muy distinta.</p>
-          <p>La primera: <em>"¿cómo solicito un crédito hipotecario?"</em>. No tiene nada que ver con un manual de seguros de auto. La similitud es baja y <strong>el filtro la ataja perfectamente</strong>. CRAG funcionó.</p>
-          <p>La segunda es la interesante: <em>"¿cuál es la franquicia por robo de auto?"</em>. Fíjense: habla de autos, habla de robo, habla de franquicias. <strong>Todo suena a este manual.</strong> La similitud es alta y el filtro la deja pasar sin dudar. Pero el manual <strong>no fija ninguna franquicia para robo</strong> — sí tiene franquicias de 150, 300 y 90 dólares, de otros riesgos. La trampa está tendida: el modelo tiene tres cifras a mano y todas son incorrectas para esa pregunta.</p>
-          <p>Y ahí está la frase que resume el bloque: <strong>el umbral mide parecido temático, no presencia del dato</strong>. CRAG los protege del ruido, no de los huecos.</p>
+          <p>Ahora viene la parte que más me interesa de esta slide, y es el <strong>límite del patrón</strong>. Recuerden el contexto: en nuestra base vectorial tenemos indexado el <strong>Manual de Seguros de Automotores</strong> de Vertex Horizon. En el Experimento 4 del laboratorio van a someter a prueba dos preguntas que no tienen respuesta en ese manual, pero cuya falla es de naturaleza muy distinta.</p>
+          <p>La primera: <em>"¿cómo solicito un crédito hipotecario?"</em>. Un trámite bancario frente a un corpus automotor: la similitud semántica es baja y <strong>el filtro la ataja con éxito</strong>. CRAG funcionó.</p>
+          <p>La segunda es la trampa sutil: <em>"¿cuál es la franquicia por robo de auto?"</em>. Fíjense: habla de autos, habla de robo, habla de franquicias. <strong>Todo suena al manual de automotor.</strong> La similitud es altísima y el filtro evaluador la deja pasar sin dudar. Pero en el manual <strong>no existe ninguna franquicia para robo</strong>: solo hay fijadas franquicias de 90, 150 y 300 dólares para granizo y cristales. La trampa está tendida: el modelo recibe tres cifras oficiales a mano y redacta una respuesta inventando que aplican al robo.</p>
+          <p>Miren la conclusión destacada en grande al pie: <strong>el umbral mide parecido temático, no presencia del dato</strong>. CRAG nos protege del <strong>ruido de otros temas</strong>, no de los <strong>huecos documentales</strong> dentro de nuestro propio manual.</p>
         `,
         validationPause: {
           question: "Ante una consulta que la base documental no puede responder, ¿el sistema debería activar una búsqueda web transparente, o admitir que no tiene información oficial suficiente?",
@@ -1665,7 +1799,7 @@
           <div class="max-w-4xl mx-auto space-y-3">
             <div class="border-l-4 border-utn-teal pl-3">
               <span class="text-xs uppercase font-bold text-utn-teal tracking-wider">El escalón siguiente</span>
-              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Cuando una Sola Búsqueda no Alcanza</h2>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Cuando una Sola Búsqueda no Alcanza: CRAG</h2>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -2159,14 +2293,14 @@
         }
       }
       setTimeout(() => {
-        try { mermaid.run({ querySelector: '.mermaid' }); } catch(e){}
+        try { mermaid.run({ querySelector: '.mermaid' }); } catch (e) { }
       }, 100);
     });
 
     function handleNotesClick() {
       const cleanUrl = window.location.href.split('?')[0];
       const targetUrl = `${cleanUrl}?role=teleprompter&slide=${currentSlideIndex + 1}`;
-      
+
       let presenterWin = null;
       try {
         presenterWin = window.open(
@@ -2206,7 +2340,7 @@
         securityLevel: 'loose',
         flowchart: { useMaxWidth: true, htmlLabels: true }
       });
-    } catch(e) {
+    } catch (e) {
       console.warn("Mermaid init note:", e);
     }
 
@@ -2247,7 +2381,7 @@
       safeSetText('prompter-slide-title', slide.title || '');
       safeSetText('prompter-cognitive-goal', slide.purpose || '');
       safeSetHTML('prompter-verbatim-text', slide.verbatimScript || '');
-      
+
       if (slide.verbatimScript) {
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = slide.verbatimScript;
@@ -2366,10 +2500,10 @@
       let isDark = false;
       if (htmlEl.classList.contains('dark')) {
         htmlEl.classList.remove('dark');
-        try { mermaid.initialize({ theme: 'default' }); } catch(e){}
+        try { mermaid.initialize({ theme: 'default' }); } catch (e) { }
       } else {
         htmlEl.classList.add('dark');
-        try { mermaid.initialize({ theme: 'dark' }); } catch(e){}
+        try { mermaid.initialize({ theme: 'dark' }); } catch (e) { }
         isDark = true;
       }
 
@@ -2378,7 +2512,7 @@
       }
 
       setTimeout(() => {
-        try { mermaid.run({ querySelector: '.mermaid' }); } catch(e){}
+        try { mermaid.run({ querySelector: '.mermaid' }); } catch (e) { }
       }, 50);
     }
 
@@ -2400,7 +2534,7 @@
       toastText.innerText = text;
       const dot = toast.querySelector('span:first-child');
       if (dot) {
-        dot.className = isActive 
+        dot.className = isActive
           ? 'w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444] animate-pulse'
           : 'w-2.5 h-2.5 rounded-full bg-slate-400';
       }
@@ -2664,4 +2798,5 @@
     });
   </script>
 </body>
+
 </html>

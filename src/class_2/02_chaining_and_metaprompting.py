@@ -58,12 +58,13 @@ litellm.verbose_logger.setLevel(logging.ERROR)
 logging.getLogger("LiteLLM").setLevel(logging.ERROR)
 
 # Configuración del modelo (selecciona automáticamente según la API Key disponible)
-default_provider_model = "openai/gpt-4o-mini" if (tiene_openai and not tiene_gemini) else "gemini/gemini-3.8-flash"
+# Se utiliza gemini-3.5-flash-lite por defecto por su cuota más generosa y amplia
+default_provider_model = "openai/gpt-4o-mini" if (tiene_openai and not tiene_gemini) else "gemini/gemini-3.5-flash-lite"
 MODEL = os.getenv("DEFAULT_MODEL", default_provider_model)
 if MODEL.startswith("gemini/") and not tiene_gemini and tiene_openai:
     MODEL = "openai/gpt-4o-mini"
 elif (MODEL.startswith("openai/") or MODEL.startswith("gpt-")) and not tiene_openai and tiene_gemini:
-    MODEL = "gemini/gemini-3.8-flash"
+    MODEL = "gemini/gemini-3.5-flash-lite"
 
 # ==============================================================================
 # PARTE 1: CADENA DE TAREAS (TASK CHAINING) - PIPELINE DE 3 PASOS

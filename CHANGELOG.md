@@ -7,6 +7,18 @@ y este proyecto se adhiere al versionado semántico [Semantic Versioning](https:
 
 ---
 
+## [1.5.0] - 2026-11-05
+
+### Añadido
+- **Scripts de Demostración en Vivo para Clase 3 (`src/class_3/`):** Suite didáctica modular de 3 scripts punta a punta alineados con las filminas y el caso de estudio de Vertex Horizon Seguros:
+  - `src/class_3/01_chunking_and_vector_db.py`: Segmentación fija vs. solapada (overlap), embeddings multidimensionales, base vectorial en memoria y telemetría de delay (Filminas 6, 7, 9 y 10).
+  - `src/class_3/02_retrieval_and_hybrid_search.py`: Puntos ciegos de Búsqueda Densa vs. Léxica (BM25) y Búsqueda Híbrida con Fusión Recíproca de Rangos (RRF) (Filminas 11, 12, 13 y 14).
+  - `src/class_3/03_rag_pipeline_and_grounding.py`: Examen a libro cerrado vs. RAG fundamentado con citas auditables y Corrective RAG (CRAG) con filtro evaluador de similitud previa (Filminas 5, 8, 15, 16 y 17).
+- **Ajuste del Modelo por Defecto:** Configuración y documentación de `gemini/gemini-3.5-flash-lite` como modelo generador por defecto en todos los scripts y plantillas de entorno (`.env.example`), por ofrecer la cuota gratuita más generosa y amplia para live coding.
+- **Refinamiento en Diapositivas:** Actualización en la filmina 16 de `presentaciones/utn_class_3_presentation_system.html` sobre el límite de Corrective RAG (ruido temático vs. huecos documentales).
+
+---
+
 ## [1.4.0] - 2026-10-27
 
 ### Añadido
