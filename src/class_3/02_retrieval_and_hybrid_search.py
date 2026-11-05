@@ -29,6 +29,32 @@ import warnings
 from typing import List, Dict, Any, Tuple
 from dotenv import load_dotenv
 
+# ==============================================================================
+# ESTILOS Y COLORES ANSI PARA TERMINAL
+# ==============================================================================
+class C:
+    RESET = "\033[0m"
+    BOLD = "\033[1m"
+    DIM = "\033[2m"
+    CYAN = "\033[36m"
+    GREEN = "\033[32m"
+    YELLOW = "\033[33m"
+    RED = "\033[31m"
+    MAGENTA = "\033[35m"
+    BLUE = "\033[34m"
+    WHITE = "\033[37m"
+    GRAY = "\033[90m"
+
+def pausa_clase(mensaje: str = "Presiona Enter para continuar..."):
+    """Pausa interactiva visible para permitir la explicación docente."""
+    print(f"\n{C.BOLD}{C.YELLOW}⏸️  [Pausa de clase] {mensaje}{C.RESET}", end="")
+    input()
+    print()
+
+
+# ==============================================================================
+# CARGA DE VARIABLES DE ENTORNO Y CREDENCIALES
+# ==============================================================================
 load_dotenv()
 load_dotenv("../.env")
 load_dotenv("../../.env")
@@ -123,7 +149,6 @@ DOCUMENTOS_CORPUS = [
 # ==============================================================================
 # MOTOR 1: BÚSQUEDA LÉXICA DISPERSA (BM25 - Best Matching 25)
 # ==============================================================================
-# Stopwords básicas en español para evitar ruido léxico en preposiciones y artículos
 STOPWORDS_ES = {
     "de", "la", "que", "el", "en", "y", "a", "los", "del", "se", "las", "por", "un", 
     "para", "con", "no", "una", "su", "al", "lo", "como", "mas", "pero", "sus", "le", 
@@ -150,18 +175,15 @@ class MotorBM25:
         self.documentos = documentos
         self.N = len(documentos)
         
-        # Longitudes y frecuencias
         self.doc_tokens = [tokenizar_texto(d["texto"]) for d in documentos]
         self.doc_lens = [len(tokens) for tokens in self.doc_tokens]
         self.avg_dl = sum(self.doc_lens) / max(1, self.N)
         
-        # Frecuencia en documentos (Document Frequency)
         self.df = Counter()
         for tokens in self.doc_tokens:
             for term in set(tokens):
                 self.df[term] += 1
                 
-        # Inverse Document Frequency (IDF) probabilístico
         self.idf = {}
         for term, freq in self.df.items():
             self.idf[term] = math.log((self.N - freq + 0.5) / (freq + 0.5) + 1.0)
@@ -180,7 +202,6 @@ class MotorBM25:
                 if term in self.idf:
                     tf = doc_counts[term]
                     idf_term = self.idf[term]
-                    # Fórmula BM25
                     numerador = tf * (self.k1 + 1.0)
                     denominador = tf + self.k1 * (1.0 - self.b + self.b * (dl / self.avg_dl))
                     score += idf_term * (numerador / denominador)
@@ -250,7 +271,6 @@ def reciprocal_rank_fusion(
     """
     Aplica RRF (Reciprocal Rank Fusion) para combinar dos listas ordenadas:
     RRF_score(d) = Σ [ 1 / (k + rank(d)) ]
-    donde rank(d) es la posición 1-indexada en cada motor.
     """
     rrf_map: Dict[str, Dict[str, Any]] = {}
     
@@ -268,7 +288,7 @@ def reciprocal_rank_fusion(
             "rrf_score": 1.0 / (k + rank_idx)
         }
         
-    # 2. Procesar ranking BM25 (solo para documentos con al menos una coincidencia léxica > 0)
+    # 2. Procesar ranking BM25 (solo para docs con coincidencias léxicas > 0)
     for rank_idx, doc in enumerate(ranking_bm25, 1):
         if doc.get("score_bm25", 0.0) <= 0.0:
             continue
@@ -291,7 +311,6 @@ def reciprocal_rank_fusion(
                 "rrf_score": aporte
             }
             
-    # Ordenar por puntaje RRF descendente
     lista_hibrida = list(rrf_map.values())
     lista_hibrida.sort(key=lambda x: x["rrf_score"], reverse=True)
     
@@ -311,11 +330,11 @@ def ejecutar_duelo(
     motor_denso: MotorDenso, 
     explicacion: str
 ):
-    print("\n" + "█" * 70)
-    print(f"⚔️  {nombre_duelo}")
-    print(f"   Consulta: \"{consulta}\"")
     print("█" * 70)
-    print(f"💡 Foco teórico: {explicacion}\n")
+    print(f"⚔️  {C.BOLD}{nombre_duelo}{C.RESET}")
+    print(f"   Consulta formulada: {C.BOLD}{C.CYAN}\"{consulta}\"{C.RESET}")
+    print("█" * 70)
+    print(f"💡 {C.YELLOW}Foco teórico:{C.RESET} {explicacion}\n")
 
     # 1. Búsqueda Léxica (BM25)
     t0_bm25 = time.time()
@@ -333,25 +352,34 @@ def ejecutar_duelo(
     t_rrf_ms = round((time.time() - t0_rrf) * 1000, 3)
 
     # Mostrar Resultados Lado a Lado
-    print(f"{'MOTOR':<12} | {'RANK #1':<10} | {'SCORE':<10} | {'LATENCIA':<10} | {'TÍTULO RESULTADO'}")
-    print("-" * 75)
+    print(f"{C.BOLD}{'MOTOR':<12} │ {'RANK #1':<10} │ {'SCORE':<10} │ {'LATENCIA':<10} │ {'TÍTULO RESULTADO'}{C.RESET}")
+    print("─" * 75)
     
     top_bm = res_bm25[0]
-    bm_desc = f"{top_bm['id']:<10} | {top_bm['score_bm25']:<10}" if top_bm['score_bm25'] > 0 else f"{'(Sin match)':<10} | {'0.0':<10}"
-    bm_titulo = top_bm['titulo'] if top_bm['score_bm25'] > 0 else "Ningún documento superó el umbral léxico"
-    print(f"{'BM25':<12} | {bm_desc} | {t_bm25_ms:<7} ms | {bm_titulo}")
+    if top_bm['score_bm25'] > 0:
+        print(f"{C.BLUE}{'BM25':<12}{C.RESET} │ {C.BOLD}{top_bm['id']:<10}{C.RESET} │ {top_bm['score_bm25']:<10} │ {t_bm25_ms:<7} ms │ {top_bm['titulo']}")
+    else:
+        print(f"{C.BLUE}{'BM25':<12}{C.RESET} │ {C.GRAY}{'(Sin match)':<10}{C.RESET} │ {C.GRAY}{'0.0':<10}{C.RESET} │ {t_bm25_ms:<7} ms │ {C.GRAY}Ningún documento superó el umbral léxico{C.RESET}")
 
     top_de = res_denso[0]
-    print(f"{'Denso':<12} | {top_de['id']:<10} | {top_de['score_denso']:<10} | {t_denso_ms:<7} ms | {top_de['titulo']}")
+    print(f"{C.MAGENTA}{'Denso':<12}{C.RESET} │ {C.BOLD}{top_de['id']:<10}{C.RESET} │ {top_de['score_denso']:<10} │ {t_denso_ms:<7} ms │ {top_de['titulo']}")
 
     top_hi = res_hibrido[0]
-    print(f"{'Híbrido RRF':<12} | {top_hi['id']:<10} | {top_hi['rrf_score']:<10} | {t_rrf_ms:<7} ms | {top_hi['titulo']}")
+    print(f"{C.GREEN}{'Híbrido RRF':<12}{C.RESET} │ {C.BOLD}{C.GREEN}{top_hi['id']:<10}{C.RESET} │ {C.GREEN}{top_hi['rrf_score']:<10}{C.RESET} │ {t_rrf_ms:<7} ms │ {C.BOLD}{top_hi['titulo']}{C.RESET}")
 
-    print("\n📋 Desglose del Ganador Híbrido (RRF):")
-    print(f"  • Documento: {top_hi['id']} - {top_hi['titulo']}")
-    print(f"  • Rank Denso: {top_hi.get('rank_denso', 'Fuera de Top-K')} | Rank BM25: {top_hi.get('rank_bm25', 'Fuera de Top-K')}")
-    print(f"  • Score RRF consolidado: {top_hi['rrf_score']}")
-    print(f"  • Texto rescatado:\n    \"{top_hi['texto'][:180]}...\"")
+    # Mostrar tarjeta del ganador
+    print()
+    encabezado = f"┌── 🏆 [Ganador Híbrido RRF] ID: {top_hi['id']} │ Score RRF: {top_hi['rrf_score']} "
+    linea_top = encabezado + "─" * max(2, 68 - len(encabezado))
+    print(f"{C.GREEN}{linea_top}{C.RESET}")
+    print(f"{C.GREEN}│ {C.CYAN}Título:{C.RESET} {top_hi['titulo']}")
+    print(f"{C.GREEN}│ {C.YELLOW}Posiciones:{C.RESET} Rank Denso: #{top_hi.get('rank_denso', 'N/D')} │ Rank BM25: #{top_hi.get('rank_bm25', 'N/D')}")
+    print(f"{C.GREEN}│{C.RESET}")
+    print(f"{C.GREEN}│ {C.WHITE}Texto rescatado:{C.RESET}")
+    for linea in top_hi['texto'].split(". "):
+        if linea.strip():
+            print(f"{C.GREEN}│   {C.WHITE}{linea.strip()}.{C.RESET}")
+    print(f"{C.GREEN}└──{'─' * 65}{C.RESET}\n")
 
 
 # ==============================================================================
@@ -365,10 +393,12 @@ if __name__ == "__main__":
     print("█" * 70)
 
     try:
-        print("\n⚙️  Indexando corpus de Vertex Horizon en ambos motores...")
+        print(f"\n⚙️  Indexando corpus de Vertex Horizon en ambos motores...")
         motor_bm25 = MotorBM25(DOCUMENTOS_CORPUS)
         motor_denso = MotorDenso(DOCUMENTOS_CORPUS, MODELO_EMBEDDING)
-        print("✅ Corpus indexado exitosamente (5 documentos con reglas y distractores).")
+        print(f"✅ {C.BOLD}{C.GREEN}Corpus indexado exitosamente (5 documentos con reglas y códigos).{C.RESET}")
+
+        pausa_clase("Presiona Enter para iniciar el Duelo 1 (Código Técnico Alfanumérico)...")
 
         # DUELO 1: Código Técnico Exacto
         ejecutar_duelo(
@@ -382,7 +412,7 @@ if __name__ == "__main__":
             )
         )
 
-        input("\n[Pausa de clase] Presiona Enter para continuar con el Duelo 2...")
+        pausa_clase("Presiona Enter para continuar con el Duelo 2 (Paráfrasis Coloquial)...")
 
         # DUELO 2: Paráfrasis Coloquial
         ejecutar_duelo(
@@ -397,7 +427,9 @@ if __name__ == "__main__":
             )
         )
 
-        print("\n" + "=" * 70)
+        pausa_clase("Presiona Enter para ver las conclusiones pedagógicas de la sesión...")
+
+        print("=" * 70)
         print("💡 CONCLUSIÓN PEDAGÓGICA (Filminas 11, 12, 13 y 14):")
         print("  - El motor Denso comprende el sentido profundo y las paráfrasis del usuario.")
         print("  - BM25 es insustituible para números de formulario, pólizas y cláusulas exactas.")

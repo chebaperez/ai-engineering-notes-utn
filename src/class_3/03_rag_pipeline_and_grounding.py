@@ -29,6 +29,47 @@ import warnings
 from typing import List, Dict, Any, Tuple, Optional
 from dotenv import load_dotenv
 
+# ==============================================================================
+# ESTILOS Y COLORES ANSI PARA TERMINAL
+# ==============================================================================
+class C:
+    RESET = "\033[0m"
+    BOLD = "\033[1m"
+    DIM = "\033[2m"
+    CYAN = "\033[36m"
+    GREEN = "\033[32m"
+    YELLOW = "\033[33m"
+    RED = "\033[31m"
+    MAGENTA = "\033[35m"
+    BLUE = "\033[34m"
+    WHITE = "\033[37m"
+    GRAY = "\033[90m"
+
+def pausa_clase(mensaje: str = "Presiona Enter para continuar..."):
+    """Pausa interactiva visible para permitir la explicación docente."""
+    print(f"\n{C.BOLD}{C.YELLOW}⏸️  [Pausa de clase] {mensaje}{C.RESET}", end="")
+    input()
+    print()
+
+def imprimir_tarjeta_respuesta(
+    titulo: str, 
+    contenido: str, 
+    color_borde: str = C.GREEN, 
+    color_texto: str = C.WHITE
+):
+    """Muestra la respuesta del modelo en un recuadro limpio con márgenes."""
+    ancho = 68
+    encabezado = f"┌── 📤 [{titulo}] "
+    linea_top = encabezado + "─" * max(2, ancho - len(encabezado))
+    print(f"{color_borde}{linea_top}{C.RESET}")
+    for linea in contenido.split("\n"):
+        print(f"{color_borde}│ {color_texto}{linea}{C.RESET}")
+    print(f"{color_borde}└──{'─' * (ancho - 3)}{C.RESET}\n")
+
+
+# ==============================================================================
+# CARGA DE VARIABLES DE ENTORNO Y CREDENCIALES
+# ==============================================================================
 load_dotenv()
 load_dotenv("../.env")
 load_dotenv("../../.env")
@@ -189,8 +230,8 @@ def demo_modo_libro_cerrado(pregunta: str) -> None:
     Invoca al LLM sin proporcionarle contexto documental alguno.
     Demuestra la vulnerabilidad de 'Self-Delusion': inventa circulares o afirma coberturas inexistentes.
     """
-    print("\n" + "─" * 70)
-    print("📕 MODO 1: EXAMEN A LIBRO CERRADO (Sin RAG / Memoria Paramétrica)")
+    print("─" * 70)
+    print(f"📕 {C.BOLD}{C.RED}MODO 1: EXAMEN A LIBRO CERRADO (Sin RAG / Memoria Paramétrica){C.RESET}")
     print("─" * 70)
     
     prompt = f"""Actúa como el Liquidador Automatizado de Vertex Horizon Seguros.
@@ -212,10 +253,10 @@ Pregunta: {pregunta}"""
     tokens_in = u.prompt_tokens if u else 0
     tokens_out = u.completion_tokens if u else 0
 
-    print(f"⏱️  Latencia LLM: {duracion:.2f}s | 🪙 Tokens In: {tokens_in} | 🪙 Tokens Out: {tokens_out}")
-    print(f"📤 Respuesta generada por el LLM:\n{texto}")
-    print("\n⚠️  DIAGNÓSTICO PEDAGÓGICO: Al no poseer el manual interno en sus pesos,")
-    print("el modelo es propenso a inventar circulares y condiciones con máxima elocuencia.")
+    print(f"\n📊 {C.BOLD}Métricas:{C.RESET} ⏱️  Latencia LLM: {duracion:.2f}s │ 🪙 Tokens In: {tokens_in} │ 🪙 Tokens Out: {tokens_out}\n")
+    imprimir_tarjeta_respuesta("Respuesta Generada a Libro Cerrado", texto, color_borde=C.RED, color_texto=C.WHITE)
+    print(f"{C.BOLD}{C.RED}⚠️  DIAGNÓSTICO PEDAGÓGICO:{C.RESET} Al no poseer el manual interno en sus pesos,")
+    print("el modelo es propenso a inventar circulares y condiciones con máxima elocuencia.\n")
 
 
 # ==============================================================================
@@ -228,8 +269,8 @@ def demo_modo_rag_fundamentado(pregunta: str, indice: IndiceVectorial) -> None:
     - Prohibido inferir o inventar hechos.
     - Cláusula de abstención: si no figura taxativamente, responder 'NO CONSTA EN LA DOCUMENTACIÓN'.
     """
-    print("\n" + "─" * 70)
-    print("📗 MODO 2: RAG FUNDAMENTADO CON CITAS OBLIGATORIAS Y ABSTENCIÓN (Grounding)")
+    print("─" * 70)
+    print(f"📗 {C.BOLD}{C.GREEN}MODO 2: RAG FUNDAMENTADO CON CITAS OBLIGATORIAS Y ABSTENCIÓN (Grounding){C.RESET}")
     print("─" * 70)
 
     # 1. Recuperación vectorial
@@ -276,16 +317,16 @@ RESPUESTA FUNDAMENTADA (incluye citas exactas):"""
     tokens_in = u.prompt_tokens if u else 0
     tokens_out = u.completion_tokens if u else 0
 
-    print("📊 TELEMETRÍA DE LA LLAMADA RAG:")
-    print(f"  • ⏱️  Delay recuperación vectorial (scan): {res_rec['delay_recuperacion_vectorial_ms']} ms")
-    print(f"  • ⏱️  Latencia generación LLM: {duracion:.2f} s")
-    print(f"  • ⏱️  Latencia total del pipeline: {round(res_rec['latencia_total_retrieval_ms']/1000 + duracion, 2)} s")
-    print(f"  • 🪙 Tokens Vector Store: {res_rec['tokens_query']} tokens")
-    print(f"  • 🪙 Tokens Prompt LLM (Contexto + Pregunta): {tokens_in} tokens")
-    print(f"  • 🪙 Tokens Completion LLM (Respuesta): {tokens_out} tokens")
-    print(f"  • 🎯 Similitud Coseno chunk líder: {res_rec['max_similitud']}")
+    print(f"\n📊 {C.BOLD}TELEMETRÍA DE LA LLAMADA RAG:{C.RESET}")
+    print(f"  • ⏱️  Delay recuperación vectorial (scan): {C.BOLD}{C.GREEN}{res_rec['delay_recuperacion_vectorial_ms']} ms{C.RESET}")
+    print(f"  • ⏱️  Latencia generación LLM: {C.BOLD}{duracion:.2f} s{C.RESET}")
+    print(f"  • ⏱️  Latencia total del pipeline: {C.BOLD}{round(res_rec['latencia_total_retrieval_ms']/1000 + duracion, 2)} s{C.RESET}")
+    print(f"  • 🪙 Tokens Vector Store: {C.BOLD}{res_rec['tokens_query']} tokens{C.RESET}")
+    print(f"  • 🪙 Tokens Prompt LLM (Contexto + Pregunta): {C.BOLD}{tokens_in} tokens{C.RESET}")
+    print(f"  • 🪙 Tokens Completion LLM (Respuesta): {C.BOLD}{tokens_out} tokens{C.RESET}")
+    print(f"  • 🎯 Similitud Coseno chunk líder: {C.BOLD}{C.CYAN}{res_rec['max_similitud']}{C.RESET}\n")
 
-    print(f"\n📤 Respuesta Fundamentada con Citas:\n{texto}")
+    imprimir_tarjeta_respuesta("Respuesta Fundamentada con Citas y Trazabilidad", texto, color_borde=C.GREEN, color_texto=C.WHITE)
 
 
 # ==============================================================================
@@ -302,33 +343,36 @@ def demo_modo_corrective_rag(
     Si la similitud no supera el umbral (fuera de dominio), se aborta la generación,
     ahorrando el 100% de los tokens del generador y blindando el sistema.
     """
-    print("\n" + "─" * 70)
-    print(f"🛡️  MODO 3: CORRECTIVE RAG (CRAG) - Filtro de Relevancia (Umbral >= {umbral_similitud})")
     print("─" * 70)
-    print(f"Pregunta analizada: \"{pregunta}\"")
+    print(f"🛡️  {C.BOLD}{C.CYAN}MODO 3: CORRECTIVE RAG (CRAG) - Filtro de Relevancia (Umbral >= {umbral_similitud}){C.RESET}")
+    print("─" * 70)
+    print(f"Pregunta analizada: {C.BOLD}{C.CYAN}\"{pregunta}\"{C.RESET}\n")
 
     # 1. Recuperación y Evaluación de Calidad del Contexto
     res_rec = indice.recuperar(pregunta, top_k=2)
     max_sim = res_rec["max_similitud"]
     chunk_lider = res_rec["chunks_recuperados"][0]
 
-    print(f"🔍 Evaluación de Relevancia del Contexto:")
-    print(f"  • Mejor fragmento recuperado: {chunk_lider['id']} (similitud = {max_sim})")
-    print(f"  • Umbral mínimo exigido: {umbral_similitud}")
+    print(f"🔍 {C.BOLD}Evaluación de Relevancia del Contexto:{C.RESET}")
+    print(f"  • Mejor fragmento recuperado: {C.BOLD}{chunk_lider['id']}{C.RESET} (similitud = {C.BOLD}{max_sim}{C.RESET})")
+    print(f"  • Umbral mínimo exigido: {C.BOLD}{umbral_similitud}{C.RESET}")
 
     # 2. Decisión del Filtro Revisor (CRAG Guardrail)
     if max_sim < umbral_similitud:
-        print("\n⛔ FILTRO CRAG ACTIVADO: RELEVANCIA INSUFICIENTE (Consulta Fuera de Dominio).")
+        print(f"\n{C.BOLD}{C.RED}⛔ FILTRO CRAG ACTIVADO: RELEVANCIA INSUFICIENTE (Consulta Fuera de Dominio).{C.RESET}")
         print(f"   La similitud ({max_sim}) está por debajo del umbral de corte ({umbral_similitud}).")
-        print("   🛑 Acción: Se interrumpe el pipeline y NO se invoca al modelo generador.")
-        print(f"   🪙 Tokens LLM ahorrados: 100% (0 tokens consumidos)")
-        print(f"   ⏱️  Delay de decisión: {res_rec['latencia_total_retrieval_ms']} ms")
-        print(f"📤 Respuesta devuelta al usuario:")
-        print("   'Estimado asegurado: Su consulta no corresponde a temas de pólizas o coberturas'")
-        print("   'disponibles en la documentación operativa de Vertex Horizon Seguros.'")
+        print(f"   🛑 {C.BOLD}Acción:{C.RESET} Se interrumpe el pipeline y {C.BOLD}NO se invoca al modelo generador{C.RESET}.")
+        print(f"   🪙 Tokens LLM ahorrados: {C.BOLD}{C.GREEN}100% (0 tokens consumidos){C.RESET}")
+        print(f"   ⏱️  Delay de decisión: {C.BOLD}{res_rec['latencia_total_retrieval_ms']} ms{C.RESET}\n")
+        
+        mensaje_rechazo = (
+            "Estimado asegurado: Su consulta sobre trámites bancarios o préstamos personales "
+            "no corresponde a pólizas o coberturas disponibles en el manual operativo de Vertex Horizon Seguros."
+        )
+        imprimir_tarjeta_respuesta("Respuesta Segura de Rechazo Temprano (CRAG)", mensaje_rechazo, color_borde=C.RED, color_texto=C.YELLOW)
     else:
-        print(f"\n✅ FILTRO CRAG APROBADO: Similitud suficiente ({max_sim} >= {umbral_similitud}).")
-        print("   ➡️  Derivando al modelo generador con evidencia validada...")
+        print(f"\n{C.BOLD}{C.GREEN}✅ FILTRO CRAG APROBADO: Similitud suficiente ({max_sim} >= {umbral_similitud}).{C.RESET}")
+        print("   ➡️  Derivando al modelo generador con evidencia validada...\n")
         demo_modo_rag_fundamentado(pregunta, indice)
 
 
@@ -344,47 +388,53 @@ if __name__ == "__main__":
     print("█" * 70)
 
     try:
-        print("\n⚙️  Indexando manual de Vertex Horizon Seguros...")
+        print(f"\n⚙️  Indexando manual de Vertex Horizon Seguros...")
         indice = IndiceVectorial(DOCUMENTOS_BASE, MODELO_EMBEDDING)
-        print(f"✅ Índice inicializado: {len(DOCUMENTOS_BASE)} artículos clave cargados.")
+        print(f"✅ {C.BOLD}{C.GREEN}Índice inicializado: {len(DOCUMENTOS_BASE)} artículos clave cargados.{C.RESET}")
+
+        pausa_clase("Presiona Enter para iniciar el Escenario 1 (Incidente Histórico de Vertex Horizon)...")
 
         # CASO 1: La consulta que causó el incidente millonario en Vertex Horizon
         PREGUNTA_INCIDENTE = (
             "¿La póliza Hogar Total 2024 de Vertex Horizon cubre daños por inundaciones "
             "extraordinarias en un predio rural según la circular del mes pasado?"
         )
-        print("\n" + "═" * 70)
-        print("🔥 ESCENARIO 1: EL INCIDENTE HISTÓRICO DE VERTEX HORIZON")
-        print(f"Consulta: \"{PREGUNTA_INCIDENTE}\"")
         print("═" * 70)
+        print(f"🔥 {C.BOLD}ESCENARIO 1: EL INCIDENTE HISTÓRICO DE VERTEX HORIZON{C.RESET}")
+        print(f"Consulta: {C.BOLD}{C.CYAN}\"{PREGUNTA_INCIDENTE}\"{C.RESET}")
+        print("═" * 70 + "\n")
 
         demo_modo_libro_cerrado(PREGUNTA_INCIDENTE)
-        input("\n[Pausa de clase] Presiona Enter para ver la resolución con RAG Fundamentado...")
+        pausa_clase("Presiona Enter para ver la resolución del Incidente con RAG Fundamentado...")
         demo_modo_rag_fundamentado(PREGUNTA_INCIDENTE, indice)
 
-        input("\n[Pausa de clase] Presiona Enter para el Escenario 2 (Pregunta tramposa sin respuesta)...")
+        pausa_clase("Presiona Enter para avanzar al Escenario 2 (Pregunta tramposa sin respuesta en manual)...")
 
         # CASO 2: Pregunta capciosa sobre dato no existente en el manual (Franquicia de robo)
         PREGUNTA_TRAMPOSA = "¿Cuál es el deducible o franquicia fijada ante el robo total de una unidad vehicular?"
-        print("\n" + "═" * 70)
-        print("🎯 ESCENARIO 2: PREGUNTA CAPCIOSA (Dato inexistente en el manual)")
-        print(f"Consulta: \"{PREGUNTA_TRAMPOSA}\"")
         print("═" * 70)
-        print("💡 Foco: En el manual hay franquicia para clima (150 USD) y cristales (90 USD), pero")
-        print("para robo el ARTICULO 5 no estipula franquicia. El RAG ingenuo suele alucinar un valor.")
+        print(f"🎯 {C.BOLD}ESCENARIO 2: PREGUNTA CAPCIOSA (Dato inexistente en el manual){C.RESET}")
+        print(f"Consulta: {C.BOLD}{C.CYAN}\"{PREGUNTA_TRAMPOSA}\"{C.RESET}")
+        print("═" * 70)
+        print(f"💡 {C.YELLOW}Foco teórico:{C.RESET} En el manual hay franquicia para clima (150 USD) y cristales (90 USD), pero")
+        print("para robo el ARTICULO 5 no estipula franquicia. El RAG ingenuo suele alucinar un valor.\n")
+        
         demo_modo_rag_fundamentado(PREGUNTA_TRAMPOSA, indice)
 
-        input("\n[Pausa de clase] Presiona Enter para el Escenario 3 (Corrective RAG - Consulta Fuera de Dominio)...")
+        pausa_clase("Presiona Enter para avanzar al Escenario 3 (Corrective RAG - Consulta Fuera de Dominio)...")
 
         # CASO 3: Consulta fuera de dominio (Filtro CRAG)
         PREGUNTA_FUERA_DOMINIO = "¿Cómo abro una cuenta corriente o solicito un préstamo personal a tasa cero?"
-        print("\n" + "═" * 70)
-        print("🛡️  ESCENARIO 3: FILTRO CRAG CONTRA CONSULTAS FUERA DE DOMINIO")
-        print(f"Consulta: \"{PREGUNTA_FUERA_DOMINIO}\"")
         print("═" * 70)
+        print(f"🛡️  {C.BOLD}ESCENARIO 3: FILTRO CRAG CONTRA CONSULTAS FUERA DE DOMINIO{C.RESET}")
+        print(f"Consulta: {C.BOLD}{C.CYAN}\"{PREGUNTA_FUERA_DOMINIO}\"{C.RESET}")
+        print("═" * 70 + "\n")
+        
         demo_modo_corrective_rag(PREGUNTA_FUERA_DOMINIO, indice, umbral_similitud=0.55)
 
-        print("\n" + "=" * 70)
+        pausa_clase("Presiona Enter para ver las conclusiones pedagógicas de la unidad...")
+
+        print("=" * 70)
         print("💡 CONCLUSIÓN PEDAGÓGICA (Filminas 5, 8, 15, 16 y 17):")
         print("  1. Libro Abierto (RAG) no enseña nuevos pesos: inyecta evidencia auditable.")
         print("  2. El Grounding exige citas rígidas [ARTICULO X] y abstención explícita.")
@@ -396,4 +446,3 @@ if __name__ == "__main__":
         import traceback
         traceback.print_exc()
         sys.exit(1)
-

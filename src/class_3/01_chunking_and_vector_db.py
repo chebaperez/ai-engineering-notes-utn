@@ -30,6 +30,55 @@ from typing import List, Dict, Any, Tuple
 from dotenv import load_dotenv
 
 # ==============================================================================
+# ESTILOS Y COLORES ANSI PARA TERMINAL
+# ==============================================================================
+class C:
+    RESET = "\033[0m"
+    BOLD = "\033[1m"
+    DIM = "\033[2m"
+    CYAN = "\033[36m"
+    GREEN = "\033[32m"
+    YELLOW = "\033[33m"
+    RED = "\033[31m"
+    MAGENTA = "\033[35m"
+    BLUE = "\033[34m"
+    WHITE = "\033[37m"
+    GRAY = "\033[90m"
+
+def pausa_clase(mensaje: str = "Presiona Enter para continuar..."):
+    """Pausa interactiva visible para permitir la explicación docente."""
+    print(f"\n{C.BOLD}{C.YELLOW}⏸️  [Pausa de clase] {mensaje}{C.RESET}", end="")
+    input()
+    print()
+
+def imprimir_caja_chunk(
+    chunk_id: str,
+    longitud: int,
+    texto: str,
+    alerta: str = "",
+    es_exito: bool = False,
+    color_borde: str = C.CYAN,
+    color_texto: str = C.YELLOW
+):
+    """Muestra un chunk con formato visual de tarjeta, márgenes y colores."""
+    ancho_barra = 68
+    encabezado = f"┌── 📦 [{chunk_id}] ({longitud} caracteres) "
+    linea_top = encabezado + "─" * max(2, (ancho_barra - len(encabezado)))
+    
+    print(f"{color_borde}{linea_top}{C.RESET}")
+    for linea in texto.split("\n"):
+        print(f"{color_borde}│ {color_texto}{linea}{C.RESET}")
+    print(f"{color_borde}└──{'─' * (ancho_barra - 3)}{C.RESET}")
+    
+    if alerta:
+        if es_exito:
+            print(f"  {C.BOLD}{C.GREEN}🎯 ÉXITO PEDAGÓGICO: {alerta}{C.RESET}")
+        else:
+            print(f"  {C.BOLD}{C.RED}⚠️  ALERTA PEDAGÓGICA: {alerta}{C.RESET}")
+    print()  # Salto de línea limpio entre chunks
+
+
+# ==============================================================================
 # CARGA DE VARIABLES DE ENTORNO Y CREDENCIALES
 # ==============================================================================
 load_dotenv()
@@ -142,14 +191,12 @@ def chunk_texto_recursivo(
     if separadores is None:
         separadores = ["\n\n", "\n", ". ", " "]
         
-    # Dividir primero por párrafos para mantener unidades conceptuales
     parrafos = [p.strip() for p in texto.split("\n\n") if p.strip()]
     chunks = []
     idx = 0
     
     buffer_actual = ""
     for parrafo in parrafos:
-        # Si el párrafo cabe en el acumulador
         if len(buffer_actual) + len(parrafo) + 2 <= chunk_size:
             buffer_actual = f"{buffer_actual}\n\n{parrafo}".strip()
         else:
@@ -161,11 +208,9 @@ def chunk_texto_recursivo(
                     "estrategia": f"Recursivo-Párrafo ({chunk_size}c / overlap {overlap}c)"
                 })
                 idx += 1
-                # Preservar solapamiento: tomar los últimos 'overlap' caracteres
                 cola_overlap = buffer_actual[-overlap:] if overlap > 0 else ""
                 buffer_actual = f"{cola_overlap}\n{parrafo}".strip()
             else:
-                # Si un solo párrafo excede el chunk_size, se fracciona limpiamente
                 sub_chunks = chunk_texto_fijo(parrafo, chunk_size, overlap)
                 for sc in sub_chunks:
                     chunks.append({
@@ -195,7 +240,6 @@ def similitud_coseno(vec_a: List[float], vec_b: List[float]) -> float:
     """
     Calcula la similitud coseno entre dos vectores densos:
     cos(theta) = (A . B) / (||A|| * ||B||)
-    Retorna un valor normalizado entre -1.0 y 1.0 (típicamente 0 a 1 en texto).
     """
     if len(vec_a) != len(vec_b):
         raise ValueError(f"Dimensión incompatible: {len(vec_a)} vs {len(vec_b)}")
@@ -262,11 +306,11 @@ def crear_base_vectorial(chunks: List[Dict[str, Any]], modelo_embedding: str) ->
         "registros": registros
     }
     
-    print(f"✅ Base vectorial creada exitosamente:")
-    print(f"   • Chunks almacenados: {len(registros)}")
-    print(f"   • Dimensión del embedding: {dimension} dimensiones")
-    print(f"   • Tokens de entrada consumidos: {tokens_consumidos}")
-    print(f"   • Tiempo total de indexación: {base_db['latencia_indexacion_ms']} ms")
+    print(f"✅ {C.BOLD}{C.GREEN}Base vectorial creada exitosamente:{C.RESET}")
+    print(f"   • Chunks almacenados: {C.BOLD}{len(registros)}{C.RESET}")
+    print(f"   • Dimensión del embedding: {C.BOLD}{dimension} dimensiones{C.RESET}")
+    print(f"   • Tokens de entrada consumidos: {C.BOLD}{tokens_consumidos} tokens{C.RESET}")
+    print(f"   • Tiempo total de indexación: {C.BOLD}{base_db['latencia_indexacion_ms']} ms{C.RESET}")
     
     return base_db
 
@@ -285,10 +329,9 @@ def buscar_en_base_vectorial(
     # 1. Vectorizar la consulta
     vectores_q, tokens_q = generar_embeddings_lote([query], base_db["modelo"])
     vec_query = vectores_q[0]
-    
     t_embed_query = time.time() - t0
     
-    # 2. Calcular distancias contra todos los vectores indexados (Scan exhaustivo)
+    # 2. Calcular distancias contra todos los vectores indexados
     t_busqueda_inicio = time.time()
     resultados = []
     for reg in base_db["registros"]:
@@ -329,37 +372,60 @@ def demo_experimento_chunking():
     print("🔬 EXPERIMENTO 1: DÓNDE SE PIERDEN LAS EXCEPCIONES LEGALES (Filmina 10)")
     print("█" * 70)
     
-    # Tomamos exclusivamente el Artículo 1 para aislar la fractura del texto
     art_1 = """ARTICULO 1: COBERTURA DE DANOS CLIMATICOS EN VIVIENDA URBANA
 La poliza Hogar Total 2024 comprende la cobertura integral frente a contingencias meteorologicas como granizo, tempestades severas y anegamiento ordinario en cascos urbanos. La denuncia del evento climatico se canaliza mediante el formulario digital F-22 disponible en la sucursal virtual. Verificada la cobertura, la compania liquidara el 100% del peritaje evaluado con una franquicia fija deducible de 150 USD por evento.
 EXCLUSION EXPRESA CLUST-90: Quedan excluidos de toda indemnizacion los siniestros derivados de inundaciones extraordinarias o desbordes de cauces hidricos en predios y zonas rurales que no cuenten con obras de mitigacion y diques de contencion homologados ante la Superintendencia de Seguros en el informe ambiental previo."""
 
-    print("\n📄 Texto analizado: Artículo 1 (Regla General + Exclusión CLUST-90)")
-    print(f"Longitud total: {len(art_1)} caracteres.")
+    print(f"\n📄 {C.BOLD}Texto original analizado:{C.RESET} Artículo 1 (Regla General + Exclusión CLUST-90)")
+    print(f"   Longitud total: {C.BOLD}{len(art_1)}{C.RESET} caracteres.\n")
 
     # 1. Estrategia Fija Naive (Tamaño 330 caracteres, sin solapamiento)
     chunks_fijos = chunk_texto_fijo(art_1, chunk_size=330, overlap=0)
-    print("\n" + "─" * 70)
-    print(f"❌ ESTRATEGIA A: CHUNKING FIJO RÍGIDO (330 caracteres / Solapamiento: 0)")
     print("─" * 70)
+    print(f"❌ {C.BOLD}{C.RED}ESTRATEGIA A: CHUNKING FIJO RÍGIDO (330 chars / Solapamiento: 0){C.RESET}")
+    print("─" * 70 + "\n")
+    
     for c in chunks_fijos:
-        print(f"[{c['id']}] ({c['longitud']} chars):")
-        print(f"  \"{c['texto']}\"")
+        alerta = ""
         if "CLUST-90" in c["texto"] and "liquidara el 100%" not in c["texto"]:
-            print("  ⚠️  ALERTA PEDAGÓGICA: La exclusión CLUST-90 quedó huérfana de su artículo de origen.")
+            alerta = "La exclusión CLUST-90 quedó huérfana y separada de su promesa de cobertura."
         elif "liquidara el 100%" in c["texto"] and "EXCLUSION" not in c["texto"]:
-            print("  ⚠️  ALERTA PEDAGÓGICA: El chunk afirma cobertura al 100% omitiendo la restricción.")
+            alerta = "El fragmento afirma liquidar al 100% omitiendo que existe una exclusión rural."
+        
+        imprimir_caja_chunk(
+            chunk_id=c['id'],
+            longitud=c['longitud'],
+            texto=c['texto'],
+            alerta=alerta,
+            es_exito=False,
+            color_borde=C.RED,
+            color_texto=C.WHITE
+        )
 
-    # 2. Estrategia con Solapamiento Adecuado (Tamaño 380 caracteres, solapamiento 100)
+    pausa_clase("Presiona Enter para contrastar con la Estrategia B (con Solapamiento)...")
+
+    # 2. Estrategia con Solapamiento Adecuado (Tamaño 420 caracteres, solapamiento 120)
     chunks_solapados = chunk_texto_recursivo(art_1, chunk_size=420, overlap=120)
-    print("\n" + "─" * 70)
-    print(f"✅ ESTRATEGIA B: CHUNKING CON SOLAPAMIENTO (420 caracteres / Solapamiento: 120)")
     print("─" * 70)
+    print(f"✅ {C.BOLD}{C.GREEN}ESTRATEGIA B: CHUNKING CON SOLAPAMIENTO (420 chars / Solapamiento: 120){C.RESET}")
+    print("─" * 70 + "\n")
+    
     for c in chunks_solapados:
-        print(f"[{c['id']}] ({c['longitud']} chars):")
-        print(f"  \"{c['texto']}\"")
+        alerta = ""
+        es_exito = False
         if "liquidara el 100%" in c["texto"] and "CLUST-90" in c["texto"]:
-            print("  🎯 ÉXITO: El chunk preserva la regla general Y su excepción legal juntas.")
+            alerta = "El fragmento preserva juntos el beneficio de cobertura Y la restricción CLUST-90."
+            es_exito = True
+            
+        imprimir_caja_chunk(
+            chunk_id=c['id'],
+            longitud=c['longitud'],
+            texto=c['texto'],
+            alerta=alerta,
+            es_exito=es_exito,
+            color_borde=C.GREEN if es_exito else C.CYAN,
+            color_texto=C.WHITE
+        )
 
 
 # ==============================================================================
@@ -372,7 +438,7 @@ def demo_vector_store_y_telemetria():
     """
     print("\n" + "█" * 70)
     print("🔍 EXPERIMENTO 2: DEL TEXTO AL ESPACIO VECTORIAL Y TELEMETRÍA DE BÚSQUEDA")
-    print(f"   Modelo de Embeddings activo: {MODELO_EMBEDDING}")
+    print(f"   Modelo de Embeddings activo: {C.BOLD}{MODELO_EMBEDDING}{C.RESET}")
     print("█" * 70)
 
     # Segmentamos el documento completo con solapamiento
@@ -381,28 +447,36 @@ def demo_vector_store_y_telemetria():
     # Ingesta offline: Generación de embeddings e indexación
     db_vectorial = crear_base_vectorial(chunks, MODELO_EMBEDDING)
     
+    pausa_clase("Base vectorial lista. Presiona Enter para ejecutar la consulta de siniestro...")
+    
     # Consulta crítica: Caso real del incidente de Vertex Horizon
     consulta = "¿La póliza cubre daños por desborde o inundación en un campo rural?"
     
-    print("\n" + "─" * 70)
-    print(f"🔎 EJECUTANDO RECUPERACIÓN SEMÁNTICA (TOP-K = 2)")
-    print(f"   Consulta formulada: \"{consulta}\"")
+    print("─" * 70)
+    print(f"🔎 {C.BOLD}EJECUTANDO RECUPERACIÓN SEMÁNTICA (TOP-K = 2){C.RESET}")
+    print(f"   Consulta formulada: {C.BOLD}{C.CYAN}\"{consulta}\"{C.RESET}")
     print("─" * 70)
     
     resultado = buscar_en_base_vectorial(consulta, db_vectorial, top_k=2)
     
     # Reporte de Métricas y Telemetría
-    print("\n📊 TELEMETRÍA DE RECUPERACIÓN:")
-    print(f"  • 🪙 Tokens consumidos por la consulta: {resultado['tokens_query']} tokens")
-    print(f"  • ⏱️  Latencia de vectorización de query: {resultado['latencia_embedding_ms']} ms")
-    print(f"  • ⏱️  Delay de búsqueda vectorial (k-NN scan): {resultado['delay_recuperacion_vectorial_ms']} ms")
-    print(f"  • ⏱️  Latencia total del pipeline de búsqueda: {resultado['latencia_total_recuperacion_ms']} ms")
+    print(f"\n📊 {C.BOLD}TELEMETRÍA DE RECUPERACIÓN:{C.RESET}")
+    print(f"  • 🪙 Tokens consumidos por la consulta: {C.BOLD}{C.YELLOW}{resultado['tokens_query']} tokens{C.RESET}")
+    print(f"  • ⏱️  Latencia de vectorización de query: {C.BOLD}{resultado['latencia_embedding_ms']} ms{C.RESET}")
+    print(f"  • ⏱️  Delay de búsqueda vectorial (k-NN scan): {C.BOLD}{C.GREEN}{resultado['delay_recuperacion_vectorial_ms']} ms{C.RESET}")
+    print(f"  • ⏱️  Latencia total del pipeline de búsqueda: {C.BOLD}{resultado['latencia_total_recuperacion_ms']} ms{C.RESET}\n")
     
-    print("\n🎯 FRAGMENTOS (CHUNKS) RECUPERADOS:")
+    print(f"🎯 {C.BOLD}FRAGMENTOS (CHUNKS) RECUPERADOS:{C.RESET}\n")
     for i, item in enumerate(resultado["top_k"], 1):
-        print(f"\n  [Rank #{i}] Chunk ID: {item['id']} | Similitud Coseno: {item['score']}")
-        print(f"  ──────────────────────────────────────────────────────────")
-        print(f"  {item['texto']}")
+        color_rank = C.GREEN if i == 1 else C.CYAN
+        medalla = "🥇" if i == 1 else "🥈"
+        
+        encabezado = f"┌── {medalla} [Rank #{i}] ID: {item['id']} │ Similitud Coseno: {item['score']} "
+        linea_top = encabezado + "─" * max(2, 68 - len(encabezado))
+        print(f"{color_rank}{linea_top}{C.RESET}")
+        for l in item["texto"].split("\n"):
+            print(f"{color_rank}│ {C.WHITE}{l}{C.RESET}")
+        print(f"{color_rank}└──{'─' * 65}{C.RESET}\n")
 
 
 # ==============================================================================
@@ -418,16 +492,18 @@ if __name__ == "__main__":
 
     try:
         demo_experimento_chunking()
-        input("\n[Pausa de clase] Presiona Enter para continuar con la indexación vectorial...")
+        pausa_clase("Presiona Enter para avanzar al Experimento 2 (Indexación Vectorial y Búsqueda)...")
         demo_vector_store_y_telemetria()
         
-        print("\n" + "=" * 70)
+        pausa_clase("Presiona Enter para ver las conclusiones pedagógicas de la sesión...")
+
+        print("=" * 70)
         print("💡 CONCLUSIONES PEDAGÓGICAS (Filminas 6, 7, 9 y 10):")
         print("  1. El chunking ciego amputa cláusulas: si la exclusión legal queda en")
         print("     otro chunk, el buscador recuperará sólo la cobertura y el LLM indemnizará.")
         print("  2. El solapamiento (overlap) garantiza la continuidad semántica del texto.")
         print("  3. La base vectorial mide similitud matemática en alta dimensionalidad;")
-        print("     el delay de búsqueda en memoria es mínimo (<1 ms), siendo la llamada")
+        print("     el delay de búsqueda en memoria es mínimo (<2 ms), siendo la llamada")
         print("     a la API de embeddings el componente dominante de la latencia.")
         print("=" * 70 + "\n")
     except Exception as e:
@@ -435,4 +511,3 @@ if __name__ == "__main__":
         import traceback
         traceback.print_exc()
         sys.exit(1)
-
