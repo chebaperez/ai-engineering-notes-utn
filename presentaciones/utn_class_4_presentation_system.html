@@ -495,27 +495,29 @@
             <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Estructura de la Sesión Sincrónica (120 Min)</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
               <div class="p-3.5 rounded-xl bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800">
-                <div class="text-xs font-bold text-utn-blue dark:text-blue-400 mb-1">BLOQUES 1-2 · 47 MIN</div>
-                <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white mb-2">Delegar y Verificar</h3>
+                <div class="text-xs font-bold text-utn-blue dark:text-blue-400 mb-1">BLOQUES 1-2 · 45 MIN</div>
+                <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white mb-2">Delegar y Razonar</h3>
                 <ul class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 space-y-1.5 list-disc list-inside">
                   <li>Tool Calling: las tres fases</li>
                   <li>El contrato de la herramienta</li>
                   <li>Lectura frente a escritura</li>
-                  <li>Groundedness, relevancia y consistencia</li>
-                  <li>LLM-as-a-Judge y su circularidad</li>
+                  <li>El bucle Pensamiento / Acción / Observación</li>
+                  <li>Anatomía de una traza real y saltos</li>
+                  <li>Agente autónomo frente a flujo guiado</li>
                 </ul>
-                <div class="mt-2 pt-1.5 border-t border-blue-200 dark:border-blue-900 text-2xs text-amber-600 dark:text-amber-400">responde al Incidente 1</div>
+                <div class="mt-2 pt-1.5 border-t border-blue-200 dark:border-blue-900 text-2xs text-amber-600 dark:text-amber-400">responde al Incidente 1 y autonomía</div>
               </div>
               <div class="p-3.5 rounded-xl bg-teal-50 dark:bg-teal-950/30 border border-teal-200 dark:border-teal-800">
-                <div class="text-xs font-bold text-utn-teal mb-1">BLOQUE 3 · 22 MIN</div>
-                <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white mb-2">Agentes y ReAct</h3>
+                <div class="text-xs font-bold text-utn-teal mb-1">BLOQUE 3 · 24 MIN</div>
+                <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white mb-2">Validación y Evaluación</h3>
                 <ul class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 space-y-1.5 list-disc list-inside">
-                  <li>El bucle Pensamiento / Acción / Observación</li>
-                  <li>Anatomía de una traza real</li>
-                  <li>Tareas de múltiples saltos</li>
-                  <li>Agente autónomo frente a flujo guiado</li>
-                  <li>Costo multiplicativo por ciclo</li>
+                  <li>Groundedness, relevancia y consistencia</li>
+                  <li>Consistencia local frente a global</li>
+                  <li>LLM-as-a-Judge y rúbricas cualitativas</li>
+                  <li>El riesgo de circularidad y sesgos</li>
+                  <li>Golden dataset y calibración humana</li>
                 </ul>
+                <div class="mt-2 pt-1.5 border-t border-teal-200 dark:border-teal-900 text-2xs text-teal-600 dark:text-teal-400">auditoría objetiva de calidad</div>
               </div>
               <div class="p-3.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-800">
                 <div class="text-xs font-bold text-utn-indigo mb-1">BLOQUES 4-5 · 39 MIN</div>
@@ -550,15 +552,16 @@
         `,
         verbatimScript: `
           <p>Este es el mapa de las dos horas, y noten que <strong>está construido sobre los dos incidentes</strong> que acabamos de ver.</p>
-          <p>Los <strong>bloques uno y dos responden al incidente uno</strong>, el de los números inventados. El bloque uno es <strong>Tool Calling</strong>: cómo hacemos que el modelo, en vez de adivinar el arancel, <strong>lo consulte</strong>. Y el bloque dos es <strong>validación</strong>: cómo medimos a escala si una respuesta se sostiene en la evidencia, sin auditarla a mano ticket por ticket.</p>
-          <p>El <strong>bloque tres</strong> es el puente entre los dos incidentes: los <strong>agentes</strong> y el bucle ReAct, que es lo que permite encadenar varios pasos. Es donde el sistema gana autonomía.</p>
+          <p>El <strong>bloque uno</strong> es <strong>Tool Calling</strong>: cómo hacemos que el modelo, en vez de adivinar el arancel, <strong>lo consulte</strong>.</p>
+          <p>El <strong>bloque dos</strong> son los <strong>agentes</strong> y el bucle ReAct: cómo encadenamos herramientas para resolver tareas de múltiples saltos, donde el sistema gana autonomía y decide dinámicamente qué paso sigue.</p>
+          <p>El <strong>bloque tres</strong> es la <strong>validación</strong> y evaluación: cómo medimos a escala si una respuesta o una traza se sostiene en la evidencia mediante LLM-as-a-Judge, sin auditar a mano miles de interacciones.</p>
           <p>Y los <strong>bloques cuatro y cinco responden al incidente dos</strong>, el del reembolso. Errores que se propagan en cadena, inyección de instrucciones, y las salvaguardas: <strong>Human-in-the-Loop</strong> y topes duros de ejecución.</p>
-          <p>Quiero marcar algo del orden, porque no es casual. <strong>La gobernanza viene después de la autonomía, pero no es un apéndice.</strong> En muchos proyectos se trata como la fase de "endurecimiento" que se hace al final si queda tiempo, y ahí es donde aparecen los incidentes. Miren la etiqueta del tercer bloque: responde al incidente que <strong>ya le costó plata</strong> a esta empresa.</p>
+          <p>Quiero marcar algo del orden, porque no es casual. <strong>La gobernanza viene después de la autonomía, pero no es un apéndice.</strong> En muchos proyectos se trata como la fase de "endurecimiento" que se hace al final si queda tiempo, y ahí es donde aparecen los incidentes. Miren la etiqueta del último bloque: responde al incidente que <strong>ya le costó plata</strong> a esta empresa.</p>
           <p>Del glosario, dos términos que quiero que retengan desde ahora. <strong>HITL</strong>, Human-in-the-Loop: el punto de control humano antes de una acción crítica. Y <strong>mutating</strong>, o herramienta de escritura: la que altera el estado del mundo real. Esa distinción, lectura contra escritura, es la que define el riesgo de todo el sistema.</p>
         `,
         validationPause: {
           question: "El programa ubica los agentes como contenido 'flexible según el ritmo del grupo'. Si hubiera que recortar algo hoy, ¿qué bloque es el menos prescindible?",
-          answer: "El de gobernanza, y la respuesta es contraintuitiva porque es el último y el que suele sacrificarse.\n\nLos tres primeros bloques enseñan capacidades: delegar, medir, encadenar. Si alguno se ve más superficialmente, el costo es que el sistema quede menos potente o peor medido. Es una pérdida de calidad.\n\nEl cuarto enseña límites, y su ausencia no produce un sistema menos potente: produce un sistema igual de potente sin frenos. Alguien que sale de acá sabiendo armar un agente ReAct con herramientas de escritura y sin haber visto inyección indirecta ni puntos de control tiene todo lo necesario para reproducir el incidente 2 de este caso.\n\nPor eso el criterio práctico es el inverso al habitual: si el grupo va lento, conviene recortar profundidad en los patrones agénticos —que son los más vistosos— antes que en las salvaguardas."
+          answer: "El de gobernanza, y la respuesta es contraintuitiva porque es el último y el que suele sacrificarse.\n\nLos tres primeros bloques enseñan capacidades: delegar, encadenar, medir. Si alguno se ve más superficialmente, el costo es que el sistema quede menos potente o peor medido. Es una pérdida de calidad.\n\nEl cuarto enseña límites, y su ausencia no produce un sistema menos potente: produce un sistema igual de potente sin frenos. Alguien que sale de acá sabiendo armar un agente ReAct con herramientas de escritura y sin haber visto inyección indirecta ni puntos de control tiene todo lo necesario para reproducir el incidente 2 de este caso.\n\nPor eso el criterio práctico es el inverso al habitual: si el grupo va lento, conviene recortar profundidad en los patrones agénticos —que son los más vistosos— antes que en las salvaguardas."
         }
       },
       {
@@ -864,14 +867,229 @@
       },
       {
         id: 8,
+        title: "El Perito Contable: el Bucle ReAct",
+        block: "B2: Agentes y ReAct (22m)",
+        targetTimeMinutes: 7,
+        purpose: "Introducir el patrón ReAct como bucle cerrado de pensamiento, acción y observación, y justificar por qué ciertas tareas no se resuelven con una sola invocación.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-4">
+            <div class="border-l-4 border-utn-teal pl-3">
+              <span class="text-xs uppercase font-bold text-utn-teal tracking-wider">Bloque 2 · Arquitectura de agentes</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">El Dictamen Llega al Final de una Cadena, no al Principio</h2>
+              <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Un perito contable no escribe el dictamen en el primer segundo: pide un libro, observa una discrepancia, y eso lo lleva a pedir el siguiente.</p>
+            </div>
+
+            <div class="p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+              <pre class="mermaid text-xs">
+                flowchart LR
+                  S["Objetivo<br/>complejo"] --> T["Pensamiento:<br/>¿qué me falta?"]
+                  T --> D{"¿Se resolvió<br/>la meta?"}
+                  D -->|No| A["Acción:<br/>ejecutar herramienta"]
+                  A --> O["Observación:<br/>salida del entorno"]
+                  O --> T
+                  D -->|Sí| F["Respuesta final"]
+              </pre>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-utn-lightBlue border-slate-200 dark:border-slate-700">
+                <div class="text-xs sm:text-sm font-bold text-utn-lightBlue mb-1">💭 Pensamiento</div>
+                <p class="text-2xs text-slate-600 dark:text-slate-300">El modelo <strong>verbaliza su estado cognitivo</strong>: analiza el contexto disponible y deduce qué información parcial le falta para resolver la meta.</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-utn-teal border-slate-200 dark:border-slate-700">
+                <div class="text-xs sm:text-sm font-bold text-utn-teal mb-1">⚡ Acción</div>
+                <p class="text-2xs text-slate-600 dark:text-slate-300">Invoca una herramienta específica por su identificador y <strong>genera los argumentos</strong> correspondientes.</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-utn-indigo border-slate-200 dark:border-slate-700">
+                <div class="text-xs sm:text-sm font-bold text-utn-indigo mb-1">👁️ Observación</div>
+                <p class="text-2xs text-slate-600 dark:text-slate-300">El anfitrión ejecuta y <strong>concatena el resultado al contexto</strong>. Ese dato alimenta el pensamiento siguiente.</p>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/60 text-xs sm:text-sm text-slate-700 dark:text-slate-300 flex items-start gap-2.5">
+              <span class="text-xl">🔑</span>
+              <div>
+                <strong class="text-slate-900 dark:text-white">Lo que distingue a ReAct de un flujo programado:</strong>
+                <span> un pipeline tradicional ejecuta pasos <strong>fijados de antemano en código</strong>. Acá el modelo <strong>ajusta dinámicamente el paso siguiente en función de lo que descubrió en el anterior</strong>. Esa flexibilidad es la capacidad… y es también el problema de gobernanza del bloque 4.</span>
+              </div>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Bloque dos. Hay tareas que <strong>no se resuelven con una sola invocación de herramienta ni con un prompt de una pasada</strong>. Si algo requiere buscar en varias fuentes, analizar resultados intermedios y corregir la trayectoria sobre la marcha, hace falta un flujo iterativo.</p>
+          <p>El modelo mental es <strong>un perito contable que debe detectar incongruencias en un balance</strong>. Y lo importante es cómo trabaja: <strong>no escribe el dictamen en el primer segundo</strong>.</p>
+          <p>Primero <strong>piensa</strong> qué libro diario necesita revisar. Después <strong>actúa</strong>, solicitando ese libro en el archivo. Al recibirlo, <strong>observa</strong> los números y nota un desfase de caja en cierta fecha. Y eso lo lleva a un nuevo pensamiento: ahora necesita los extractos bancarios de ese mes. Y actúa otra vez. Ese ciclo continúa metódicamente hasta que reúne evidencia suficiente. <strong>El dictamen llega al final de una cadena, no al principio.</strong></p>
+          <p>Eso es <strong>ReAct</strong>, propuesto por investigadores de Princeton y Google Research en 2022. El nombre viene de <em>Reason + Act</em>, y lo que hace es <strong>unificar la cadena de razonamiento que vimos en la Unidad 2 con la ejecución de herramientas, en un bucle cerrado</strong>.</p>
+          <p>La traza se estructura en tres componentes intercalados, que están en las tres tarjetas. <strong>Pensamiento</strong>: el modelo verbaliza su estado cognitivo y deduce qué le falta. <strong>Acción</strong>: invoca una herramienta con sus argumentos. <strong>Observación</strong>: el anfitrión ejecuta y concatena el resultado al contexto.</p>
+          <p>Y fíjense en el diagrama: la observación <strong>vuelve al pensamiento</strong>. Ese es el bucle. Cada dato nuevo alimenta la decisión siguiente. El ciclo se repite hasta que el modelo determina que ya puede responder sin más acciones externas, y ahí emite la acción de cierre, típicamente rotulada <span class="font-mono">Finish</span>.</p>
+          <p>Ahora el recuadro de abajo, que marca la diferencia clave. Un pipeline tradicional ejecuta <strong>pasos fijados de antemano en código</strong>: siempre los mismos, en el mismo orden. Acá el modelo <strong>ajusta dinámicamente el paso siguiente en función de lo que descubrió</strong>.</p>
+          <p>Retengan esa frase con las dos caras: <strong>esa flexibilidad es la capacidad que hace valioso al agente, y es exactamente el problema de gobernanza del bloque cuatro</strong>. Un sistema que decide su propio camino es un sistema cuyo camino no podemos anticipar.</p>
+        `,
+        validationPause: {
+          question: "¿Qué relación tiene el bucle ReAct con el Chain-of-Thought que vimos en la Unidad 2?",
+          answer: "ReAct es Chain-of-Thought con el mundo exterior cerrando el circuito.\n\nEn CoT el modelo razona paso a paso, pero todos los pasos salen de sus propios pesos: el texto que genera es su memoria de trabajo, y nada externo lo corrige. Si en el paso 2 asume un dato equivocado, el paso 3 construye sobre esa suposición y el error se arrastra hasta el final.\n\nEn ReAct, entre pensamiento y pensamiento se intercala una observación que viene de un sistema determinista. El modelo no supone el valor declarado del envío: lo consulta. Eso ancla la cadena de razonamiento a hechos verificables en cada eslabón, en lugar de solo al principio.\n\nDicho de otro modo: CoT le da al modelo un pizarrón para pensar; ReAct le da además un teléfono para preguntar. Y el segundo cambia la naturaleza del error posible: de 'razonó bien sobre un dato inventado' a 'razonó bien sobre un dato real, o falló al pedirlo'."
+        }
+      },
+      {
+        id: 9,
+        title: "Anatomía de una Traza Real, Paso a Paso",
+        block: "B2: Agentes y ReAct (22m)",
+        targetTimeMinutes: 8,
+        purpose: "Recorrer una traza ReAct concreta del caso de estudio para mostrar que el orden de las acciones no es arbitrario sino que lo impone la dependencia de datos entre herramientas.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-3">
+            <div class="border-l-4 border-utn-lightBlue pl-3">
+              <span class="text-xs uppercase font-bold text-utn-lightBlue tracking-wider">Mecanismo Práctico · tarea de dos saltos</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">"¿Cuánto cuesta nacionalizar el envío LRG-88421?"</h2>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+              <pre class="text-2xs sm:text-xs font-mono text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-wrap"><span class="text-utn-lightBlue font-bold">Thought 1:</span> Para calcular el arancel necesito el valor declarado
+            y los dias de demora. No los tengo.
+<span class="text-utn-teal font-bold">Action 1:</span> consultar_envio[LRG-88421]
+<span class="text-utn-indigo font-bold">Observation 1:</span> Retenido en aduana · valor declarado 12.500 USD
+                · demora 9 dias.
+
+<span class="text-utn-lightBlue font-bold">Thought 2:</span> Ahora tengo los dos parametros. Puedo calcular.
+<span class="text-utn-teal font-bold">Action 2:</span> calcular_arancel_y_penalizacion[valor=12500, dias=9]
+<span class="text-utn-indigo font-bold">Observation 2:</span> Arancel 1.500 USD · penalizacion 270 USD
+                · total 1.770 USD.
+
+<span class="text-utn-lightBlue font-bold">Thought 3:</span> Tengo todo verificado contra los sistemas.
+<span class="text-emerald-500 font-bold">Action 3:</span> <span class="text-emerald-500 font-bold">Finish</span>[El costo total de nacionalizacion es 1.770 USD.]</pre>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-l-4 border-semantic-error border-slate-200 dark:border-slate-700">
+                <div class="text-xs sm:text-sm font-bold text-semantic-error mb-1">🔒 El orden no es una elección del agente</div>
+                <p class="text-xs text-slate-600 dark:text-slate-300">
+                  <strong>No podía llamar a la calculadora en el primer ciclo</strong>: sus parámetros —valor y días— <strong>son la salida de la herramienta anterior</strong>. La dependencia de datos impone la secuencia.
+                </p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-l-4 border-amber-500 border-slate-200 dark:border-slate-700">
+                <div class="text-xs sm:text-sm font-bold text-amber-600 dark:text-amber-400 mb-1">💰 Los <em>round-trips</em> son el costo</div>
+                <p class="text-xs text-slate-600 dark:text-slate-300">
+                  Cada ciclo <strong>reenvía todo el historial acumulado</strong> de pensamientos y observaciones. El costo de un agente <strong>no es fijo: crece con cada vuelta del bucle</strong>.
+                </p>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-900/50 text-xs sm:text-sm text-slate-700 dark:text-slate-300 flex items-start gap-2.5">
+              <span class="text-xl">🧪</span>
+              <div>
+                <strong class="text-slate-900 dark:text-white">Experimento 3 del laboratorio:</strong>
+                <span> van a correr esta misma meta con <span class="font-mono text-2xs">max_iteraciones = 1</span> y ver <strong>exactamente en qué punto de la cadena lo dejó el corte</strong> y qué dato le faltaba. Después suben a 3 y recorren la traza completa. A nivel de código, el bucle se implementa como <strong>una máquina de estados</strong>: si el modelo pide herramientas, el grafo enruta a los nodos de ejecución; si no pide más, sale hacia el usuario.</span>
+              </div>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Vamos a recorrer una traza real, y es la misma meta que van a ejecutar esta tarde en el laboratorio: <em>"¿cuánto cuesta nacionalizar el envío LRG-88421?"</em>.</p>
+          <p>Fíjense en el <strong>Pensamiento 1</strong>: <em>"para calcular el arancel necesito el valor declarado y los días de demora. No los tengo."</em> Eso es el modelo <strong>reconociendo un hueco</strong>, que es lo que un LLM sin herramientas nunca hace: normalmente completaría el hueco con una cifra plausible.</p>
+          <p><strong>Acción 1</strong>: consulta el envío. <strong>Observación 1</strong>: retenido en aduana, valor declarado 12.500 dólares, demora 9 días. Esos números <strong>no los produjo el modelo</strong>: vinieron del sistema.</p>
+          <p><strong>Pensamiento 2</strong>: ahora sí tiene los dos parámetros. <strong>Acción 2</strong>: llama a la calculadora con esos valores exactos. <strong>Observación 2</strong>: arancel 1.500, penalización 270, total 1.770.</p>
+          <p><strong>Pensamiento 3</strong>: tiene todo verificado. <strong>Acción 3</strong>: <span class="font-mono">Finish</span>, y redacta la respuesta.</p>
+          <p>Ahora, la pregunta que quiero dejarles, y está en el recuadro rojo: <strong>¿podría el agente haber llamado a la calculadora en el primer ciclo?</strong></p>
+          <p><strong>No.</strong> Y no por una decisión de diseño ni por prudencia del modelo: <strong>los parámetros de la calculadora son la salida de la herramienta anterior</strong>. Valor declarado y días de demora salen de consultar el envío. <strong>La dependencia de datos impone la secuencia.</strong> Por eso esta es una meta genuina de dos saltos y no un capricho pedagógico: no hay forma de resolverla en una sola llamada.</p>
+          <p>Y el recuadro ámbar tiene la contracara económica: <strong>cada ciclo reenvía todo el historial acumulado</strong> de pensamientos y observaciones. El contexto crece vuelta a vuelta. <strong>El costo de un agente no es fijo: es multiplicativo.</strong></p>
+          <p>En el Experimento 3 van a correr esta meta con <strong>una sola iteración permitida</strong> y ver exactamente en qué punto de la cadena lo dejó el corte. Después suben a tres y recorren la traza completa. Es la mejor forma de entender que el agente no "sabe" la respuesta: la construye.</p>
+        `,
+        validationPause: {
+          question: "Si la secuencia de herramientas estaba determinada por la dependencia de datos, ¿no convendría programarla directamente en código y ahorrarse el agente?",
+          answer: "Para esta consulta puntual, sí. Y es una conclusión importante: si el flujo es siempre el mismo, un pipeline cableado es más rápido, más barato y completamente auditable. Usar un agente ahí es pagar flexibilidad que no se usa.\n\nEl agente empieza a justificarse cuando la secuencia no se conoce de antemano. Si el envío no estuviera retenido, el segundo paso no haría falta. Si el cliente preguntara además por el historial de reclamos, aparecería una tercera herramienta. Y si la consulta llega en lenguaje natural abierto, ni siquiera sabemos qué preguntó hasta leerlo.\n\nCablear todas esas ramas significa anticipar cada combinación posible, y el árbol crece rápido. El agente recorre ese árbol sin que nadie lo haya escrito.\n\nLa regla práctica: si podés dibujar el diagrama de flujo completo, programalo. Si el diagrama depende de datos que solo se conocen en ejecución, ahí hay un caso para el agente."
+        }
+      },
+      {
+        id: 10,
+        title: "Agente Autónomo frente a Flujo Guiado",
+        block: "B2: Agentes y ReAct (22m)",
+        targetTimeMinutes: 7,
+        purpose: "Cerrar el bloque con el criterio de selección entre razonamiento libre y flujos cableados, ubicando cada uno en el tipo de aplicación donde su perfil de riesgo es aceptable.",
+        screenHTML: `
+          <div class="max-w-4xl mx-auto space-y-3">
+            <div class="border-l-4 border-amber-500 pl-3">
+              <span class="text-xs uppercase font-bold text-amber-500 tracking-wider">Criterios de Decisión</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Flexibilidad Cognitiva contra Control Presupuestario</h2>
+            </div>
+
+            <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700">
+              <table class="w-full text-xs sm:text-sm text-left">
+                <thead class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 uppercase text-2xs tracking-wider">
+                  <tr>
+                    <th class="px-3 py-2 font-bold">Dimensión</th>
+                    <th class="px-3 py-2 font-bold">Prompt estático / RAG simple</th>
+                    <th class="px-3 py-2 font-bold">Agente ReAct</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-700 bg-white dark:bg-slate-900">
+                  <tr>
+                    <td class="px-3 py-2 font-bold text-slate-700 dark:text-slate-200">Capacidad de resolución<br/><span class="text-2xs font-normal text-slate-400">más es mejor</span></td>
+                    <td class="px-3 py-2"><span class="flex items-start gap-1.5"><span class="mt-[0.45em] w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0"></span><span class="text-amber-600 dark:text-amber-400">Limitada a consultas de <strong>un solo salto</strong>.</span></span></td>
+                    <td class="px-3 py-2"><span class="flex items-start gap-1.5"><span class="mt-[0.45em] w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span><span class="text-emerald-600 dark:text-emerald-400">Alta. Resuelve consultas de <strong>múltiples saltos</strong>.</span></span></td>
+                  </tr>
+                  <tr>
+                    <td class="px-3 py-2 font-bold text-slate-700 dark:text-slate-200">Latencia<br/><span class="text-2xs font-normal text-slate-400">menos y más predecible es mejor</span></td>
+                    <td class="px-3 py-2"><span class="flex items-start gap-1.5"><span class="mt-[0.45em] w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span><span class="text-emerald-600 dark:text-emerald-400">Rápida y predecible: 1 a 3 segundos.</span></span></td>
+                    <td class="px-3 py-2"><span class="flex items-start gap-1.5"><span class="mt-[0.45em] w-1.5 h-1.5 rounded-full bg-red-500 shrink-0"></span><span class="text-red-600 dark:text-red-400">Variable y mucho mayor: llamadas encadenadas.</span></span></td>
+                  </tr>
+                  <tr>
+                    <td class="px-3 py-2 font-bold text-slate-700 dark:text-slate-200">Costo de inferencia<br/><span class="text-2xs font-normal text-slate-400">previsible es mejor</span></td>
+                    <td class="px-3 py-2"><span class="flex items-start gap-1.5"><span class="mt-[0.45em] w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span><span class="text-emerald-600 dark:text-emerald-400">Fijo y acotado al prompt inicial.</span></span></td>
+                    <td class="px-3 py-2"><span class="flex items-start gap-1.5"><span class="mt-[0.45em] w-1.5 h-1.5 rounded-full bg-red-500 shrink-0"></span><span class="text-red-600 dark:text-red-400"><strong>Multiplicativo.</strong> Cada ciclo reenvía todo el historial.</span></span></td>
+                  </tr>
+                  <tr>
+                    <td class="px-3 py-2 font-bold text-slate-700 dark:text-slate-200">Determinismo y gobernanza<br/><span class="text-2xs font-normal text-slate-400">más es mejor</span></td>
+                    <td class="px-3 py-2"><span class="flex items-start gap-1.5"><span class="mt-[0.45em] w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span><span class="text-emerald-600 dark:text-emerald-400">Predecible y fácilmente auditable.</span></span></td>
+                    <td class="px-3 py-2"><span class="flex items-start gap-1.5"><span class="mt-[0.45em] w-1.5 h-1.5 rounded-full bg-red-500 shrink-0"></span><span class="text-red-600 dark:text-red-400">Menor. Puede tomar <strong>trayectorias no anticipadas</strong>.</span></span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-2xs text-slate-500 dark:text-slate-400">
+              <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Favorable</span>
+              <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Intermedio</span>
+              <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> Desfavorable</span>
+              <span class="italic">· El agente gana <strong class="not-italic text-slate-600 dark:text-slate-300">una sola fila</strong>: la única que el flujo estático no puede cubrir de ninguna manera.</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-l-4 border-utn-lightBlue border-slate-200 dark:border-slate-700">
+                <div class="text-xs sm:text-sm font-bold text-utn-lightBlue mb-1">👥 Aplicaciones masivas al cliente final</div>
+                <p class="text-xs text-slate-600 dark:text-slate-300">La industria privilegia <strong>flujos guiados por grafos de control estricto</strong>, donde el LLM solo redacta los tramos intermedios. La predictibilidad de costo y tiempo es innegociable.</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-l-4 border-utn-teal border-slate-200 dark:border-slate-700">
+                <div class="text-xs sm:text-sm font-bold text-utn-teal mb-1">🔍 Investigación interna y soporte nivel 3</div>
+                <p class="text-xs text-slate-600 dark:text-slate-300">Ahí sí, <strong>agentes ReAct autónomos</strong>: back-office, análisis complejo, casos donde <strong>la profundidad del hallazgo justifica el costo computacional</strong>.</p>
+              </div>
+            </div>
+          </div>
+        `,
+        verbatimScript: `
+          <p>Cerramos el bloque con la decisión, que igual que en las unidades anteriores no se toma por sofisticación sino por perfil de riesgo.</p>
+          <p>Lean la tabla por color y van a encontrar un patrón que ya nos resulta familiar: <strong>el agente gana una sola fila de las cuatro</strong>.</p>
+          <p>Gana en <strong>capacidad de resolución</strong>: resuelve consultas de múltiples saltos, donde el prompt estático está limitado a un solo salto semántico. Es una ventaja real y es la única razón para usarlo.</p>
+          <p>Y pierde en las otras tres, todas en rojo. <strong>Latencia</strong>: variable y significativamente mayor. <strong>Costo</strong>: <em>multiplicativo</em> —cada ciclo reenvía todo el historial acumulado—. Y <strong>determinismo</strong>: el agente puede tomar trayectorias que nadie anticipó.</p>
+          <p>Esa última fila merece un momento, porque es la que subestiman los equipos. <strong>Dos ejecuciones de la misma consulta pueden recorrer caminos distintos.</strong> Ante una auditoría, "depende de la trayectoria que tomó esa vez" es una respuesta muy incómoda.</p>
+          <p>Ahora piensen en el impacto financiero concreto: <strong>un agente que entra en un bucle innecesario de ocho iteraciones para una consulta trivial de un cliente</strong>. Ocho veces el costo presupuestado, para una pregunta que un flujo simple resolvía en una llamada. Y multiplicado por el tráfico de un canal masivo.</p>
+          <p>Por eso el criterio de la industria es el de las dos tarjetas de abajo. En <strong>aplicaciones masivas al cliente final</strong>, se privilegian <strong>flujos guiados por grafos de control estricto</strong>, donde el LLM solo redacta los tramos intermedios y el camino lo decide el código. La predictibilidad de costo y tiempo es innegociable a esa escala.</p>
+          <p>Y los <strong>agentes ReAct autónomos</strong> se reservan para investigación analítica interna, soporte especializado de nivel tres y tareas de back-office, <strong>donde la profundidad del hallazgo justifica con creces el costo computacional</strong> y donde una latencia de diez segundos no la nota nadie.</p>
+        `,
+        validationPause: {
+          question: "¿Cuál sería un límite razonable de iteraciones para un agente, y contra qué dato lo definirían?",
+          answer: "El número habitual está entre 3 y 5, pero lo importante es de dónde sale, porque elegirlo a ojo es lo que produce las dos fallas opuestas.\n\nSe define contra la profundidad real de las tareas del dominio. Si se mide la distribución de saltos necesarios sobre un conjunto de consultas representativas y resulta que el 95% se resuelve en dos o tres, el tope va en cuatro: cubre casi todo y deja un margen. Un tope demasiado bajo trunca tareas legítimas; uno demasiado alto no frena nada y solo se entera cuando llega la factura.\n\nY conviene que el tope no sea solo de iteraciones. Los despliegues maduros ponen dos frenos en paralelo: ciclos máximos y presupuesto de tokens por sesión. El segundo atrapa el caso del agente que hace pocas vueltas pero con un contexto que creció enormemente.\n\nUn detalle de diseño que suele olvidarse: hay que decidir qué hace el sistema al agotar el presupuesto. Devolver un error crudo es la peor opción. Lo correcto es devolver lo que se averiguó hasta ahí y declarar explícitamente que la tarea quedó incompleta: es la versión agéntica de la abstención fundamentada."
+        }
+      },
+      {
+        id: 11,
         title: "El Tribunal de Tesis: por qué no Sirve Comparar Cadenas",
-        block: "B2: Validación (24m)",
+        block: "B3: Validación (24m)",
         targetTimeMinutes: 7,
         purpose: "Establecer por qué el testing tradicional no aplica al lenguaje natural y qué se evalúa en su lugar, con el modelo mental del tribunal y su rúbrica.",
         screenHTML: `
           <div class="max-w-4xl mx-auto space-y-4">
             <div class="border-l-4 border-utn-indigo pl-3">
-              <span class="text-xs uppercase font-bold text-utn-indigo tracking-wider">Bloque 2 · Cómo se mide la calidad</span>
+              <span class="text-xs uppercase font-bold text-utn-indigo tracking-wider">Bloque 3 · Cómo se mide la calidad</span>
               <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Dos Respuestas Correctas Pueden no Compartir una Palabra</h2>
               <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Y una respuesta falsa puede parecerse muchísimo a la verdadera. Hay que evaluar <strong>significado</strong>, y a escala de miles de tickets nadie lo hace a mano.</p>
             </div>
@@ -913,7 +1131,7 @@
           </div>
         `,
         verbatimScript: `
-          <p>Bloque dos. Y esto responde a una pregunta muy concreta que aparece en todo comité: <strong>¿cómo sabemos que el sistema anda bien?</strong></p>
+          <p>Bloque tres. Y esto responde a una pregunta muy concreta que aparece en todo comité: <strong>¿cómo sabemos que el sistema anda bien?</strong></p>
           <p>En software tradicional la respuesta es fácil. Una prueba unitaria compara dos valores y el veredicto es binario: o devolvió 206,25 o no lo devolvió. No hay matices ni interpretación.</p>
           <p><strong>Con lenguaje natural eso no sirve</strong>, y por dos motivos simétricos. <strong>Dos respuestas correctas pueden no compartir una sola palabra</strong> —una dice "el reembolso se acredita en 15 días corridos" y otra dice "el plazo de acreditación es de dos semanas"; son la misma respuesta—. Y al revés: <strong>una respuesta falsa puede parecerse muchísimo a la verdadera</strong>, cambiando un solo número.</p>
           <p>Hay que evaluar <strong>significado</strong>. Y a escala de miles de tickets diarios, nadie lo hace a mano.</p>
@@ -927,9 +1145,9 @@
         }
       },
       {
-        id: 9,
+        id: 12,
         title: "Las Tres Dimensiones: Qué se Compara contra Qué",
-        block: "B2: Validación (24m)",
+        block: "B3: Validación (24m)",
         targetTimeMinutes: 8,
         purpose: "Definir groundedness, relevancia contextual y consistencia factual precisando en cada caso los dos elementos que se contrastan, y distinguir consistencia local de global.",
         screenHTML: `
@@ -1004,9 +1222,9 @@
         }
       },
       {
-        id: 10,
+        id: 13,
         title: "LLM-as-a-Judge: un Modelo Auditando a Otro",
-        block: "B2: Validación (24m)",
+        block: "B3: Validación (24m)",
         targetTimeMinutes: 9,
         purpose: "Presentar el patrón de evaluación automatizada con su rúbrica y su configuración, y enfrentar el problema de circularidad con la solución operativa del conjunto de calibración.",
         screenHTML: `
@@ -1119,221 +1337,6 @@
         validationPause: {
           question: "Si el evaluador automático tiene los mismos sesgos cognitivos que intenta auditar, ¿cómo puede una organización confiarle sus métricas de calidad?",
           answer: "No confiándole nada a ciegas: calibrándolo primero contra un patrón humano.\n\nEl mecanismo estándar es el conjunto de calibración, o golden dataset: una muestra de casos verificados manualmente por especialistas del dominio, que funciona como examen del juez. Si el modelo evaluador coincide con el panel humano en más del 85% de esa muestra, se lo considera calibrado para procesar volumen. Si no coincide, el problema no está en el sistema auditado: está en la rúbrica o en el juez.\n\nY hay una segunda medida que ataca directamente el sesgo de verbosidad: acotar la rúbrica a respuestas de opción fija. Clasificaciones binarias sí/no, o escalas cortas con criterios explícitos. Cuanto más cerrada la salida del juez, menos espacio tiene el estilo retórico para interferir en el puntaje.\n\nLa conclusión de gobernanza es que el juez automático no reemplaza a la auditoría humana: la reubica. Los especialistas dejan de revisar miles de tickets y pasan a mantener el conjunto de calibración, que es un trabajo mucho más chico y de mayor valor."
-        }
-      },
-      {
-        id: 11,
-        title: "El Perito Contable: el Bucle ReAct",
-        block: "B3: Agentes y ReAct (22m)",
-        targetTimeMinutes: 7,
-        purpose: "Introducir el patrón ReAct como bucle cerrado de pensamiento, acción y observación, y justificar por qué ciertas tareas no se resuelven con una sola invocación.",
-        screenHTML: `
-          <div class="max-w-4xl mx-auto space-y-4">
-            <div class="border-l-4 border-utn-teal pl-3">
-              <span class="text-xs uppercase font-bold text-utn-teal tracking-wider">Bloque 3 · Arquitectura de agentes</span>
-              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">El Dictamen Llega al Final de una Cadena, no al Principio</h2>
-              <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Un perito contable no escribe el dictamen en el primer segundo: pide un libro, observa una discrepancia, y eso lo lleva a pedir el siguiente.</p>
-            </div>
-
-            <div class="p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-              <pre class="mermaid text-xs">
-                flowchart LR
-                  S["Objetivo<br/>complejo"] --> T["Pensamiento:<br/>¿qué me falta?"]
-                  T --> D{"¿Se resolvió<br/>la meta?"}
-                  D -->|No| A["Acción:<br/>ejecutar herramienta"]
-                  A --> O["Observación:<br/>salida del entorno"]
-                  O --> T
-                  D -->|Sí| F["Respuesta final"]
-              </pre>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-utn-lightBlue border-slate-200 dark:border-slate-700">
-                <div class="text-xs sm:text-sm font-bold text-utn-lightBlue mb-1">💭 Pensamiento</div>
-                <p class="text-2xs text-slate-600 dark:text-slate-300">El modelo <strong>verbaliza su estado cognitivo</strong>: analiza el contexto disponible y deduce qué información parcial le falta para resolver la meta.</p>
-              </div>
-              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-utn-teal border-slate-200 dark:border-slate-700">
-                <div class="text-xs sm:text-sm font-bold text-utn-teal mb-1">⚡ Acción</div>
-                <p class="text-2xs text-slate-600 dark:text-slate-300">Invoca una herramienta específica por su identificador y <strong>genera los argumentos</strong> correspondientes.</p>
-              </div>
-              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-t-4 border-utn-indigo border-slate-200 dark:border-slate-700">
-                <div class="text-xs sm:text-sm font-bold text-utn-indigo mb-1">👁️ Observación</div>
-                <p class="text-2xs text-slate-600 dark:text-slate-300">El anfitrión ejecuta y <strong>concatena el resultado al contexto</strong>. Ese dato alimenta el pensamiento siguiente.</p>
-              </div>
-            </div>
-
-            <div class="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/60 text-xs sm:text-sm text-slate-700 dark:text-slate-300 flex items-start gap-2.5">
-              <span class="text-xl">🔑</span>
-              <div>
-                <strong class="text-slate-900 dark:text-white">Lo que distingue a ReAct de un flujo programado:</strong>
-                <span> un pipeline tradicional ejecuta pasos <strong>fijados de antemano en código</strong>. Acá el modelo <strong>ajusta dinámicamente el paso siguiente en función de lo que descubrió en el anterior</strong>. Esa flexibilidad es la capacidad… y es también el problema de gobernanza del bloque 4.</span>
-              </div>
-            </div>
-          </div>
-        `,
-        verbatimScript: `
-          <p>Bloque tres. Hay tareas que <strong>no se resuelven con una sola invocación de herramienta ni con un prompt de una pasada</strong>. Si algo requiere buscar en varias fuentes, analizar resultados intermedios y corregir la trayectoria sobre la marcha, hace falta un flujo iterativo.</p>
-          <p>El modelo mental es <strong>un perito contable que debe detectar incongruencias en un balance</strong>. Y lo importante es cómo trabaja: <strong>no escribe el dictamen en el primer segundo</strong>.</p>
-          <p>Primero <strong>piensa</strong> qué libro diario necesita revisar. Después <strong>actúa</strong>, solicitando ese libro en el archivo. Al recibirlo, <strong>observa</strong> los números y nota un desfase de caja en cierta fecha. Y eso lo lleva a un nuevo pensamiento: ahora necesita los extractos bancarios de ese mes. Y actúa otra vez. Ese ciclo continúa metódicamente hasta que reúne evidencia suficiente. <strong>El dictamen llega al final de una cadena, no al principio.</strong></p>
-          <p>Eso es <strong>ReAct</strong>, propuesto por investigadores de Princeton y Google Research en 2022. El nombre viene de <em>Reason + Act</em>, y lo que hace es <strong>unificar la cadena de razonamiento que vimos en la Unidad 2 con la ejecución de herramientas, en un bucle cerrado</strong>.</p>
-          <p>La traza se estructura en tres componentes intercalados, que están en las tres tarjetas. <strong>Pensamiento</strong>: el modelo verbaliza su estado cognitivo y deduce qué le falta. <strong>Acción</strong>: invoca una herramienta con sus argumentos. <strong>Observación</strong>: el anfitrión ejecuta y concatena el resultado al contexto.</p>
-          <p>Y fíjense en el diagrama: la observación <strong>vuelve al pensamiento</strong>. Ese es el bucle. Cada dato nuevo alimenta la decisión siguiente. El ciclo se repite hasta que el modelo determina que ya puede responder sin más acciones externas, y ahí emite la acción de cierre, típicamente rotulada <span class="font-mono">Finish</span>.</p>
-          <p>Ahora el recuadro de abajo, que marca la diferencia clave. Un pipeline tradicional ejecuta <strong>pasos fijados de antemano en código</strong>: siempre los mismos, en el mismo orden. Acá el modelo <strong>ajusta dinámicamente el paso siguiente en función de lo que descubrió</strong>.</p>
-          <p>Retengan esa frase con las dos caras: <strong>esa flexibilidad es la capacidad que hace valioso al agente, y es exactamente el problema de gobernanza del bloque cuatro</strong>. Un sistema que decide su propio camino es un sistema cuyo camino no podemos anticipar.</p>
-        `,
-        validationPause: {
-          question: "¿Qué relación tiene el bucle ReAct con el Chain-of-Thought que vimos en la Unidad 2?",
-          answer: "ReAct es Chain-of-Thought con el mundo exterior cerrando el circuito.\n\nEn CoT el modelo razona paso a paso, pero todos los pasos salen de sus propios pesos: el texto que genera es su memoria de trabajo, y nada externo lo corrige. Si en el paso 2 asume un dato equivocado, el paso 3 construye sobre esa suposición y el error se arrastra hasta el final.\n\nEn ReAct, entre pensamiento y pensamiento se intercala una observación que viene de un sistema determinista. El modelo no supone el valor declarado del envío: lo consulta. Eso ancla la cadena de razonamiento a hechos verificables en cada eslabón, en lugar de solo al principio.\n\nDicho de otro modo: CoT le da al modelo un pizarrón para pensar; ReAct le da además un teléfono para preguntar. Y el segundo cambia la naturaleza del error posible: de 'razonó bien sobre un dato inventado' a 'razonó bien sobre un dato real, o falló al pedirlo'."
-        }
-      },
-      {
-        id: 12,
-        title: "Anatomía de una Traza Real, Paso a Paso",
-        block: "B3: Agentes y ReAct (22m)",
-        targetTimeMinutes: 8,
-        purpose: "Recorrer una traza ReAct concreta del caso de estudio para mostrar que el orden de las acciones no es arbitrario sino que lo impone la dependencia de datos entre herramientas.",
-        screenHTML: `
-          <div class="max-w-4xl mx-auto space-y-3">
-            <div class="border-l-4 border-utn-lightBlue pl-3">
-              <span class="text-xs uppercase font-bold text-utn-lightBlue tracking-wider">Mecanismo Práctico · tarea de dos saltos</span>
-              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">"¿Cuánto cuesta nacionalizar el envío LRG-88421?"</h2>
-            </div>
-
-            <div class="p-3.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-              <pre class="text-2xs sm:text-xs font-mono text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-wrap"><span class="text-utn-lightBlue font-bold">Thought 1:</span> Para calcular el arancel necesito el valor declarado
-            y los dias de demora. No los tengo.
-<span class="text-utn-teal font-bold">Action 1:</span> consultar_envio[LRG-88421]
-<span class="text-utn-indigo font-bold">Observation 1:</span> Retenido en aduana · valor declarado 12.500 USD
-                · demora 9 dias.
-
-<span class="text-utn-lightBlue font-bold">Thought 2:</span> Ahora tengo los dos parametros. Puedo calcular.
-<span class="text-utn-teal font-bold">Action 2:</span> calcular_arancel_y_penalizacion[valor=12500, dias=9]
-<span class="text-utn-indigo font-bold">Observation 2:</span> Arancel 1.500 USD · penalizacion 270 USD
-                · total 1.770 USD.
-
-<span class="text-utn-lightBlue font-bold">Thought 3:</span> Tengo todo verificado contra los sistemas.
-<span class="text-emerald-500 font-bold">Action 3:</span> <span class="text-emerald-500 font-bold">Finish</span>[El costo total de nacionalizacion es 1.770 USD.]</pre>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-l-4 border-semantic-error border-slate-200 dark:border-slate-700">
-                <div class="text-xs sm:text-sm font-bold text-semantic-error mb-1">🔒 El orden no es una elección del agente</div>
-                <p class="text-xs text-slate-600 dark:text-slate-300">
-                  <strong>No podía llamar a la calculadora en el primer ciclo</strong>: sus parámetros —valor y días— <strong>son la salida de la herramienta anterior</strong>. La dependencia de datos impone la secuencia.
-                </p>
-              </div>
-              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-l-4 border-amber-500 border-slate-200 dark:border-slate-700">
-                <div class="text-xs sm:text-sm font-bold text-amber-600 dark:text-amber-400 mb-1">💰 Los <em>round-trips</em> son el costo</div>
-                <p class="text-xs text-slate-600 dark:text-slate-300">
-                  Cada ciclo <strong>reenvía todo el historial acumulado</strong> de pensamientos y observaciones. El costo de un agente <strong>no es fijo: crece con cada vuelta del bucle</strong>.
-                </p>
-              </div>
-            </div>
-
-            <div class="p-3.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-900/50 text-xs sm:text-sm text-slate-700 dark:text-slate-300 flex items-start gap-2.5">
-              <span class="text-xl">🧪</span>
-              <div>
-                <strong class="text-slate-900 dark:text-white">Experimento 3 del laboratorio:</strong>
-                <span> van a correr esta misma meta con <span class="font-mono text-2xs">max_iteraciones = 1</span> y ver <strong>exactamente en qué punto de la cadena lo dejó el corte</strong> y qué dato le faltaba. Después suben a 3 y recorren la traza completa. A nivel de código, el bucle se implementa como <strong>una máquina de estados</strong>: si el modelo pide herramientas, el grafo enruta a los nodos de ejecución; si no pide más, sale hacia el usuario.</span>
-              </div>
-            </div>
-          </div>
-        `,
-        verbatimScript: `
-          <p>Vamos a recorrer una traza real, y es la misma meta que van a ejecutar esta tarde en el laboratorio: <em>"¿cuánto cuesta nacionalizar el envío LRG-88421?"</em>.</p>
-          <p>Fíjense en el <strong>Pensamiento 1</strong>: <em>"para calcular el arancel necesito el valor declarado y los días de demora. No los tengo."</em> Eso es el modelo <strong>reconociendo un hueco</strong>, que es lo que un LLM sin herramientas nunca hace: normalmente completaría el hueco con una cifra plausible.</p>
-          <p><strong>Acción 1</strong>: consulta el envío. <strong>Observación 1</strong>: retenido en aduana, valor declarado 12.500 dólares, demora 9 días. Esos números <strong>no los produjo el modelo</strong>: vinieron del sistema.</p>
-          <p><strong>Pensamiento 2</strong>: ahora sí tiene los dos parámetros. <strong>Acción 2</strong>: llama a la calculadora con esos valores exactos. <strong>Observación 2</strong>: arancel 1.500, penalización 270, total 1.770.</p>
-          <p><strong>Pensamiento 3</strong>: tiene todo verificado. <strong>Acción 3</strong>: <span class="font-mono">Finish</span>, y redacta la respuesta.</p>
-          <p>Ahora, la pregunta que quiero dejarles, y está en el recuadro rojo: <strong>¿podría el agente haber llamado a la calculadora en el primer ciclo?</strong></p>
-          <p><strong>No.</strong> Y no por una decisión de diseño ni por prudencia del modelo: <strong>los parámetros de la calculadora son la salida de la herramienta anterior</strong>. Valor declarado y días de demora salen de consultar el envío. <strong>La dependencia de datos impone la secuencia.</strong> Por eso esta es una meta genuina de dos saltos y no un capricho pedagógico: no hay forma de resolverla en una sola llamada.</p>
-          <p>Y el recuadro ámbar tiene la contracara económica: <strong>cada ciclo reenvía todo el historial acumulado</strong> de pensamientos y observaciones. El contexto crece vuelta a vuelta. <strong>El costo de un agente no es fijo: es multiplicativo.</strong></p>
-          <p>En el Experimento 3 van a correr esta meta con <strong>una sola iteración permitida</strong> y ver exactamente en qué punto de la cadena lo dejó el corte. Después suben a tres y recorren la traza completa. Es la mejor forma de entender que el agente no "sabe" la respuesta: la construye.</p>
-        `,
-        validationPause: {
-          question: "Si la secuencia de herramientas estaba determinada por la dependencia de datos, ¿no convendría programarla directamente en código y ahorrarse el agente?",
-          answer: "Para esta consulta puntual, sí. Y es una conclusión importante: si el flujo es siempre el mismo, un pipeline cableado es más rápido, más barato y completamente auditable. Usar un agente ahí es pagar flexibilidad que no se usa.\n\nEl agente empieza a justificarse cuando la secuencia no se conoce de antemano. Si el envío no estuviera retenido, el segundo paso no haría falta. Si el cliente preguntara además por el historial de reclamos, aparecería una tercera herramienta. Y si la consulta llega en lenguaje natural abierto, ni siquiera sabemos qué preguntó hasta leerlo.\n\nCablear todas esas ramas significa anticipar cada combinación posible, y el árbol crece rápido. El agente recorre ese árbol sin que nadie lo haya escrito.\n\nLa regla práctica: si podés dibujar el diagrama de flujo completo, programalo. Si el diagrama depende de datos que solo se conocen en ejecución, ahí hay un caso para el agente."
-        }
-      },
-      {
-        id: 13,
-        title: "Agente Autónomo frente a Flujo Guiado",
-        block: "B3: Agentes y ReAct (22m)",
-        targetTimeMinutes: 7,
-        purpose: "Cerrar el bloque con el criterio de selección entre razonamiento libre y flujos cableados, ubicando cada uno en el tipo de aplicación donde su perfil de riesgo es aceptable.",
-        screenHTML: `
-          <div class="max-w-4xl mx-auto space-y-3">
-            <div class="border-l-4 border-amber-500 pl-3">
-              <span class="text-xs uppercase font-bold text-amber-500 tracking-wider">Criterios de Decisión</span>
-              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Flexibilidad Cognitiva contra Control Presupuestario</h2>
-            </div>
-
-            <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700">
-              <table class="w-full text-xs sm:text-sm text-left">
-                <thead class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 uppercase text-2xs tracking-wider">
-                  <tr>
-                    <th class="px-3 py-2 font-bold">Dimensión</th>
-                    <th class="px-3 py-2 font-bold">Prompt estático / RAG simple</th>
-                    <th class="px-3 py-2 font-bold">Agente ReAct</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-200 dark:divide-slate-700 bg-white dark:bg-slate-900">
-                  <tr>
-                    <td class="px-3 py-2 font-bold text-slate-700 dark:text-slate-200">Capacidad de resolución<br/><span class="text-2xs font-normal text-slate-400">más es mejor</span></td>
-                    <td class="px-3 py-2"><span class="flex items-start gap-1.5"><span class="mt-[0.45em] w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0"></span><span class="text-amber-600 dark:text-amber-400">Limitada a consultas de <strong>un solo salto</strong>.</span></span></td>
-                    <td class="px-3 py-2"><span class="flex items-start gap-1.5"><span class="mt-[0.45em] w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span><span class="text-emerald-600 dark:text-emerald-400">Alta. Resuelve consultas de <strong>múltiples saltos</strong>.</span></span></td>
-                  </tr>
-                  <tr>
-                    <td class="px-3 py-2 font-bold text-slate-700 dark:text-slate-200">Latencia<br/><span class="text-2xs font-normal text-slate-400">menos y más predecible es mejor</span></td>
-                    <td class="px-3 py-2"><span class="flex items-start gap-1.5"><span class="mt-[0.45em] w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span><span class="text-emerald-600 dark:text-emerald-400">Rápida y predecible: 1 a 3 segundos.</span></span></td>
-                    <td class="px-3 py-2"><span class="flex items-start gap-1.5"><span class="mt-[0.45em] w-1.5 h-1.5 rounded-full bg-red-500 shrink-0"></span><span class="text-red-600 dark:text-red-400">Variable y mucho mayor: llamadas encadenadas.</span></span></td>
-                  </tr>
-                  <tr>
-                    <td class="px-3 py-2 font-bold text-slate-700 dark:text-slate-200">Costo de inferencia<br/><span class="text-2xs font-normal text-slate-400">previsible es mejor</span></td>
-                    <td class="px-3 py-2"><span class="flex items-start gap-1.5"><span class="mt-[0.45em] w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span><span class="text-emerald-600 dark:text-emerald-400">Fijo y acotado al prompt inicial.</span></span></td>
-                    <td class="px-3 py-2"><span class="flex items-start gap-1.5"><span class="mt-[0.45em] w-1.5 h-1.5 rounded-full bg-red-500 shrink-0"></span><span class="text-red-600 dark:text-red-400"><strong>Multiplicativo.</strong> Cada ciclo reenvía todo el historial.</span></span></td>
-                  </tr>
-                  <tr>
-                    <td class="px-3 py-2 font-bold text-slate-700 dark:text-slate-200">Determinismo y gobernanza<br/><span class="text-2xs font-normal text-slate-400">más es mejor</span></td>
-                    <td class="px-3 py-2"><span class="flex items-start gap-1.5"><span class="mt-[0.45em] w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span><span class="text-emerald-600 dark:text-emerald-400">Predecible y fácilmente auditable.</span></span></td>
-                    <td class="px-3 py-2"><span class="flex items-start gap-1.5"><span class="mt-[0.45em] w-1.5 h-1.5 rounded-full bg-red-500 shrink-0"></span><span class="text-red-600 dark:text-red-400">Menor. Puede tomar <strong>trayectorias no anticipadas</strong>.</span></span></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-2xs text-slate-500 dark:text-slate-400">
-              <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Favorable</span>
-              <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Intermedio</span>
-              <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> Desfavorable</span>
-              <span class="italic">· El agente gana <strong class="not-italic text-slate-600 dark:text-slate-300">una sola fila</strong>: la única que el flujo estático no puede cubrir de ninguna manera.</span>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-l-4 border-utn-lightBlue border-slate-200 dark:border-slate-700">
-                <div class="text-xs sm:text-sm font-bold text-utn-lightBlue mb-1">👥 Aplicaciones masivas al cliente final</div>
-                <p class="text-xs text-slate-600 dark:text-slate-300">La industria privilegia <strong>flujos guiados por grafos de control estricto</strong>, donde el LLM solo redacta los tramos intermedios. La predictibilidad de costo y tiempo es innegociable.</p>
-              </div>
-              <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border-l-4 border-utn-teal border-slate-200 dark:border-slate-700">
-                <div class="text-xs sm:text-sm font-bold text-utn-teal mb-1">🔍 Investigación interna y soporte nivel 3</div>
-                <p class="text-xs text-slate-600 dark:text-slate-300">Ahí sí, <strong>agentes ReAct autónomos</strong>: back-office, análisis complejo, casos donde <strong>la profundidad del hallazgo justifica el costo computacional</strong>.</p>
-              </div>
-            </div>
-          </div>
-        `,
-        verbatimScript: `
-          <p>Cerramos el bloque con la decisión, que igual que en las unidades anteriores no se toma por sofisticación sino por perfil de riesgo.</p>
-          <p>Lean la tabla por color y van a encontrar un patrón que ya nos resulta familiar: <strong>el agente gana una sola fila de las cuatro</strong>.</p>
-          <p>Gana en <strong>capacidad de resolución</strong>: resuelve consultas de múltiples saltos, donde el prompt estático está limitado a un solo salto semántico. Es una ventaja real y es la única razón para usarlo.</p>
-          <p>Y pierde en las otras tres, todas en rojo. <strong>Latencia</strong>: variable y significativamente mayor. <strong>Costo</strong>: <em>multiplicativo</em> —cada ciclo reenvía todo el historial acumulado—. Y <strong>determinismo</strong>: el agente puede tomar trayectorias que nadie anticipó.</p>
-          <p>Esa última fila merece un momento, porque es la que subestiman los equipos. <strong>Dos ejecuciones de la misma consulta pueden recorrer caminos distintos.</strong> Ante una auditoría, "depende de la trayectoria que tomó esa vez" es una respuesta muy incómoda.</p>
-          <p>Ahora piensen en el impacto financiero concreto: <strong>un agente que entra en un bucle innecesario de ocho iteraciones para una consulta trivial de un cliente</strong>. Ocho veces el costo presupuestado, para una pregunta que un flujo simple resolvía en una llamada. Y multiplicado por el tráfico de un canal masivo.</p>
-          <p>Por eso el criterio de la industria es el de las dos tarjetas de abajo. En <strong>aplicaciones masivas al cliente final</strong>, se privilegian <strong>flujos guiados por grafos de control estricto</strong>, donde el LLM solo redacta los tramos intermedios y el camino lo decide el código. La predictibilidad de costo y tiempo es innegociable a esa escala.</p>
-          <p>Y los <strong>agentes ReAct autónomos</strong> se reservan para investigación analítica interna, soporte especializado de nivel tres y tareas de back-office, <strong>donde la profundidad del hallazgo justifica con creces el costo computacional</strong> y donde una latencia de diez segundos no la nota nadie.</p>
-        `,
-        validationPause: {
-          question: "¿Cuál sería un límite razonable de iteraciones para un agente, y contra qué dato lo definirían?",
-          answer: "El número habitual está entre 3 y 5, pero lo importante es de dónde sale, porque elegirlo a ojo es lo que produce las dos fallas opuestas.\n\nSe define contra la profundidad real de las tareas del dominio. Si se mide la distribución de saltos necesarios sobre un conjunto de consultas representativas y resulta que el 95% se resuelve en dos o tres, el tope va en cuatro: cubre casi todo y deja un margen. Un tope demasiado bajo trunca tareas legítimas; uno demasiado alto no frena nada y solo se entera cuando llega la factura.\n\nY conviene que el tope no sea solo de iteraciones. Los despliegues maduros ponen dos frenos en paralelo: ciclos máximos y presupuesto de tokens por sesión. El segundo atrapa el caso del agente que hace pocas vueltas pero con un contexto que creció enormemente.\n\nUn detalle de diseño que suele olvidarse: hay que decidir qué hace el sistema al agotar el presupuesto. Devolver un error crudo es la peor opción. Lo correcto es devolver lo que se averiguó hasta ahí y declarar explícitamente que la tarea quedó incompleta: es la versión agéntica de la abstención fundamentada."
         }
       },
       {
